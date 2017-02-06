@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.mobithink.carbon.R;
 
@@ -31,6 +32,8 @@ public class CreateLineActivity extends Activity {
 
     Button mCreateLineButton;
 
+    RelativeLayout mActivityCreateLineRelativeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,8 @@ public class CreateLineActivity extends Activity {
         mAddFirstStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_Station);
         mAddSecondStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_second_Station);
 
+        mActivityCreateLineRelativeLayout = (RelativeLayout) findViewById(R.id.activity_create_line_relative_layout);
+
         mCreateLineButton = (Button) findViewById(R.id.createLine);
 
         mCreateLineButton.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +61,15 @@ public class CreateLineActivity extends Activity {
                 createLine();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(mAddSecondStationTextInputLayout != null) {
+            mActivityCreateLineRelativeLayout.addView(createNewEditText());
+        }
     }
 
     public void createLine(){
@@ -78,6 +92,20 @@ public class CreateLineActivity extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
 
+    private TextInputLayout createNewEditText(){
+
+        TextInputLayout textInputLayout = new TextInputLayout(this);
+        textInputLayout.setErrorTextAppearance(R.style.MyErrorText);
+        textInputLayout.isErrorEnabled();
+        TextInputEditText textInputEditText = new TextInputEditText(this);
+        textInputEditText.setHint(R.string.addStation);
+        textInputEditText.setTextSize(R.dimen.input_text_size);
+        textInputEditText.setTextColor(getResources().getColor(R.color.primary_text));
+
+        textInputLayout.addView(textInputEditText);
+
+        return textInputLayout;
     }
 }

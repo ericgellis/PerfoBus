@@ -3,10 +3,10 @@ package com.mobithink.carbon.preparation;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobithink.carbon.R;
-import com.rey.material.widget.Slider;
 
 /**
  * Created by mplaton on 31/01/2017.
@@ -14,18 +14,24 @@ import com.rey.material.widget.Slider;
 
 public class ParametersActivity extends Activity {
 
-    Slider mFrequencySeekBar;
+    SeekBar mFrequencySeekBar;
     SeekBar mRadiusSeekBar;
+
+    TextView mFrequencyNumberTextView;
+    TextView mRadiusNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parameters);
 
-        mFrequencySeekBar = (Slider) findViewById(R.id.frequency_seekbar);
+        mFrequencySeekBar = (SeekBar) findViewById(R.id.frequency_seekbar);
         mRadiusSeekBar = (SeekBar) findViewById(R.id.radius_seekbar);
 
-        /*mFrequencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mFrequencyNumberTextView = (TextView) findViewById(R.id.frequencyNumber);
+        mRadiusNumberTextView = (TextView) findViewById(R.id.radiusNumber);
+
+        mFrequencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
 
             @Override
@@ -35,15 +41,13 @@ public class ParametersActivity extends Activity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(ParametersActivity.this,"Frequency seekbar progress:"+progressChanged,
-                        Toast.LENGTH_SHORT).show();
+                mFrequencyNumberTextView.setText("" + progressChanged);
             }
-        });*/
+        });
 
         mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
@@ -55,14 +59,11 @@ public class ParametersActivity extends Activity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(ParametersActivity.this,"Radius seekbar progress:"+progressChanged,
-                        Toast.LENGTH_SHORT).show();
+                mRadiusNumberTextView.setText("" + progressChanged);
             }
         });
 

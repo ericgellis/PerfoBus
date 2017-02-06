@@ -31,8 +31,8 @@
     <string name="cancellation">Annulation</string>
 
     <!--parameters-->
-    <string name="frequency">Fréquence relevée en roulage (en sec)</string>
-    <string name="radius">Rayon de couverture des stations (en m)</string>
+    <string name="frequency">Fréquence relevée en roulage (en sec) : </string>
+    <string name="radius">Rayon de couverture des stations (en m) : </string>
     <string name="register">Enregistrer</string>
 
     <!--event_tab3-->
