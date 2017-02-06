@@ -1,6 +1,10 @@
 package com.mobithink.carbon;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +14,7 @@ import android.widget.ImageView;
 import com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity;
 import com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity;
 import com.mobithink.carbon.preparation.ParametersActivity;
+import com.squareup.picasso.Picasso;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -22,7 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     ImageView mParametersSettings;
 
     ImageView mMobiThinkLogo;
-    String logoUrl = "http://mobithinjy.cluster003.ovh.net/wp-content/uploads/2016/12/MOBITHINK_logoSSB_Q.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         mParametersSettings = (ImageView) findViewById(R.id.parameterButton);
         mMobiThinkLogo = (ImageView) findViewById(R.id.mobithinkLogo);
-        mMobiThinkLogo.setImageResource(R.drawable.mobithink_logo);
 
         mAnalyzeButton = (Button) findViewById(R.id.analyzeButton);
         mConsultButton = (Button) findViewById(R.id.consultButton);
