@@ -4,5 +4,31 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="black_overlay">#66000000</color>
+    <!-- Main Page-->
+    <color name="grey">#BDBDBD</color>
+    <color name="mobiThinkBlue">#006680</color>
+    <color name="veryLightGrey">#FAFAFA</color>
+
+    <!--ParametersActivity-->
+    <color name="parameters_label_text">#A9A9A9</color>
+    <color name="parameters_button">#388E3C</color>
+    <color name="background_parameters_button">#FFFFFF</color>
+
+    <!--Driving-->
+    <color name="orange_button_event">#F57C00</color>
+    <color name="orange_button_atmo">#FF9800</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lightBlue">#2196F3</color>
+    <color name="black">#000000</color>
+
+    <!--StationActivity-->
+    <color name="green_button">#1B5E20</color>
+    <color name="red_button">#D32F2F</color>
+    <color name="grey_station">#757575</color>
+
+    <!--Dark texts on light backgrounds-->
+    <color name="primary_text">#87000000</color>
+
+    <!--Error-->
+    <color name="red_color_error">#ffff0000</color>
 </resources>

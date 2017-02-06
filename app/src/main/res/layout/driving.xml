@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/weatherImageView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"/>
+
+    <TextView
+        android:id="@+id/weatherTemperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/weatherImageView"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/actualTime"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="@dimen/regular_margin"
+        android:textAlignment="center"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/actualDate"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/actualTime"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/atmoNumberTextView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="275dp"
+        android:layout_marginLeft="275dp"
+        android:background="@drawable/texview_circle_design"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/atmoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/atmoNumberTextView"
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:layout_marginStart="275dp"
+        android:layout_marginLeft="275dp"
+        android:text="@string/atmo"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/coursetextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/actualDate"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/course"/>
+
+    <TextView
+        android:id="@+id/courseTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_alignBottom="@+id/coursetextView"
+        android:textColor="@color/lightBlue"/>
+
+    <TextView
+        android:id="@+id/sectiontextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/coursetextView"
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/section"/>
+
+    <TextView
+        android:id="@+id/sectionTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_alignBottom="@+id/sectiontextView"
+        android:textColor="@color/lightBlue"/>
+
+    <Button
+        android:id="@+id/eventButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@+id/nextStationRelativeLayout"
+        android:text="@string/event"
+        android:textColor="@color/white"
+        android:background="@color/orange_button_event"/>
+
+    <RelativeLayout
+        android:id="@+id/nextStationRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="@string/nextStation"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="@dimen/double_regular_margin"/>
+
+        <TextView
+            android:id="@+id/nextStationNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightBlue"
+            android:textSize="30sp"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

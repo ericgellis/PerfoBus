@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/frequency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginLeft="@dimen/double_regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/frequency"
+        android:textColor="@color/parameters_label_text"/>
+
+    <com.rey.material.widget.Slider
+        android:id="@+id/frequency_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/frequency"
+        android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginLeft="@dimen/double_regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        app:sl_minValue="0"
+        app:sl_maxValue="60"
+        app:sl_discreteMode="true"
+        app:sl_primaryColor="@color/mobiThinkBlue"/>
+
+    <TextView
+        android:id="@+id/radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frequency_seekbar"
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginLeft="@dimen/double_regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/radius"
+        android:textColor="@color/parameters_label_text"/>
+
+    <SeekBar
+        android:id="@+id/radius_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/radius"
+        android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginLeft="@dimen/double_regular_margin"
+        android:max="1000"
+        android:progress="0"/>
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/register"
+        android:textColor="@color/parameters_button"
+        android:background="@color/background_parameters_button"/>
+
+</RelativeLayout>

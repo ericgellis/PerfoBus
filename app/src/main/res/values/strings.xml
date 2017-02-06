@@ -1,6 +1,48 @@
 <resources>
-    <string name="app_name">Carbon</string>
+    <string name="app_name">MobiThink</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- Main Page-->
+    <string name="fixed_text">Analyse des conditions d’exploitation de lignes de transports publics</string>
+    <string name="analyze">Analyser</string>
+    <string name="consult">Consulter</string>
+
+    <!--choice_line_from_analyze-->
+    <string name="cityName">Ville</string>
+    <string name="lineName">Ligne</string>
+    <string name="directionName">Direction</string>
+    <string name="vehicleCapacity">Capacité du véhicule</string>
+    <string name="start">Démarrer</string>
+
+    <!--new_line-->
+    <string name="departureStation">Station de départ</string>
+    <string name="addStation">Ajouter une station</string>
+    <string name="create">Créer</string>
+
+    <!--Driving-->
+    <string name="nextStation">Prochaine station</string>
+    <string name="event">Evènement</string>
+    <string name="course">Parcours :</string>
+    <string name="section">Tronçon :</string>
+    <string name="atmo">ATMO</string>
+
+    <!--StationActivity-->
+    <string name="boarding">Montée</string>
+    <string name="exit">Descente</string>
+    <string name="cancellation">Annulation</string>
+
+    <!--parameters-->
+    <string name="frequency">Fréquence relevée en roulage (en sec)</string>
+    <string name="radius">Rayon de couverture des stations (en m)</string>
+    <string name="register">Enregistrer</string>
+
+    <!--event_tab3-->
+    <string name="enteringData">Saisi le</string>
+    <string name="includingLoss">dont perte :</string>
+    <string name="averageSection">Tronçon moyen :</string>
+    <string name="detourRouteMaps">Détour/\ Itinéraire-maps</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
