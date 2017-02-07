@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,10 +31,21 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     TextInputEditText mWriteDirectionTextInputEditText;
     TextInputEditText mWriteVehicleCapacityTextInputEditText;
 
+    Toolbar mAnalyzeLineToolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_line_from_analyze);
+
+        mAnalyzeLineToolBar = (Toolbar) findViewById(R.id.analyzeLineToolBar);
+        mAnalyzeLineToolBar.setTitle("Choix d'une ligne");
+        mAnalyzeLineToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_City_Name_TextInputLayout);
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Line_Name_TextInputLayout);

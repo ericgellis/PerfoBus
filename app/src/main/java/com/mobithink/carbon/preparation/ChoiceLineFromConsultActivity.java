@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,12 +26,23 @@ public class ChoiceLineFromConsultActivity extends Activity {
     TextInputEditText mWriteLineTextInputEditText;
     TextInputEditText mWriteDirectionTextInputEditText;
 
+    Toolbar mConsultLineToolBar;
+
     Button mConsultButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_line_from_consult);
+
+        mConsultLineToolBar = (Toolbar) findViewById(R.id.consultLineToolBar);
+        mConsultLineToolBar.setTitle("Choix d'une ligne");
+        mConsultLineToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_City_Name_TextInputLayout);
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Line_Name_TextInputLayout);

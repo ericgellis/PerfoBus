@@ -3,13 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        layout="@layout/driving_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <ImageView
         android:id="@+id/weatherImageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginTop="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginStart="40dp" />
 
     <TextView
         android:id="@+id/weatherTemperatureTextView"
@@ -17,7 +21,6 @@
         android:layout_height="30dp"
         android:layout_below="@+id/weatherImageView"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
         android:textColor="@color/black"
         android:textSize="18sp"/>
 
@@ -46,7 +49,6 @@
         android:layout_height="56dp"
         android:layout_marginTop="50dp"
         android:layout_marginStart="275dp"
-        android:layout_marginLeft="275dp"
         android:background="@drawable/texview_circle_design"
         android:textColor="@color/white"
         android:textAlignment="center"/>
@@ -58,7 +60,6 @@
         android:layout_below="@+id/atmoNumberTextView"
         android:layout_marginTop="@dimen/double_regular_margin"
         android:layout_marginStart="275dp"
-        android:layout_marginLeft="275dp"
         android:text="@string/atmo"
         android:textColor="@color/black"
         android:textSize="18sp"/>
@@ -70,7 +71,6 @@
         android:layout_below="@+id/actualDate"
         android:layout_marginTop="60dp"
         android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/course"/>
 
@@ -79,7 +79,6 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="200dp"
-        android:layout_marginLeft="200dp"
         android:layout_alignBottom="@+id/coursetextView"
         android:textColor="@color/lightBlue"/>
 
@@ -90,7 +89,6 @@
         android:layout_below="@+id/coursetextView"
         android:layout_marginTop="@dimen/double_regular_margin"
         android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/section"/>
 
@@ -99,7 +97,6 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="200dp"
-        android:layout_marginLeft="200dp"
         android:layout_alignBottom="@+id/sectiontextView"
         android:textColor="@color/lightBlue"/>
 
@@ -124,7 +121,6 @@
             android:layout_height="20dp"
             android:text="@string/nextStation"
             android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
             android:layout_marginBottom="@dimen/double_regular_margin"/>
 
         <TextView
@@ -137,7 +133,5 @@
             android:textSize="30sp"
             android:textAlignment="center"/>
     </RelativeLayout>
-
-
-
+    
 </RelativeLayout>

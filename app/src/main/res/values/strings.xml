@@ -16,6 +16,7 @@
     <!--new_line-->
     <string name="departureStation">Station de départ</string>
     <string name="addStation">Ajouter une station</string>
+    <string name="interurban">Interurbain</string>
     <string name="create">Créer</string>
 
     <!--Driving-->
@@ -24,6 +25,7 @@
     <string name="course">Parcours :</string>
     <string name="section">Tronçon :</string>
     <string name="atmo">ATMO</string>
+    <string name="dir">dir.</string>
 
     <!--StationActivity-->
     <string name="boarding">Montée</string>
@@ -31,6 +33,7 @@
     <string name="cancellation">Annulation</string>
 
     <!--parameters-->
+    <string name="parameters">Paramètres</string>
     <string name="frequency">Fréquence relevée en roulage (en sec) : </string>
     <string name="radius">Rayon de couverture des stations (en m) : </string>
     <string name="register">Enregistrer</string>
