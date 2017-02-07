@@ -94,14 +94,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_STATION =
             "CREATE TABLE " + TABLE_STATION
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-                    + KEY_STATION_NAME  + " TEXT"
-                    + KEY_STEP + "INTEGER" + ")";
+                    + KEY_STATION_NAME  + " TEXT" + ")";
 
     // Create table LINE_STATION
     private static final String CREATE_TABLE_LINE_STATION =
             "CREATE TABLE " + TABLE_LINE_STATION
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-                    + KEY_LINE_ID + " INTEGER," + KEY_STATION_ID + " INTEGER," + ")";
+                    + KEY_LINE_ID + " INTEGER,"
+                    + KEY_STATION_ID + " INTEGER,"
+                    + KEY_STEP + "INTEGER" + ")";
 
     // Create table TRIP
     private static final String CREATE_TABLE_TRIP =

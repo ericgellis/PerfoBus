@@ -23,8 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitManager {
 
-    private static final String BASE_URL = "TO DEFINE";
-    private static final String BASE_URL_INTEGRATION = "TO DEFINE";
+    private static final String BASE_URL = "https://mobithink.herokuapp.com/";
+    private static final String BASE_URL_INTEGRATION = "https://mobithink.herokuapp.com/";
 
     static Retrofit mRetrofitInstance;
 
