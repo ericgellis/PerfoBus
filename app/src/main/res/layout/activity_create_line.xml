@@ -4,102 +4,53 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/Line_Name_TextInputLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Writing_Line_Name"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
-            android:hint="@string/lineName" />
-    </android.support.design.widget.TextInputLayout>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/City_Name_TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_below="@+id/Line_Name_TextInputLayout"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Writing_City_Name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
-            android:hint="@string/cityName" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/stationEditTextContainer"
+            android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/Departure_Station_TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_below="@+id/City_Name_TextInputLayout"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Writing_Departure_Station"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="2"
-            android:hint="@string/departureStation" />
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Line_Name_TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/regular_margin"
+                app:errorTextAppearance="@style/MyErrorText"
+                app:errorEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Writing_Line_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="@dimen/input_text_size"
+                    android:textColor="@color/primary_text"
+                    android:maxLines="1"
+                    android:hint="@string/lineName" />
+            </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/Adding_Station_TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_below="@+id/Departure_Station_TextInputLayout"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Adding_Station"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
-            android:hint="@string/addStation" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/Adding_Second_Station_TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_below="@+id/Adding_Station_TextInputLayout"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Adding_second_Station"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
-            android:hint="@string/addStation" />
-    </android.support.design.widget.TextInputLayout>
-
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/City_Name_TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                app:errorTextAppearance="@style/MyErrorText"
+                app:errorEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Writing_City_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="@dimen/input_text_size"
+                    android:textColor="@color/primary_text"
+                    android:maxLines="1"
+                    android:hint="@string/cityName" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
     <Button
         android:id="@+id/createLine"
         android:layout_width="match_parent"

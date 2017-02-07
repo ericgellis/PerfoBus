@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/regular_margin"
+    android:layout_marginLeft="@dimen/regular_margin"
+    app:errorTextAppearance="@style/MyErrorText"
+    app:errorEnabled="true"
+    android:hint="@string/addStation">
+
+    <EditText
+        android:id="@+id/station_field"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="@dimen/input_text_size"
+        android:textColor="@color/primary_text"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
+
+</android.support.design.widget.TextInputLayout>

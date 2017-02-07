@@ -6,10 +6,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by mplaton on 31/01/2017.
@@ -20,14 +29,14 @@ public class CreateLineActivity extends Activity {
     TextInputLayout mWriteLineTextInputLayout;
     TextInputLayout mWriteCityNameTextInputLayout;
     TextInputLayout mWriteDepartureStationTextInputLayout;
-    TextInputLayout mAddFirstStationTextInputLayout;
-    TextInputLayout mAddSecondStationTextInputLayout;
+
+    LinearLayout mStationEditTextContainer;
 
     TextInputEditText mWriteLineTextInputEditText;
     TextInputEditText mWriteCityNameTextInputEditText;
     TextInputEditText mWriteDepartureStationTextInputEditText;
-    TextInputEditText mAddFirstStationTextInputEditText;
-    TextInputEditText mAddSecondStationTextInputEditText;
+
+    ArrayList<TextInputLayout> mListStationTextInputEditText = new ArrayList<>();
 
     Button mCreateLineButton;
 
@@ -36,17 +45,15 @@ public class CreateLineActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_line);
 
+        mStationEditTextContainer = (LinearLayout) findViewById(R.id.stationEditTextContainer);
+
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Line_Name_TextInputLayout);
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.City_Name_TextInputLayout);
-        mWriteDepartureStationTextInputLayout = (TextInputLayout) findViewById(R.id.Departure_Station_TextInputLayout);
-        mAddFirstStationTextInputLayout = (TextInputLayout) findViewById(R.id.Adding_Station_TextInputLayout);
-        mAddSecondStationTextInputLayout = (TextInputLayout) findViewById(R.id.Adding_Second_Station_TextInputLayout);
 
         mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Line_Name);
         mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
-        mWriteDepartureStationTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Departure_Station);
-        mAddFirstStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_Station);
-        mAddSecondStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_second_Station);
+
+        addTextInputLayout();
 
         mCreateLineButton = (Button) findViewById(R.id.createLine);
 
@@ -56,6 +63,34 @@ public class CreateLineActivity extends Activity {
                 createLine();
             }
         });
+    }
+
+    private void addTextInputLayout() {
+        final TextInputLayout textInputLayout = (TextInputLayout) LayoutInflater.from(this).inflate(R.layout.text_input_layout, null);
+
+        EditText stationEditText = (EditText) textInputLayout.findViewById(R.id.station_field);
+        stationEditText.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                            if(mListStationTextInputEditText.get(mListStationTextInputEditText.size()-1).equals(textInputLayout)){
+                                addTextInputLayout();
+                            }
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+        mStationEditTextContainer.addView(textInputLayout);
+        mListStationTextInputEditText.add(textInputLayout);
+
+        if(!mListStationTextInputEditText.get(0).equals(textInputLayout)){
+            stationEditText.requestFocus();
+        }
     }
 
     public void createLine(){
