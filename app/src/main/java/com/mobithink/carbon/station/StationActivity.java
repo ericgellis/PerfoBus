@@ -1,12 +1,17 @@
 package com.mobithink.carbon.station;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.driving.DrivingActivity;
+
 
 /**
  * Created by mplaton on 02/02/2017.
@@ -25,6 +30,12 @@ public class StationActivity extends Activity {
     private TextView mBoardingPeopleTextView;
     private TextView mExitPeopleTextView;
 
+    private Toolbar mStationToolBar;
+    private Button mChangeStationNameButton;
+    private Button mDeleteTimeCodeButton;
+    private TextView mStationNameTextView;
+    private TextView mTimeCodeTextView;
+
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
 
@@ -32,6 +43,14 @@ public class StationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station);
+
+        mStationToolBar = (Toolbar) findViewById(R.id.stationToolBar);
+        mChangeStationNameButton = (Button) findViewById(R.id.changeStationNameButton);
+        mDeleteTimeCodeButton = (Button) findViewById(R.id.deleteTimeCodeButton);
+        mStationNameTextView = (TextView) findViewById(R.id.stationNameTextView);
+        mStationNameTextView.setText("Jean Jaures");
+        mTimeCodeTextView = (TextView) findViewById(R.id.timeCodeTextView);
+        mTimeCodeTextView.setText("1:05");
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfRemovedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfRemovedPeopleButton);
@@ -45,8 +64,35 @@ public class StationActivity extends Activity {
         mBoardingPeopleTextView.setText("0");
         mExitPeopleTextView = (TextView) findViewById(R.id.exitPeopleTextView);
         mExitPeopleTextView.setText("0");
+
+        mChangeStationNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStationName();
+            }
+        });
+
+        mDeleteTimeCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToDrivingPage();
+            }
+        });
+
     }
 
+    public void changeStationName(){
+        mStationNameTextView.setEnabled(true);
+        mStationNameTextView.getEditableText();
+        mStationNameTextView.setCursorVisible(true);
+        mStationNameTextView.setFocusable(true);
+        mStationNameTextView.setFocusableInTouchMode(true);
+    }
+
+    public void goToDrivingPage(){
+        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
+        this.startActivity(toDrivingPage);
+    }
 
     //Select number of boarding people
     public void countBoardingPeople(View v) {

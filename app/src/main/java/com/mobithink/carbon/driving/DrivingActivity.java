@@ -96,7 +96,7 @@ public class DrivingActivity extends Activity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setCancelable(true);
         alertDialogBuilder.setTitle("Supprimer la saisie ?");
-        alertDialogBuilder.setMessage("Toutes les données de la saisie seront perdues. Vous ne pourrezpas annuler cette action.");
+        alertDialogBuilder.setMessage("Toutes les données de la saisie seront perdues. Vous ne pourrez pas annuler cette action.");
         alertDialogBuilder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

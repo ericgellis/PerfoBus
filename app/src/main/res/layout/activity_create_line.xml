@@ -17,29 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/newLineToolBar"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="@dimen/double_regular_margin">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/stationEditTextContainer"
             android:orientation="vertical">
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/Line_Name_TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="@dimen/regular_margin"
-                app:errorTextAppearance="@style/MyErrorText"
-                app:errorEnabled="true">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/Writing_Line_Name"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:textSize="@dimen/input_text_size"
-                    android:textColor="@color/primary_text"
-                    android:maxLines="1"
-                    android:hint="@string/lineName" />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/City_Name_TextInputLayout"
@@ -58,24 +42,43 @@
                     android:hint="@string/cityName" />
             </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/interurban"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Line_Name_TextInputLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/double_regular_margin"
-                android:layout_below="@+id/City_Name_TextInputLayout"
-                android:text="@string/interurban"
-                android:textSize="18sp"/>
+                android:layout_marginStart="@dimen/regular_margin"
+                app:errorTextAppearance="@style/MyErrorText"
+                app:errorEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Writing_Line_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="@dimen/input_text_size"
+                    android:textColor="@color/primary_text"
+                    android:maxLines="1"
+                    android:hint="@string/lineName" />
+            </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/interurbanCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:layout_alignBaseline="@+id/interurban"
-                android:buttonTint="@color/lightBlue"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/interurban"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/double_regular_margin"
+                    android:text="@string/interurban"
+                    android:textSize="18sp"/>
 
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/interurbanCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignBaseline="@+id/interurban"
+                    android:buttonTint="@color/lightBlue"/>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
     <Button
@@ -86,6 +89,5 @@
         android:text="@string/create"
         android:textColor="@color/mobiThinkBlue"
         android:background="@color/veryLightGrey"/>
-
 
 </RelativeLayout>
