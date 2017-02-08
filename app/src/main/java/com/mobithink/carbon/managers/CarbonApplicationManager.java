@@ -1,6 +1,6 @@
 package com.mobithink.carbon.managers;
 
-import com.mobithink.carbon.database.model.Trip;
+import com.mobithink.carbon.database.model.TripDTO;
 
 /**
  * Created by jpaput on 06/02/2017.
@@ -36,7 +36,7 @@ public class CarbonApplicationManager {
         mCurrentTripId = tripId;
     }
 
-    public Trip getCurrentTrip(){
+    public TripDTO getCurrentTrip(){
         return DatabaseManager.getInstance().getTrip(mCurrentTripId);
     }
 

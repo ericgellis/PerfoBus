@@ -4,9 +4,9 @@ package com.mobithink.carbon.database.model;
  * Created by jpaput on 07/02/2017.
  */
 
-public class City {
+public class CityDTO {
 
-    public City() {
+    public CityDTO() {
     }
 
     private long id;
@@ -27,5 +27,10 @@ public class City {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

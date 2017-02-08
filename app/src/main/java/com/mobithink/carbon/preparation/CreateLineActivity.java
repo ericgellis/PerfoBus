@@ -10,14 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 
 import com.mobithink.carbon.R;
 
@@ -31,13 +29,11 @@ public class CreateLineActivity extends Activity {
 
     TextInputLayout mWriteLineTextInputLayout;
     TextInputLayout mWriteCityNameTextInputLayout;
-    TextInputLayout mWriteDepartureStationTextInputLayout;
 
     LinearLayout mStationEditTextContainer;
 
     TextInputEditText mWriteLineTextInputEditText;
     TextInputEditText mWriteCityNameTextInputEditText;
-    TextInputEditText mWriteDepartureStationTextInputEditText;
 
     ArrayList<TextInputLayout> mListStationTextInputEditText = new ArrayList<>();
 
@@ -67,7 +63,7 @@ public class CreateLineActivity extends Activity {
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Line_Name_TextInputLayout);
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.City_Name_TextInputLayout);
 
-        mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Line_Name);
+        mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Line_edtitext);
         mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
 
         addTextInputLayout();

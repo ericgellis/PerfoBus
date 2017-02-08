@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.mobithink.carbon.database.model.Trip;
-
-import java.util.Date;
+import com.mobithink.carbon.database.model.TripDTO;
 
 /**
  * Created by jpaput on 07/02/2017.
@@ -62,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ATMO = "atmo";
     private static final String KEY_TEMPERATURE = "temperature";
     private static final String KEY_WEATHER = "weather";
-    private static final String KEY_CAPACITY = "capacity";
+    private static final String KEY_CAPACITY = "vehiculeCapacity";
 
     // ROLLING_POINT Table - column names
     private static final String KEY_TRAFFIC = "traffic";
@@ -192,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Trip getTrip(long tripId) {
+    public TripDTO getTrip(long tripId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_TRIP + " WHERE "
@@ -206,18 +204,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         c.moveToFirst();
 
-        Trip trip = new Trip();
-        trip.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        trip.setTripName((c.getString(c.getColumnIndex(KEY_TRIP_NAME))));
-        trip.setTripStartTime(c.getLong(c.getColumnIndex(KEY_START_DATETIME)));
-        trip.setTripEndTime(c.getLong(c.getColumnIndex(KEY_END_DATETIME)));
-        trip.setAtmo(c.getInt(c.getColumnIndex(KEY_ATMO)));
-        trip.setTemperature(c.getInt(c.getColumnIndex(KEY_TEMPERATURE)));
-        trip.setWeather(c.getString(c.getColumnIndex(KEY_WEATHER)));
-        trip.setCapacity(c.getInt(c.getColumnIndex(KEY_CAPACITY)));
-        trip.setLineId(c.getInt(c.getColumnIndex(KEY_LINE_ID)));
+        TripDTO tripDTO = new TripDTO();
+        tripDTO.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        tripDTO.setTripName((c.getString(c.getColumnIndex(KEY_TRIP_NAME))));
+        tripDTO.setStartTime(c.getLong(c.getColumnIndex(KEY_START_DATETIME)));
+        tripDTO.setEndTime(c.getLong(c.getColumnIndex(KEY_END_DATETIME)));
+        tripDTO.setAtmo(c.getInt(c.getColumnIndex(KEY_ATMO)));
+        tripDTO.setTemperature(c.getInt(c.getColumnIndex(KEY_TEMPERATURE)));
+        tripDTO.setWeather(c.getString(c.getColumnIndex(KEY_WEATHER)));
+        tripDTO.setVehiculeCapacity(c.getInt(c.getColumnIndex(KEY_CAPACITY)));
+        tripDTO.setLineId(c.getInt(c.getColumnIndex(KEY_LINE_ID)));
 
-        return trip;
+        return tripDTO;
     }
 
     public void finishCurrentTrip(long currentTripId) {
@@ -230,17 +228,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(currentTripId)});
     }
 
-    public void updateTrip(Trip trip) {
+    public void updateTrip(TripDTO tripDTO) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ATMO, trip.getAtmo());
-        values.put(KEY_CAPACITY, trip.getCapacity());
-        values.put(KEY_TEMPERATURE, trip.getTemperature());
-        values.put(KEY_WEATHER, trip.getWeather());
+        values.put(KEY_ATMO, tripDTO.getAtmo());
+        values.put(KEY_CAPACITY, tripDTO.getVehiculeCapacity());
+        values.put(KEY_TEMPERATURE, tripDTO.getTemperature());
+        values.put(KEY_WEATHER, tripDTO.getWeather());
 
         db.update(TABLE_TRIP, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(trip.getId())});
+                new String[] { String.valueOf(tripDTO.getId())});
     }
 
     public void deleteTrip(long tripId) {

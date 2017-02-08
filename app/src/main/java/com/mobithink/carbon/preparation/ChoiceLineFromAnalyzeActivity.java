@@ -1,18 +1,27 @@
 package com.mobithink.carbon.preparation;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.model.City;
+import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
@@ -32,19 +41,25 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     Button mCreateNewLineButton;
     Button mStartButton;
 
-    TextInputLayout mWriteCityNameTextInputLayout;
-    TextInputLayout mWriteLineTextInputLayout;
-    TextInputLayout mWriteDirectionTextInputLayout;
-    TextInputLayout mWriteVehicleCapacityTextInputLayout;
+    TextInputLayout mCityTextInputLayout;
+    TextInputLayout mLineTextInputLayout;
+    TextInputLayout mDirectionTextInputLayout;
+    TextInputLayout mCapacityTextInputLayout;
 
-    AutoCompleteTextView mWriteCityNameTextInputEditText;
-    TextInputEditText mWriteLineTextInputEditText;
-    TextInputEditText mWriteDirectionTextInputEditText;
-    TextInputEditText mWriteVehicleCapacityTextInputEditText;
+    AutoCompleteTextView mCityAutocompleteView;
+    TextInputEditText mLineEditText;
+    TextInputEditText mDirectionEditText;
+    TextInputEditText mCapacityEditText;
 
-    ArrayAdapter<String> cityNameAdapter;
+    ArrayAdapter<CityDTO> cityAdapter;
+    ArrayAdapter<BusLineDTO> lineAdapter;
+    ArrayAdapter<StationDTO> directionAdapter;
+    CityDTO mSelectedCityDTO;
+    BusLineDTO mSelectedLineDTO;
 
     Toolbar mAnalyzeLineToolBar;
+    private StationDTO mSelectedDirection;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +75,37 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             }
         });
 
-        cityNameAdapter = new ArrayAdapter<>(this,android.R.layout.select_dialog_item);
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
+        lineAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
+        directionAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
 
-        mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_City_Name_TextInputLayout);
-        mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Line_Name_TextInputLayout);
-        mWriteDirectionTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Direction_TextInputLayout);
-        mWriteVehicleCapacityTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Vehicle_Capacity_TextInputLayout);
+        mCityTextInputLayout = (TextInputLayout) findViewById(R.id.city_textinputlayout);
+        mLineTextInputLayout = (TextInputLayout) findViewById(R.id.line_textinputlayout);
+        mDirectionTextInputLayout = (TextInputLayout) findViewById(R.id.direction_textinputlayout);
+        mCapacityTextInputLayout = (TextInputLayout) findViewById(R.id.capacity_textinputlayout);
 
-        mWriteCityNameTextInputEditText = (AutoCompleteTextView) findViewById(R.id.Writing_City_Name);
-        mWriteCityNameTextInputEditText.setThreshold(1);//will start working from first character
-        mWriteCityNameTextInputEditText.setAdapter(cityNameAdapter);
-        mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Line_Name);
-        mWriteDirectionTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Direction);
-        mWriteVehicleCapacityTextInputEditText =(TextInputEditText) findViewById(R.id.Writing_Vehicle_Capacity);
+        mCityAutocompleteView = (AutoCompleteTextView) findViewById(R.id.Writing_City_Name);
+        mCityAutocompleteView.setThreshold(1);//will start working from first character
+        mCityAutocompleteView.setAdapter(cityAdapter);
+
+        mCityAutocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long arg3) {
+                //hide keyboard
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(parent.getApplicationWindowToken(), 0);
+
+                mSelectedCityDTO = (CityDTO) parent.getAdapter().getItem(position);
+                getCityLines();
+
+            }
+        });
+
+        mLineEditText = (TextInputEditText) findViewById(R.id.Line_edtitext);
+        mDirectionEditText = (TextInputEditText) findViewById(R.id.Writing_Direction);
+        mCapacityEditText = (TextInputEditText) findViewById(R.id.Writing_Vehicle_Capacity);
 
         mCreateNewLineButton = (Button) findViewById(R.id.createNewLine);
         mStartButton = (Button) findViewById(R.id.start_button);
@@ -84,10 +117,114 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             }
         });
 
+        mLineEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO check if a line is selected
+                if(mSelectedCityDTO != null) {
+                    new AlertDialog.Builder(ChoiceLineFromAnalyzeActivity.this)
+                            .setCancelable(true)
+                            .setAdapter(lineAdapter, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mSelectedLineDTO = lineAdapter.getItem(which);
+                                    mLineEditText.setText(mSelectedLineDTO.getName());
+                                    getLineStations();
+                                }
+                            })
+                            .create()
+                            .show();
+                }else{
+                    mCityTextInputLayout.setErrorEnabled(true);
+                    mCityTextInputLayout.setError("Vous devez sélectionner une ville");
+                }
+            }
+        });
+
+        mDirectionEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mSelectedLineDTO != null) {
+
+                    new AlertDialog.Builder(ChoiceLineFromAnalyzeActivity.this)
+                            .setCancelable(true)
+                            .setAdapter(directionAdapter, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mSelectedDirection = directionAdapter.getItem(which);
+                                    mDirectionEditText.setText(mSelectedDirection.getStationName());
+                                }
+                            })
+                            .create()
+                            .show();
+                }else{
+                    mLineTextInputLayout.setErrorEnabled(true);
+                    mLineTextInputLayout.setError("Vous devez sélectionner une Ligne");
+                }
+            }
+        });
+
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDriving();
+            }
+        });
+    }
+
+    private void getLineStations() {
+        LineService groupService = RetrofitManager.build().create(LineService.class);
+
+        Call<List<StationDTO>> call = groupService.getLineStations(mSelectedLineDTO.getId());
+
+        call.enqueue(new Callback<List<StationDTO>>() {
+            @Override
+            public void onResponse(Call<List<StationDTO>> call, Response<List<StationDTO>> response) {
+                switch (response.code()) {
+                    case 200:
+
+                        directionAdapter.add(response.body().get(0));
+                        directionAdapter.add(response.body().get(response.body().size()-1));
+
+                        directionAdapter.notifyDataSetChanged();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StationDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getCityLines() {
+        //TODO check if a city is selected
+        LineService groupService = RetrofitManager.build().create(LineService.class);
+
+        Call<List<BusLineDTO>> call = groupService.getCityLines(mSelectedCityDTO.getName());
+
+        call.enqueue(new Callback<List<BusLineDTO>>() {
+            @Override
+            public void onResponse(Call<List<BusLineDTO>> call, Response<List<BusLineDTO>> response) {
+                switch (response.code()) {
+                    case 200:
+
+                        lineAdapter.addAll(response.body());
+                        lineAdapter.notifyDataSetChanged();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BusLineDTO>> call, Throwable t) {
+
             }
         });
     }
@@ -101,39 +238,67 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     private void getCities() {
         LineService groupService = RetrofitManager.build().create(LineService.class);
 
-        Call<List<City>> call = groupService.getCities();
+        Call<List<CityDTO>> call = groupService.getCities();
 
-        call.enqueue(new Callback<List<City>>() {
+        call.enqueue(new Callback<List<CityDTO>>() {
             @Override
-            public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+            public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
 
-                        for(City city : response.body()){
-                            cityNameAdapter.add(city.getName());
-                        }
-                        cityNameAdapter.notifyDataSetChanged();
+                        cityAdapter.addAll(response.body());
+                        cityAdapter.notifyDataSetChanged();
 
                         break;
-                    default :
+                    default:
                         break;
                 }
             }
 
             @Override
-            public void onFailure(Call<List<City>> call, Throwable t) {
+            public void onFailure(Call<List<CityDTO>> call, Throwable t) {
 
             }
         });
     }
 
-    public void changePageToCreateNewLine(){
+    public void changePageToCreateNewLine() {
+
         Intent createLine = new Intent(this, CreateLineActivity.class);
         this.startActivity(createLine);
+
     }
 
-    public void startDriving(){
-        Intent startDriving = new Intent(this, DrivingActivity.class);
-        this.startActivity(startDriving);
+    public void startDriving() {
+        boolean hasError = false;
+
+        if ((mCityAutocompleteView.getText().toString().equals(""))) {
+            hasError = true;
+            mCityTextInputLayout.setErrorEnabled(true);
+            mCityTextInputLayout.setError("Vous devez sélectionner une ville");
+        }
+
+        if ((mLineEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mLineTextInputLayout.setErrorEnabled(true);
+            mLineTextInputLayout.setError("Vous devez sélectionner une ligne");
+        }
+
+        if ((mDirectionEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mDirectionTextInputLayout.setErrorEnabled(true);
+            mDirectionTextInputLayout.setError("Vous devez sélectionner une direction");
+        }
+
+        if ((mCapacityEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mCapacityTextInputLayout.setErrorEnabled(true);
+            mCapacityTextInputLayout.setError("Vous devez inscrire une capacité pour le véhicule");
+        }
+
+        if (!hasError) {
+            Intent startDriving = new Intent(this, DrivingActivity.class);
+            this.startActivity(startDriving);
+        }
     }
 }

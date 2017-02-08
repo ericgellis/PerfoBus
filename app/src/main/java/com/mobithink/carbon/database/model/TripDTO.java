@@ -4,15 +4,15 @@ package com.mobithink.carbon.database.model;
  * Created by jpaput on 07/02/2017.
  */
 
-public class Trip {
+public class TripDTO {
 
     public int id;
 
     public String tripName;
 
-    public Long tripStartTime;
+    public Long startTime;
 
-    public Long tripEndTime;
+    public Long endTime;
 
     public int atmo;
 
@@ -20,11 +20,11 @@ public class Trip {
 
     public String weather;
 
-    public int capacity;
+    public int vehiculeCapacity;
 
     public int lineId;
 
-    public Trip() {
+    public TripDTO() {
     }
 
     public int getId() {
@@ -43,20 +43,20 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public Long getTripStartTime() {
-        return tripStartTime;
+    public Long getStartTime() {
+        return startTime;
     }
 
-    public void setTripStartTime(Long tripStartTime) {
-        this.tripStartTime = tripStartTime;
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
     }
 
-    public Long getTripEndTime() {
-        return tripEndTime;
+    public Long getEndTime() {
+        return endTime;
     }
 
-    public void setTripEndTime(Long tripEndTime) {
-        this.tripEndTime = tripEndTime;
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
     public int getAtmo() {
@@ -83,12 +83,12 @@ public class Trip {
         this.weather = weather;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public int getVehiculeCapacity() {
+        return vehiculeCapacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setVehiculeCapacity(int vehiculeCapacity) {
+        this.vehiculeCapacity = vehiculeCapacity;
     }
 
     public int getLineId() {

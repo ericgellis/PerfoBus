@@ -44,12 +44,12 @@ public class ChoiceLineFromConsultActivity extends Activity {
             }
         });
 
-        mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_City_Name_TextInputLayout);
-        mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Writing_Line_Name_TextInputLayout);
-        mWriteDirectionTextInputLayout  = (TextInputLayout) findViewById(R.id.Writing_Direction_TextInputLayout);
+        mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.city_textinputlayout);
+        mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.line_textinputlayout);
+        mWriteDirectionTextInputLayout  = (TextInputLayout) findViewById(R.id.direction_textinputlayout);
 
         mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
-        mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Line_Name);
+        mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Line_edtitext);
         mWriteDirectionTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Direction);
 
         mConsultButton = (Button) findViewById(R.id.consultButton);
