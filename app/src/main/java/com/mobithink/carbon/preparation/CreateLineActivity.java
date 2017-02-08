@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 
 import com.mobithink.carbon.R;
 
@@ -40,12 +43,28 @@ public class CreateLineActivity extends Activity {
 
     Button mCreateLineButton;
 
+    Toolbar mNewLineToolBar;
+
+    CheckBox interUrbanCheckBox;
+
+    RelativeLayout mActivityCreateLineRelativeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_line);
 
         mStationEditTextContainer = (LinearLayout) findViewById(R.id.stationEditTextContainer);
+
+        mNewLineToolBar = (Toolbar) findViewById(R.id.newLineToolBar);
+        mNewLineToolBar.setTitle("Nouvelle ligne");
+        mNewLineToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Line_Name_TextInputLayout);
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.City_Name_TextInputLayout);
@@ -54,6 +73,10 @@ public class CreateLineActivity extends Activity {
         mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
 
         addTextInputLayout();
+
+        mActivityCreateLineRelativeLayout = (RelativeLayout) findViewById(R.id.activity_create_line_relative_layout);
+
+        interUrbanCheckBox = (CheckBox) findViewById(R.id.interurbanCheckBox);
 
         mCreateLineButton = (Button) findViewById(R.id.createLine);
 
@@ -113,6 +136,7 @@ public class CreateLineActivity extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
 
     }
 }

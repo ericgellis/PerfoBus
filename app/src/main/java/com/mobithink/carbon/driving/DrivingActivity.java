@@ -1,8 +1,11 @@
 package com.mobithink.carbon.driving;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +31,13 @@ public class DrivingActivity extends Activity {
     TextView mSectionTimeTextView;
     TextView mNextStationNameTextView;
 
+    Toolbar mDrivingToolBar;
+    TextView mDirectionNameTextView;
+    TextView mCityNameTextView;
+    TextView mLineNameTextView;
+    Button mCancelButton;
+
+
     Button mEventButton;
 
     RelativeLayout mNextStationRelativeLayout;
@@ -37,6 +47,20 @@ public class DrivingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driving);
+
+        mDrivingToolBar = (Toolbar) findViewById(R.id.drivingToolBar);
+        mDirectionNameTextView = (TextView) findViewById(R.id.directionNameTextView);
+        mCityNameTextView = (TextView) findViewById(R.id.cityNameTextView);
+        mLineNameTextView = (TextView) findViewById(R.id.lineNameTextView);
+        mCancelButton = (Button) findViewById(R.id.cancelButton);
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteData();
+            }
+        });
+
 
         mWeatherImageView = (ImageView) findViewById(R.id.weatherImageView);
 
@@ -65,5 +89,28 @@ public class DrivingActivity extends Activity {
         Intent toStationPage = new Intent (this, StationActivity.class);
         this.startActivity(toStationPage);
 
+    }
+
+    public void deleteData(){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setTitle("Supprimer la saisie ?");
+        alertDialogBuilder.setMessage("Toutes les données de la saisie seront perdues. Vous ne pourrezpas annuler cette action.");
+        alertDialogBuilder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

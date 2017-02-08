@@ -3,18 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/newLineToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white"
+        android:background="#388E3C"
+        app:navigationIcon="@mipmap/ic_white_arrow"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/newLineToolBar"
         android:layout_marginBottom="60dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/stationEditTextContainer"
             android:orientation="vertical">
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/Line_Name_TextInputLayout"
                 android:layout_width="match_parent"
@@ -49,6 +57,25 @@
                     android:maxLines="1"
                     android:hint="@string/cityName" />
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/interurban"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:layout_below="@+id/City_Name_TextInputLayout"
+                android:text="@string/interurban"
+                android:textSize="18sp"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/interurbanCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_alignBaseline="@+id/interurban"
+                android:buttonTint="@color/lightBlue"/>
+
         </LinearLayout>
     </ScrollView>
     <Button

@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
     <!--Error label text style-->
     <style name="MyErrorText" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/red_color_error</item>
