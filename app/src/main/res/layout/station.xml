@@ -3,13 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        layout="@layout/station_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
     <Button
         android:id="@+id/decreaseNumberOfAddedPeopleButton"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="@dimen/regular_size_rounded_button"
+        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_marginTop="70dp"
         android:layout_marginStart="@dimen/double_regular_margin"
-        android:layout_marginLeft="@dimen/double_regular_margin"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:background="@mipmap/ic_green_arrow"
         style="@style/Widget.AppCompat.Button.Colored"/>
@@ -20,17 +24,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/decreaseNumberOfAddedPeopleButton"
         android:layout_marginStart="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
         android:text="@string/cancellation"/>
 
     <Button
         android:id="@+id/decreaseNumberOfRemovedPeopleButton"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="@dimen/regular_size_rounded_button"
+        android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_below="@+id/cancellation_textView"
         android:layout_marginTop="@dimen/double_regular_margin"
         android:layout_marginStart="@dimen/double_regular_margin"
-        android:layout_marginLeft="@dimen/double_regular_margin"
         android:background="@mipmap/ic_red_arrow"/>
 
     <TextView
@@ -39,7 +41,6 @@
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignBottom="@+id/decreaseNumberOfAddedPeopleButton"
         android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -51,7 +52,6 @@
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignBottom="@+id/decreaseNumberOfRemovedPeopleButton"
         android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -59,13 +59,11 @@
 
     <Button
         android:id="@+id/addPeopleButton"
-        android:layout_width="125dp"
+        android:layout_width="105dp"
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:background="@color/green_button"
         android:text="@string/boarding"
@@ -73,14 +71,12 @@
 
     <Button
         android:id="@+id/removePeopleButton"
-        android:layout_width="125dp"
+        android:layout_width="105dp"
         android:layout_height="70dp"
         android:layout_below="@+id/addPeopleButton"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/double_regular_margin"
         android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
         android:background="@color/red_button"
         android:text="@string/exit"
         android:textColor="@color/white"/>
@@ -91,8 +87,6 @@
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="150dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginRight="@dimen/regular_margin"
         android:layout_marginEnd="@dimen/regular_margin"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:background="@mipmap/ic_event_information"/>
@@ -103,7 +97,6 @@
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/chooseEventButton"
-        android:layout_toRightOf="@+id/chooseEventButton"
         android:layout_marginStart="@dimen/regular_margin"
         android:layout_marginLeft="@dimen/regular_margin"
         android:layout_marginRight="@dimen/regular_margin"
@@ -117,7 +110,6 @@
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/unrealizedStopButton"
-        android:layout_toRightOf="@+id/unrealizedStopButton"
         android:layout_marginStart="@dimen/regular_margin"
         android:layout_marginLeft="@dimen/regular_margin"
         android:layout_marginRight="@dimen/regular_margin"

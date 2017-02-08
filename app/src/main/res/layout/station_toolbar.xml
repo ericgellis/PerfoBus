@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/lightBlue"
+    android:id="@+id/stationToolBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/changeStationNameButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@mipmap/ic_interrogation_point"/>
+
+        <TextView
+            android:id="@+id/stationNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/changeStationNameButton"
+            android:layout_alignBaseline="@+id/changeStationNameButton"
+            android:layout_marginStart="@dimen/double_regular_margin"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/timeCodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/stationNameTextView"
+            android:layout_marginStart="@dimen/double_regular_margin"
+            android:layout_alignBaseline="@+id/changeStationNameButton"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/deleteTimeCodeButton"
+            android:layout_width="@dimen/regular_size_rounded_button"
+            android:layout_height="@dimen/regular_size_rounded_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:background="@mipmap/ic_white_cross" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>
