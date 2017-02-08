@@ -120,7 +120,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         mLineEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO check if a line is selected
                 if(mSelectedCityDTO != null) {
                     new AlertDialog.Builder(ChoiceLineFromAnalyzeActivity.this)
                             .setCancelable(true)
@@ -196,13 +195,13 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
             @Override
             public void onFailure(Call<List<StationDTO>> call, Throwable t) {
-
+                //TODO
             }
         });
     }
 
     private void getCityLines() {
-        //TODO check if a city is selected
+
         LineService groupService = RetrofitManager.build().create(LineService.class);
 
         Call<List<BusLineDTO>> call = groupService.getCityLines(mSelectedCityDTO.getName());
@@ -224,7 +223,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
             @Override
             public void onFailure(Call<List<BusLineDTO>> call, Throwable t) {
-
+                //TODO
             }
         });
     }
@@ -257,7 +256,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-
+                //TODO
             }
         });
     }
