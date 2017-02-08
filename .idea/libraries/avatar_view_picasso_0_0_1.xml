@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="avatar-view-picasso-0.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/agency.tango.android/avatar-view-picasso/0.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/agency.tango.android/avatar-view-picasso/0.0.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/agency.tango.android/avatar-view-picasso/0.0.1/d9740e87703806de4f2f3a18a9bc17f47cfb91b7/avatar-view-picasso-0.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

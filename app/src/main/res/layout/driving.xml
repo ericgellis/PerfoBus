@@ -12,7 +12,7 @@
         android:id="@+id/weatherImageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="90dp"
         android:layout_marginStart="40dp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="110dp"
         android:layout_marginBottom="@dimen/regular_margin"
         android:textAlignment="center"
         android:textSize="20sp"/>
@@ -47,7 +47,7 @@
         android:id="@+id/atmoNumberTextView"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="90dp"
         android:layout_marginStart="275dp"
         android:background="@drawable/texview_circle_design"
         android:textColor="@color/white"
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_below="@+id/actualDate"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/course"/>
@@ -133,5 +133,5 @@
             android:textSize="30sp"
             android:textAlignment="center"/>
     </RelativeLayout>
-    
+
 </RelativeLayout>
