@@ -8,11 +8,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mobithink.carbon.BuildConfig;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +29,8 @@ public class RetrofitManager {
 
     private static final String BASE_URL = "https://mobithink.herokuapp.com/";
     private static final String BASE_URL_INTEGRATION = "https://mobithink.herokuapp.com/";
+
+    private static final String SECURITY_TOKEN = "Basic ZXJpYzptb2JpMjAxN3RoaW5r";
 
     static Retrofit mRetrofitInstance;
 
@@ -49,28 +55,21 @@ public class RetrofitManager {
                 builder.readTimeout(8, TimeUnit.SECONDS);
             }
 
-            //Add token in header if needed
-        /*if(BFApplicationManager.getInstance().getToken() != null){
+
             builder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Interceptor.Chain chain) throws IOException {
-                    String token = BFApplicationManager.getInstance().getToken().getAccessToken();
 
                     Request original = chain.request();
                     Request.Builder requestBuilder = original.newBuilder()
                             .header("Accept", "application/json")
-                            .header("Authorization", token)
+                            .header("Authorization", SECURITY_TOKEN)
                             .method(original.method(), original.body());
 
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 }
             });
-
-            //Call the authenticator, to refreshToken if received error code 401 unauthorized
-            //To check and test
-            builder.authenticator(new TokenAuthenticator());
-        }*/
 
             OkHttpClient client = builder.build();
 
