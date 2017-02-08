@@ -10,6 +10,10 @@ public class StationDTO {
     private String stationName;
     private int step;
 
+    public StationDTO(String stationName){
+      this.stationName = stationName;
+    }
+
     public int getStep() {
         return step;
     }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -24,4 +25,7 @@ public interface LineService {
 
     @GET("/mobithink/station/find/{busLineId}")
     Call<List<StationDTO>> getLineStations(@Path("busLineId") Long lineID);
+
+    @POST("/mobithink/busline/create")
+    Call<BusLineDTO> register(BusLineDTO busLineDTO);
 }

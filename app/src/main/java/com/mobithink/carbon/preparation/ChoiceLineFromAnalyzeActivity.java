@@ -158,7 +158,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                             .show();
                 }else{
                     mLineTextInputLayout.setErrorEnabled(true);
-                    mLineTextInputLayout.setError("Vous devez sélectionner une Ligne");
+                    mLineTextInputLayout.setError("Vous devez sélectionner une ligne");
                 }
             }
         });
