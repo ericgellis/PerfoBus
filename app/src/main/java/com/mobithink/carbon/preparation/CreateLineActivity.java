@@ -47,8 +47,6 @@ public class CreateLineActivity extends Activity {
 
     CheckBox interUrbanCheckBox;
 
-    RelativeLayout mActivityCreateLineRelativeLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +71,6 @@ public class CreateLineActivity extends Activity {
         mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
 
         addTextInputLayout();
-
-        mActivityCreateLineRelativeLayout = (RelativeLayout) findViewById(R.id.activity_create_line_relative_layout);
 
         interUrbanCheckBox = (CheckBox) findViewById(R.id.interurbanCheckBox);
 
@@ -138,5 +134,4 @@ public class CreateLineActivity extends Activity {
         alertDialog.show();
     }
 
-    }
 }
