@@ -41,7 +41,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventType> {
         EventType eventType = getItem(position);
 
         viewHolder.eventTypeName.setText(eventType.getName());
-        //viewHolder.eventIcon.setImageDrawable(eventType.getIcon());
+        viewHolder.eventIcon.setImageResource(eventType.getIcon());
 
         return convertView;
     }

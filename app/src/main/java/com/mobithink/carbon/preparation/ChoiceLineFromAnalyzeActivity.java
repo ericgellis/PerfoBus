@@ -59,6 +59,9 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     CityDTO mSelectedCityDTO;
     BusLineDTO mSelectedLineDTO;
 
+    CityDTO mCity;
+    BusLineDTO mBusLine;
+
     Toolbar mAnalyzeLineToolBar;
     private StationDTO mSelectedDirection;
     private ArrayList<StationDTO> listStation;
@@ -68,6 +71,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_line_from_analyze);
+
 
         mAnalyzeLineToolBar = (Toolbar) findViewById(R.id.analyzeLineToolBar);
         mAnalyzeLineToolBar.setTitle("Choix d'une ligne");
@@ -167,12 +171,23 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             }
         });
 
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle != null){
+            mCity = (CityDTO) bundle.getSerializable("city");
+            mBusLine = (BusLineDTO) bundle.getSerializable("line");
+            mCityAutocompleteView.setText(mCity.getName());
+            mLineEditText.setText(mBusLine.getName());
+        }
+
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDriving();
             }
         });
+
+
     }
 
     private void getLineStations() {
@@ -239,6 +254,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     protected void onResume() {
         super.onResume();
         getCities();
+
     }
 
     private void getCities() {
@@ -270,8 +286,17 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     public void changePageToCreateNewLine() {
 
-        Intent createLine = new Intent(this, CreateLineActivity.class);
-        this.startActivity(createLine);
+        if (mSelectedCityDTO == null){
+            Intent createLine = new Intent(this, CreateLineActivity.class);
+            this.startActivity(createLine);
+        } else {
+            Bundle createNewlineBundle = new Bundle();
+            createNewlineBundle.putSerializable("chosenCity", mSelectedCityDTO);
+            Intent createNewLineIntent = new Intent(this, CreateLineActivity.class);
+            createNewLineIntent.putExtras(createNewlineBundle);
+            this.startActivity(createNewLineIntent);
+
+        }
 
     }
 

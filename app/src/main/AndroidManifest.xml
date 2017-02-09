@@ -27,6 +27,7 @@
         <activity android:name="com.mobithink.carbon.driving.DrivingActivity"></activity>
         <activity android:name="com.mobithink.carbon.station.StationActivity"></activity>
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"></activity>
+        <activity android:name="com.mobithink.carbon.station.EventDialogFragment"></activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

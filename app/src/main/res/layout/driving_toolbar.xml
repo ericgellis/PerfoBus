@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="?attr/actionBarSize"
+    android:background="@color/veryLightGrey"
     android:id="@+id/drivingToolBar">
 
     <RelativeLayout
@@ -15,14 +16,16 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/lineNameTextView"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:text="@string/dir"/>
+            android:text="@string/dir"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/directionNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/lineNameTextView"
-            android:layout_toEndOf="@+id/direction"/>
+            android:layout_toEndOf="@+id/direction"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/cityNameTextView"
@@ -30,7 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/regular_margin"
             android:layout_centerHorizontal="true"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@id/lineNameTextView"
@@ -39,7 +43,9 @@
             android:layout_below="@id/cityNameTextView"
             android:layout_marginTop="@dimen/regular_margin"
             android:layout_centerHorizontal="true"
-            android:textSize="26sp"/>
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/cancelButton"

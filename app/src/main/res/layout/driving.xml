@@ -19,61 +19,63 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp" />
 
-            <ImageView
-                android:id="@+id/weatherImageView"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="90dp" />
+    <ImageView
+        android:id="@+id/weatherImageView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="40dp" />
 
-            <TextView
-                android:id="@+id/weatherTemperatureTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@+id/weatherImageView"
-                android:layout_marginStart="40dp"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+    <TextView
+        android:id="@+id/weatherTemperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/weatherImageView"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"/>
 
-            <TextView
-                android:id="@+id/actualTime"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/regular_margin"
-                android:layout_marginTop="110dp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+    <TextView
+        android:id="@+id/actualTime"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="@dimen/regular_margin"
+        android:textAlignment="center"
+        android:textSize="40sp"/>
 
-            <TextView
-                android:id="@+id/actualDate"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@+id/actualTime"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/regular_margin"
-                android:textAlignment="center" />
+    <TextView
+        android:id="@+id/actualDate"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/actualTime"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/atmoNumberTextView"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="275dp"
-                android:layout_marginTop="90dp"
-                android:background="@drawable/texview_circle_design"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/atmoNumberTextView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="275dp"
+        android:background="@drawable/texview_circle_design"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="40sp" />
 
-            <TextView
-                android:id="@+id/atmoTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@+id/atmoNumberTextView"
-                android:layout_marginStart="275dp"
-                android:layout_marginTop="@dimen/double_regular_margin"
-                android:text="@string/atmo"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+    <TextView
+        android:id="@+id/atmoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/atmoNumberTextView"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_marginStart="278dp"
+        android:text="@string/atmo"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/coursetextView"
@@ -114,9 +116,9 @@
             <Button
                 android:id="@+id/eventButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="70dp"
                 android:background="@color/orange_button_event"
                 android:text="@string/event"
                 android:textColor="@color/white" />
@@ -138,11 +140,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/nextStationRelativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:clickable="true">
+    <RelativeLayout
+        android:id="@+id/nextStationRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:clickable="true">
 
                 <TextView
                     android:layout_width="wrap_content"

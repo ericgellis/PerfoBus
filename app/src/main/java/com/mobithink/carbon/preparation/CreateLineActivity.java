@@ -61,6 +61,8 @@ public class CreateLineActivity extends Activity {
     private ArrayList<EditText> mListStationEditText = new ArrayList<>();
     CityDTO mSelectedCityDTO;
 
+    CityDTO mChosenCity;
+
     private Button mCreateLineButton;
 
     private Toolbar mNewLineToolBar;
@@ -111,6 +113,14 @@ public class CreateLineActivity extends Activity {
 
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mChosenCity = (CityDTO) extras.getSerializable("chosenCity");
+            if(mChosenCity!= null){
+                mCityAutocompleteView.setText(mChosenCity.getName());
+            }
+        }
 
         addTextInputLayout();
 
@@ -201,12 +211,14 @@ public class CreateLineActivity extends Activity {
                 switch (response.code()) {
                     case 200:
                         Log.d("Success", "youhoo");
-                            //TODO intent to choose line
+
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("city",mSelectedCityDTO);
+                        BusLineDTO mWrittenLine = new BusLineDTO();
                         bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
                         Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
                         intent.putExtras(bundle);
+                        getApplication().startActivity(intent);
 
                         break;
 
@@ -227,6 +239,9 @@ public class CreateLineActivity extends Activity {
         super.onResume();
 
         getCities();
+
+
+
     }
 
     private void getCities() {
