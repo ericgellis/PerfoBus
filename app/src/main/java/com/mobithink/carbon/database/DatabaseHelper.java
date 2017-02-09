@@ -20,68 +20,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mobithink";
 
     // Table Names
-    private static final String TABLE_CITY = "cities";
-    private static final String TABLE_LINE = "lines";
-    private static final String TABLE_STATION = "stations";
-    private static final String TABLE_LINE_STATION = "lines_stations";
-    private static final String TABLE_TRIP = "trips";
-    private static final String TABLE_STATION_TRIP_DATA = "stationTripDatas";
-    private static final String TABLE_EVENT = "events";
-    private static final String TABLE_ROLLING_POINT = "rollingPoints";
+    public static final String TABLE_CITY = "cities";
+    public static final String TABLE_LINE = "lines";
+    public static final String TABLE_STATION = "stations";
+    public static final String TABLE_LINE_STATION = "lines_stations";
+    public static final String TABLE_TRIP = "trips";
+    public static final String TABLE_STATION_TRIP_DATA = "stationTripDatas";
+    public static final String TABLE_EVENT = "events";
+    public static final String TABLE_ROLLING_POINT = "rollingPoints";
 
 
 
     // Common column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_LONGITUDE = "longitude";
-    private static final String KEY_LATITUDE = "latitude";
-    private static final String KEY_CREATION_DATE = "creationDate";
-    private static final String KEY_TRIP_ID = "trip_id";
-    private static final String KEY_LINE_ID = "line_id";
-    private static final String KEY_START_DATETIME = "startDatetime";
-    private static final String KEY_END_DATETIME = "endDatetime";
-    private static final String KEY_STEP = "step";
+    public static final String KEY_ID = "id";
+    public static final String KEY_LONGITUDE = "longitude";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_CREATION_DATE = "creationDate";
+    public static final String KEY_TRIP_ID = "trip_id";
+    public static final String KEY_LINE_ID = "line_id";
+    public static final String KEY_START_DATETIME = "startDatetime";
+    public static final String KEY_END_DATETIME = "endDatetime";
+    public static final String KEY_STEP = "step";
 
     // CITY Table - column names
-    private static final String KEY_CITY_NAME = "cityName";
+    public static final String KEY_CITY_NAME = "cityName";
 
     // LINE Table - column names
-    private static final String KEY_LINE_NAME = "lineName";
-    private static final String KEY_CITY_ID = "city_id";
+    public static final String KEY_LINE_NAME = "lineName";
+    public static final String KEY_CITY_ID = "city_id";
 
     // STATION Table - column names
-    private static final String KEY_STATION_NAME = "stationName";
+    public static final String KEY_STATION_NAME = "stationName";
 
     // LINE_STATION Table - column names
-    private static final String KEY_STATION_ID = "station_id";
+    public static final String KEY_STATION_ID = "station_id";
 
     // TRIP Table - column names
-    private static final String KEY_TRIP_NAME = "tripName";
-    private static final String KEY_ATMO = "atmo";
-    private static final String KEY_TEMPERATURE = "temperature";
-    private static final String KEY_WEATHER = "weather";
-    private static final String KEY_CAPACITY = "vehiculeCapacity";
+    public static final String KEY_TRIP_NAME = "tripName";
+    public static final String KEY_ATMO = "atmo";
+    public static final String KEY_TEMPERATURE = "temperature";
+    public static final String KEY_WEATHER = "weather";
+    public static final String KEY_CAPACITY = "vehiculeCapacity";
 
     // ROLLING_POINT Table - column names
-    private static final String KEY_TRAFFIC = "traffic";
+    public static final String KEY_TRAFFIC = "traffic";
 
     // STATION_TRIP_DATA Table - column names
-    private static final String KEY_COME_IN = "comeIn";
-    private static final String KEY_GO_OUT = "goOut";
+    public static final String KEY_COME_IN = "comeIn";
+    public static final String KEY_GO_OUT = "goOut";
 
     // EVENT Table - column names
-    private static final String KEY_EVENT_NAME = "eventName";
-    private static final String KEY_STATION_DATA_ID = "stationData_id";
+    public static final String KEY_EVENT_NAME = "eventName";
+    public static final String KEY_STATION_DATA_ID = "stationData_id";
 
 
     // Create table CITY
-    private static final String CREATE_TABLE_CITY =
+    public static final String CREATE_TABLE_CITY =
             "CREATE TABLE " + TABLE_CITY
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_CITY_NAME  + " TEXT" + ")";
 
     // Create table LINE
-    private static final String CREATE_TABLE_LINE =
+    public static final String CREATE_TABLE_LINE =
             "CREATE TABLE " + TABLE_LINE
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_LINE_NAME + " TEXT,"
@@ -89,13 +89,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_CITY_ID + " INTEGER" +")";
 
     // Create table STATION
-    private static final String CREATE_TABLE_STATION =
+    public static final String CREATE_TABLE_STATION =
             "CREATE TABLE " + TABLE_STATION
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_STATION_NAME  + " TEXT" + ")";
 
     // Create table LINE_STATION
-    private static final String CREATE_TABLE_LINE_STATION =
+    public static final String CREATE_TABLE_LINE_STATION =
             "CREATE TABLE " + TABLE_LINE_STATION
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_LINE_ID + " INTEGER,"
@@ -103,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_STEP + "INTEGER" + ")";
 
     // Create table TRIP
-    private static final String CREATE_TABLE_TRIP =
+    public static final String CREATE_TABLE_TRIP =
             "CREATE TABLE " + TABLE_TRIP
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_TRIP_NAME + " TEXT,"
@@ -113,20 +113,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_TEMPERATURE + " INTEGER,"
                     + KEY_WEATHER + " TEXT,"
                     + KEY_CAPACITY + " INTEGER,"
-                    + KEY_LINE_ID + " INTEGER," +")";
+                    + KEY_LINE_ID + " INTEGER" +")";
 
     // Create table ROLLING_POINT
-    private static final String CREATE_TABLE_ROLLING_POINT =
+    public static final String CREATE_TABLE_ROLLING_POINT =
             "CREATE TABLE " + TABLE_ROLLING_POINT
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_TRAFFIC + " INTEGER,"
                     + KEY_CREATION_DATE + " DATETIME,"
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
-                    + KEY_TRIP_ID + " INTEGER," +")";
+                    + KEY_TRIP_ID + " INTEGER" +")";
 
     // Create table STATION_TRIP_DATA
-    private static final String CREATE_TABLE_STATION_TRIP_DATA =
+    public static final String CREATE_TABLE_STATION_TRIP_DATA =
             "CREATE TABLE " + TABLE_STATION_TRIP_DATA
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_COME_IN + " INTEGER,"
@@ -136,10 +136,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_STEP + "INTEGER"
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
-                    + KEY_TRIP_ID + " INTEGER," +")";
+                    + KEY_TRIP_ID + " INTEGER" +")";
 
     // Create table EVENT
-    private static final String CREATE_TABLE_EVENT =
+    public static final String CREATE_TABLE_EVENT =
             "CREATE TABLE " + TABLE_EVENT
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_EVENT_NAME + " TEXT,"
@@ -148,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER,"
-                    + KEY_STATION_DATA_ID + " INTEGER,"+")";
+                    + KEY_STATION_DATA_ID + " INTEGER"+")";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -176,18 +176,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /*************************** TRIP **************************************/
 
-    public long createTrip(int lineId ) {
-        SQLiteDatabase db = this.getWritableDatabase();
+   /* public long createTrip(long lineId ) {
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_LINE_ID, lineId);
-        values.put(KEY_START_DATETIME, getDateTime());
-
-        // insert row
-        long tripId = db.insert(TABLE_TRIP, null, values);
 
         return tripId;
-    }
+    }*/
 
 
     public TripDTO getTrip(long tripId) {
@@ -218,15 +211,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return tripDTO;
     }
 
-    public void finishCurrentTrip(long currentTripId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_END_DATETIME, getDateTime());
-
-        db.update(TABLE_TRIP, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(currentTripId)});
-    }
 
     public void updateTrip(TripDTO tripDTO) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -248,10 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(tripId) });
     }
 
-    /*************************** Utils *****************************/
-    private Long getDateTime() {
-        return System.currentTimeMillis();
-    }
+
 
 
 }

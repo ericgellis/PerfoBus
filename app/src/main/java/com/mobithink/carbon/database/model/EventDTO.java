@@ -1,12 +1,13 @@
 package com.mobithink.carbon.database.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jpaput on 07/02/2017.
  */
 
-public class EventDTO {
+public class EventDTO implements Serializable {
 
     private Long id;
     private String eventName;

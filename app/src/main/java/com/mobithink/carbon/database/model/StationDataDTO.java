@@ -1,12 +1,13 @@
 package com.mobithink.carbon.database.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jpaput on 07/02/2017.
  */
 
-public class StationDataDTO {
+public class StationDataDTO implements Serializable {
     private Long id;
     private int numberOfComeIn;
     private int numberOfGoOut;

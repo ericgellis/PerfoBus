@@ -1,5 +1,8 @@
 package com.mobithink.carbon.managers;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.database.DatabaseHelper;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -13,6 +16,7 @@ public class DatabaseManager {
     private static DatabaseManager mInstance;
 
     private static DatabaseHelper mDataBase;
+    private SQLiteDatabase openedDatabase;
 
     public static DatabaseManager getInstance() {
         if (mInstance == null)
@@ -23,14 +27,29 @@ public class DatabaseManager {
         return mInstance;
     }
 
-    public DatabaseHelper getDataBase(){
-        return mDataBase;
+    public void open(){
+
+         openedDatabase = mDataBase.getWritableDatabase();
+    }
+
+    private SQLiteDatabase getOpenedDatabase(){
+        if(openedDatabase == null){
+            open();
+        }
+        return  openedDatabase;
     }
 
     /*************** TripDTO **************/
 
-    public void startNewTrip(int lineID){
-        long tripId = mDataBase.createTrip(lineID);
+    public void startNewTrip(long lineID){
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_LINE_ID, lineID);
+        values.put(DatabaseHelper.KEY_START_DATETIME, getDateTime());
+
+        // insert row
+        long tripId = getOpenedDatabase().insert(DatabaseHelper.TABLE_TRIP, null, values);
+
         CarbonApplicationManager.getInstance().setCurrentTripId(tripId);
     }
 
@@ -45,8 +64,20 @@ public class DatabaseManager {
     }
 
     public void finishCurrentTrip(){
-        mDataBase.finishCurrentTrip(
-                CarbonApplicationManager.getInstance().getCurrentTripId());
+
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_END_DATETIME, getDateTime());
+
+        getOpenedDatabase().update(
+                DatabaseHelper.TABLE_TRIP, values, DatabaseHelper.KEY_ID + " = ?",
+                new String[] { String.valueOf(CarbonApplicationManager.getInstance().getCurrentTripId())});
+
+    }
+
+    /*************************** Utils *****************************/
+    private Long getDateTime() {
+        return System.currentTimeMillis();
     }
 
 }

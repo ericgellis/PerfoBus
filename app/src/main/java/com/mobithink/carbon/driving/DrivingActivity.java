@@ -13,7 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.station.StationActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mplaton on 01/02/2017.
@@ -37,16 +42,27 @@ public class DrivingActivity extends Activity {
     TextView mLineNameTextView;
     Button mCancelButton;
 
-
     Button mEventButton;
 
     RelativeLayout mNextStationRelativeLayout;
 
+    List<StationDTO> stationDTOList;
+    StationDTO direction;
+    CityDTO cityDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driving);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            stationDTOList = (List<StationDTO>) extras.getSerializable("listStation");
+            cityDTO = (CityDTO) extras.getSerializable("city");
+            direction = (StationDTO) extras.getSerializable("direction");
+            //The key argument here must match that used in the other activity
+        }
+
 
         mDrivingToolBar = (Toolbar) findViewById(R.id.drivingToolBar);
         mDirectionNameTextView = (TextView) findViewById(R.id.directionNameTextView);

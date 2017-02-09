@@ -1,10 +1,12 @@
 package com.mobithink.carbon.database.model;
 
+import java.io.Serializable;
+
 /**
  * Created by jpaput on 07/02/2017.
  */
 
-public class CityDTO {
+public class CityDTO implements Serializable {
 
     public CityDTO() {
     }

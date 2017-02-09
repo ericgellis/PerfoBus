@@ -1,12 +1,13 @@
 package com.mobithink.carbon.database.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jpaput on 07/02/2017.
  */
 
-public class BusLineDTO {
+public class BusLineDTO implements Serializable {
 
     private Long id;
     private String name;
@@ -42,8 +43,9 @@ public class BusLineDTO {
         return cityDto;
     }
 
-    public void setCityDto(CityDTO cityDto) {
-        this.cityDto = cityDto;
+    public void setCityDto(CityDTO city) {
+
+        cityDto = city;
     }
 
     public List<StationDTO> getStationDTOList() {

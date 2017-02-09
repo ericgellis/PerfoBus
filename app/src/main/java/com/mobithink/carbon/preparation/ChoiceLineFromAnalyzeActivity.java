@@ -23,9 +23,11 @@ import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -59,6 +61,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     Toolbar mAnalyzeLineToolBar;
     private StationDTO mSelectedDirection;
+    private ArrayList<StationDTO> listStation;
 
 
     @Override
@@ -78,6 +81,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         cityAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         lineAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         directionAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
+        listStation = new ArrayList<>();
 
         mCityTextInputLayout = (TextInputLayout) findViewById(R.id.city_textinputlayout);
         mLineTextInputLayout = (TextInputLayout) findViewById(R.id.line_textinputlayout);
@@ -181,9 +185,9 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<StationDTO>> call, Response<List<StationDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
-                        directionAdapter.add(response.body().get(0));
-                        directionAdapter.add(response.body().get(response.body().size()-1));
+                        listStation.addAll(response.body());
+                        directionAdapter.add(listStation.get(0));
+                        directionAdapter.add(listStation.get(listStation.size()-1));
 
                         directionAdapter.notifyDataSetChanged();
 
@@ -296,7 +300,16 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         }
 
         if (!hasError) {
+
+            DatabaseManager.getInstance().startNewTrip(mSelectedLineDTO.getId());
+
             Intent startDriving = new Intent(this, DrivingActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("listStation",listStation);
+            bundle.putSerializable("city",mSelectedCityDTO);
+            bundle.putSerializable("direction",mSelectedDirection);
+            startDriving.putExtras(bundle);
             this.startActivity(startDriving);
         }
     }
