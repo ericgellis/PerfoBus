@@ -2,6 +2,7 @@ package com.mobithink.carbon.driving;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.station.EventDialogFragment;
 import com.mobithink.carbon.station.StationActivity;
 
 import java.util.List;
@@ -87,9 +89,24 @@ public class DrivingActivity extends Activity {
         mCourseTimeTextView = (TextView) findViewById(R.id.courseTimeTextView);
         mSectionTimeTextView = (TextView) findViewById(R.id.sectionTimeTextView);
         mNextStationNameTextView = (TextView) findViewById(R.id.nextStationNameTextView);
+
+
+        mWeatherImageView.setImageResource(R.drawable.meteo);
+        mWeatherTemperatureTextView.setText("12°C");
+        mActualTime.setText("13:34");
+        mActualDate.setText ("Lun. 9 Janv.");
+        mAtmoNumberTextView.setText("5");
+        mCourseTimeTextView.setText("1 h 02 min");
+        mSectionTimeTextView.setText("3 min 34 s");
         mNextStationNameTextView.setText("Jean-Jaures");
 
         mEventButton = (Button) findViewById(R.id.eventButton);
+        mEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChooseEvent();
+            }
+        });
 
         mNextStationRelativeLayout = (RelativeLayout) findViewById(R.id.nextStationRelativeLayout);
         mNextStationNameTextView.setOnClickListener(new View.OnClickListener() {
@@ -137,5 +154,16 @@ public class DrivingActivity extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void goToChooseEvent(){
+
+        /*FragmentManager fm = getFragmentManager();
+        MyDialogFragment dialogFragment = new MyDialogFragment ();
+        dialogFragment.show(fm, "Choisir un évènement");*/
+
+        Intent ToChoosePage = new Intent (this, EventDialogFragment.class);
+        this.startActivity(ToChoosePage);
+
     }
 }
