@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +19,9 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.driving.adapters.StationAdapter;
 import com.mobithink.carbon.station.StationActivity;
+import com.mobithink.carbon.utils.CarbonUtils;
 
 import java.util.List;
 
@@ -40,9 +45,12 @@ public class DrivingActivity extends Activity {
     TextView mDirectionNameTextView;
     TextView mCityNameTextView;
     TextView mLineNameTextView;
-    Button mCancelButton;
 
+    Button mCancelButton;
     Button mEventButton;
+
+    RecyclerView mStationRecyclerView;
+    StationAdapter mStationAdapter;
 
     RelativeLayout mNextStationRelativeLayout;
 
@@ -50,11 +58,17 @@ public class DrivingActivity extends Activity {
     StationDTO mDirection;
     CityDTO mCity;
     private BusLineDTO mLine;
+    private BottomSheetBehavior<View> mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driving);
+
+        final View bottomSheet = findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior.setHideable(false);
+        mBottomSheetBehavior.setPeekHeight(CarbonUtils.dpToPx(60));
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -70,6 +84,11 @@ public class DrivingActivity extends Activity {
         mCityNameTextView = (TextView) findViewById(R.id.cityNameTextView);
         mLineNameTextView = (TextView) findViewById(R.id.lineNameTextView);
         mCancelButton = (Button) findViewById(R.id.cancelButton);
+
+        mStationRecyclerView = (RecyclerView) findViewById(R.id.station_recyclerview);
+        mStationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mStationAdapter = new StationAdapter();
+        mStationRecyclerView.setAdapter(mStationAdapter);
 
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +106,6 @@ public class DrivingActivity extends Activity {
         mCourseTimeTextView = (TextView) findViewById(R.id.courseTimeTextView);
         mSectionTimeTextView = (TextView) findViewById(R.id.sectionTimeTextView);
         mNextStationNameTextView = (TextView) findViewById(R.id.nextStationNameTextView);
-        mNextStationNameTextView.setText("Jean-Jaures");
 
         mEventButton = (Button) findViewById(R.id.eventButton);
 
@@ -108,6 +126,10 @@ public class DrivingActivity extends Activity {
         mCityNameTextView.setText(mCity.getName());
         mLineNameTextView.setText(mLine.getName());
         mDirectionNameTextView.setText(mDirection.getStationName());
+        mNextStationNameTextView.setText(mStationList.get(0).getStationName());
+
+        mStationAdapter.setData(mStationList);
+        mStationAdapter.notifyDataSetChanged();
     }
 
     public void goToStationPage(){
