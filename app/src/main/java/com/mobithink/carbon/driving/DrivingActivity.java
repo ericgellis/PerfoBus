@@ -62,6 +62,9 @@ public class DrivingActivity extends Activity {
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
 
+    FragmentManager fm = getFragmentManager();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,12 +182,10 @@ public class DrivingActivity extends Activity {
 
     public void goToChooseEvent(){
 
-        /*FragmentManager fm = getFragmentManager();
-        MyDialogFragment dialogFragment = new MyDialogFragment ();
-        dialogFragment.show(fm, "Choisir un évènement");*/
-
-        Intent ToChoosePage = new Intent (this, EventDialogFragment.class);
-        this.startActivity(ToChoosePage);
+       EventDialogFragment dialogFragment = new EventDialogFragment ();
+        dialogFragment.show(fm, "Choisir un évènement");
+        /*Intent ToChoosePage = new Intent (this, EventDialogFragment.class);
+        this.startActivity(ToChoosePage);*/
 
     }
 }
