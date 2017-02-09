@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -63,6 +66,7 @@ public class CreateLineActivity extends Activity {
     private Toolbar mNewLineToolBar;
 
     private CheckBox interUrbanCheckBox;
+    private ArrayList<StationDTO> mStationDTOList;
 
 
     @Override
@@ -104,7 +108,6 @@ public class CreateLineActivity extends Activity {
                 in.hideSoftInputFromWindow(parent.getApplicationWindowToken(), 0);
 
                 mSelectedCityDTO = (CityDTO) parent.getAdapter().getItem(position);
-                getCities();
 
             }
         });
@@ -125,28 +128,27 @@ public class CreateLineActivity extends Activity {
         });
 
         mCreateLineButton = (Button) findViewById(R.id.createLine);
-        createLine();
 
-        /*mCreateLineButton.setOnClickListener(new View.OnClickListener() {
+        mCreateLineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createLine();
+                controlEditText();
             }
-        });*/
+        });
 
     }
 
     private void addTextInputLayout() {
         final TextInputLayout textInputLayout = (TextInputLayout) LayoutInflater.from(this).inflate(R.layout.text_input_layout, null);
 
-        EditText stationEditText = (EditText) textInputLayout.findViewById(R.id.station_field);
+        final EditText stationEditText = (EditText) textInputLayout.findViewById(R.id.station_field);
         stationEditText.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                            if(mListStationEditText.get(mListStationEditText.size()-1).equals(textInputLayout)){
+                            if(mListStationEditText.get(mListStationEditText.size()-1).equals(stationEditText)){
                                 addTextInputLayout();
                             }
 
@@ -167,45 +169,25 @@ public class CreateLineActivity extends Activity {
     public void createLine(){
 
         final BusLineDTO busLineDTO = new BusLineDTO();
+        final CityDTO cityDTO;
 
-        //busLineDTO.setCityDto(mCityAutocompleteView.getText().toString());
-
-        busLineDTO.setName(mWriteLineTextInputEditText.getText().toString());
-
-        final ArrayList<StationDTO> stationDTOList = new ArrayList<>();
-        for(EditText et : mListStationEditText){
-            stationDTOList.add(
-                    new StationDTO(et.getText().toString())
-            );
+        if(mSelectedCityDTO != null){
+            cityDTO = mSelectedCityDTO;
+        }else{
+            cityDTO = new CityDTO();
+            cityDTO.setName(mCityAutocompleteView.getText().toString());
         }
-        busLineDTO.setStationDTOList(stationDTOList);
 
-        controlEditText();
+        Calendar c=Calendar.getInstance();
+        c.setTime(new Date());
 
-        mCreateLineButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateLineActivity.this);
-                    alertDialogBuilder.setCancelable(true);
-                    alertDialogBuilder.setTitle("Confirmer les stations");
-                    alertDialogBuilder.setMessage(""+ stationDTOList);
-                    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    registerLine(busLineDTO);
-                }
-            });
-            alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+        busLineDTO.setCityDto(cityDTO);
+        busLineDTO.setName(mWriteLineTextInputEditText.getText().toString());
+        busLineDTO.setStationDTOList(mStationDTOList);
+        busLineDTO.setDateOfCreation(c.getTimeInMillis());
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            }
-        });
+        registerLine(busLineDTO);
+
     }
 
     public void registerLine(BusLineDTO busLineDTO){
@@ -218,6 +200,13 @@ public class CreateLineActivity extends Activity {
             public void onResponse(Call<BusLineDTO> call, Response<BusLineDTO> response) {
                 switch (response.code()) {
                     case 200:
+                        Log.d("Success", "youhoo");
+                            //TODO intent to choose line
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("city",mSelectedCityDTO);
+                        bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
+                        Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
+                        intent.putExtras(bundle);
 
                         break;
 
@@ -231,8 +220,13 @@ public class CreateLineActivity extends Activity {
 
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        getCities();
     }
 
     private void getCities() {
@@ -278,9 +272,40 @@ public class CreateLineActivity extends Activity {
         }
 
         if (!hasError) {
-            Intent startToChooseLine = new Intent(this, ChoiceLineFromAnalyzeActivity.class);
-            this.startActivity(startToChooseLine);
+
+            mStationDTOList = new ArrayList<>();
+            int step = 0;
+
+            for(EditText et : mListStationEditText){
+                if(! et.getText().toString().isEmpty()){
+                    mStationDTOList.add(
+                            new StationDTO(et.getText().toString(), step )
+                    );
+                    step ++;
+                }
+            }
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateLineActivity.this);
+            alertDialogBuilder.setCancelable(true);
+            alertDialogBuilder.setTitle("Confirmer les stations");
+            alertDialogBuilder.setMessage(mStationDTOList.toString());
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    createLine();
+
+                }
+            });
+            alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         }
     }
-
 }

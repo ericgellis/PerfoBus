@@ -181,7 +181,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<StationDTO>> call, Response<List<StationDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        directionAdapter.clear();
                         directionAdapter.add(response.body().get(0));
                         directionAdapter.add(response.body().get(response.body().size()-1));
 
@@ -211,7 +211,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<BusLineDTO>> call, Response<List<BusLineDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        lineAdapter.clear();
                         lineAdapter.addAll(response.body());
                         lineAdapter.notifyDataSetChanged();
 
@@ -244,7 +244,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        cityAdapter.clear();
                         cityAdapter.addAll(response.body());
                         cityAdapter.notifyDataSetChanged();
 

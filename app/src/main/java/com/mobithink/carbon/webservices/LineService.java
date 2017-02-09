@@ -7,6 +7,7 @@ import com.mobithink.carbon.database.model.StationDTO;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -27,5 +28,5 @@ public interface LineService {
     Call<List<StationDTO>> getLineStations(@Path("busLineId") Long lineID);
 
     @POST("/mobithink/busline/create")
-    Call<BusLineDTO> register(BusLineDTO busLineDTO);
+    Call<BusLineDTO> register(@Body BusLineDTO busLineDTO);
 }
