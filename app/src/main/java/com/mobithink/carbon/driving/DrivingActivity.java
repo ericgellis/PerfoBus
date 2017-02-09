@@ -13,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.station.StationActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,9 +46,10 @@ public class DrivingActivity extends Activity {
 
     RelativeLayout mNextStationRelativeLayout;
 
-    List<StationDTO> stationDTOList;
-    StationDTO direction;
-    CityDTO cityDTO;
+    List<StationDTO> mStationList;
+    StationDTO mDirection;
+    CityDTO mCity;
+    private BusLineDTO mLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,10 @@ public class DrivingActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            stationDTOList = (List<StationDTO>) extras.getSerializable("listStation");
-            cityDTO = (CityDTO) extras.getSerializable("city");
-            direction = (StationDTO) extras.getSerializable("direction");
-            //The key argument here must match that used in the other activity
+            mStationList = (List<StationDTO>) extras.getSerializable("listStation");
+            mCity = (CityDTO) extras.getSerializable("city");
+            mDirection = (StationDTO) extras.getSerializable("direction");
+            mLine = (BusLineDTO) extras.getSerializable("line");
         }
 
 
@@ -76,7 +77,6 @@ public class DrivingActivity extends Activity {
                 deleteData();
             }
         });
-
 
         mWeatherImageView = (ImageView) findViewById(R.id.weatherImageView);
 
@@ -99,6 +99,15 @@ public class DrivingActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mCityNameTextView.setText(mCity.getName());
+        mLineNameTextView.setText(mLine.getName());
+        mDirectionNameTextView.setText(mDirection.getStationName());
     }
 
     public void goToStationPage(){

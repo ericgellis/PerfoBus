@@ -186,11 +186,12 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                 switch (response.code()) {
                     case 200:
                         listStation.addAll(response.body());
-                        directionAdapter.add(listStation.get(0));
-                        directionAdapter.add(listStation.get(listStation.size()-1));
 
-                        directionAdapter.notifyDataSetChanged();
-
+                        if(listStation.size()>= 2) {
+                            directionAdapter.add(listStation.get(0));
+                            directionAdapter.add(listStation.get(listStation.size() - 1));
+                            directionAdapter.notifyDataSetChanged();
+                        }
                         break;
                     default:
                         break;
@@ -309,6 +310,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             bundle.putSerializable("listStation",listStation);
             bundle.putSerializable("city",mSelectedCityDTO);
             bundle.putSerializable("direction",mSelectedDirection);
+            bundle.putSerializable("line",mSelectedLineDTO);
             startDriving.putExtras(bundle);
             this.startActivity(startDriving);
         }
