@@ -23,7 +23,7 @@ import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
-import com.mobithink.carbon.managers.DatabaseManager;
+        import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
@@ -162,7 +162,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                             .show();
                 }else{
                     mLineTextInputLayout.setErrorEnabled(true);
-                    mLineTextInputLayout.setError("Vous devez sélectionner une Ligne");
+                    mLineTextInputLayout.setError("Vous devez sélectionner une ligne");
                 }
             }
         });
@@ -185,8 +185,10 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<StationDTO>> call, Response<List<StationDTO>> response) {
                 switch (response.code()) {
                     case 200:
+                        listStation.clear();
                         listStation.addAll(response.body());
 
+                        directionAdapter.clear();
                         if(listStation.size()>= 2) {
                             directionAdapter.add(listStation.get(0));
                             directionAdapter.add(listStation.get(listStation.size() - 1));
@@ -216,7 +218,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<BusLineDTO>> call, Response<List<BusLineDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        lineAdapter.clear();
                         lineAdapter.addAll(response.body());
                         lineAdapter.notifyDataSetChanged();
 
@@ -249,7 +251,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        cityAdapter.clear();
                         cityAdapter.addAll(response.body());
                         cityAdapter.notifyDataSetChanged();
 
