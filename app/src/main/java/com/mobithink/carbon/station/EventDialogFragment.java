@@ -27,7 +27,7 @@ public class EventDialogFragment extends DialogFragment {
         //super.onCreate(savedInstanceState);
         //setContentView(R.layout.event_dialog_fragment);
 
-        View rootView = inflater.inflate(R.layout.event_dialog_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.event_dialog_box, container, false);
         getDialog().setTitle("Choisir un évènement");
 
         eventListView = (ListView) rootView.findViewById(R.id.event_list_view);
