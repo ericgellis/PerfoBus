@@ -70,16 +70,7 @@ public class DrivingActivity extends Activity {
         final View bottomSheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior.setHideable(false);
-        mBottomSheetBehavior.setPeekHeight(CarbonUtils.dpToPx(60));
-
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            mStationList = (List<StationDTO>) extras.getSerializable("listStation");
-            mCity = (CityDTO) extras.getSerializable("city");
-            mDirection = (StationDTO) extras.getSerializable("direction");
-            mLine = (BusLineDTO) extras.getSerializable("line");
-        }
-
+        mBottomSheetBehavior.setPeekHeight(CarbonUtils.dpToPx(70));
 
         mDrivingToolBar = (Toolbar) findViewById(R.id.drivingToolBar);
         mDirectionNameTextView = (TextView) findViewById(R.id.directionNameTextView);
@@ -125,6 +116,18 @@ public class DrivingActivity extends Activity {
             }
         });
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mStationList = (List<StationDTO>) extras.getSerializable("listStation");
+            if(mStationList.size()>0){
+                mStationAdapter.setData(mStationList);
+                mStationAdapter.notifyDataSetChanged();
+            }
+            mCity = (CityDTO) extras.getSerializable("city");
+            mDirection = (StationDTO) extras.getSerializable("direction");
+            mLine = (BusLineDTO) extras.getSerializable("line");
+        }
+
     }
 
     @Override
@@ -135,9 +138,6 @@ public class DrivingActivity extends Activity {
         mLineNameTextView.setText(mLine.getName());
         mDirectionNameTextView.setText(mDirection.getStationName());
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
-
-        mStationAdapter.setData(mStationList);
-        mStationAdapter.notifyDataSetChanged();
 
         mWeatherImageView.setImageResource(R.drawable.meteo);
         mWeatherTemperatureTextView.setText("12°C");
