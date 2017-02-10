@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -112,6 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 200:
+                        Log.d(this.getClass().getName(), "The Serveur status is up");
                         mServerStatusView.setBackground(getDrawable(R.drawable.server_online_circle_status));
                         break;
                     default:

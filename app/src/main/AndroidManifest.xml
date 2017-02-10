@@ -27,6 +27,9 @@
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"></activity>
     </application>
 
+    <service android:name="com.mobithink.carbon.services.LocationService"></service>
+
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />

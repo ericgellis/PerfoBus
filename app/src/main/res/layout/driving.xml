@@ -87,8 +87,8 @@
                 android:layout_marginTop="80dp"
                 android:text="@string/course" />
 
-            <TextView
-                android:id="@+id/courseTimeTextView"
+            <Chronometer
+                android:id="@+id/chronometerCourse"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignBottom="@+id/coursetextView"
@@ -105,8 +105,8 @@
                 android:layout_marginTop="@dimen/double_regular_margin"
                 android:text="@string/section" />
 
-            <TextView
-                android:id="@+id/sectionTimeTextView"
+            <Chronometer
+                android:id="@+id/chronometerSection"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignBottom="@+id/sectiontextView"

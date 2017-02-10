@@ -110,8 +110,6 @@ public class ParametersActivity extends Activity {
             @Override
             public void onClick(View v) {
                 registerPreference();
-
-
             }
         });
 
