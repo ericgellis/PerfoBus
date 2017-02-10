@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/drivingToolBar"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="?attr/actionBarSize"
     android:background="@color/veryLightGrey"
-    android:id="@+id/drivingToolBar">
+    android:minHeight="?attr/actionBarSize"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/relativelayout"
@@ -14,37 +15,38 @@
             android:id="@+id/direction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/lineNameTextView"
-            android:layout_marginStart="@dimen/double_regular_margin"
+            android:layout_centerVertical="true"
             android:text="@string/dir"
             android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/directionNameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/lineNameTextView"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/direction"
+            android:lines="1"
             android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/cityNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/regular_margin"
             android:layout_centerHorizontal="true"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:layout_marginBottom="@dimen/regular_margin"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@id/lineNameTextView"
+            android:id="@+id/lineNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cityNameTextView"
-            android:layout_marginTop="@dimen/regular_margin"
             android:layout_centerHorizontal="true"
-            android:textSize="26sp"
+            android:layout_marginTop="@dimen/regular_margin"
             android:textColor="@color/black"
+            android:textSize="26sp"
             android:textStyle="bold"/>
 
         <Button
