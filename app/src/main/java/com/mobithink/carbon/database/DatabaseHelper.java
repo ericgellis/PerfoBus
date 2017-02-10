@@ -13,12 +13,6 @@ import com.mobithink.carbon.database.model.TripDTO;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Database Version
-    private static final int DATABASE_VERSION = 1;
-
-    // Database Name
-    private static final String DATABASE_NAME = "mobithink";
-
     // Table Names
     public static final String TABLE_CITY = "cities";
     public static final String TABLE_LINE = "lines";
@@ -28,9 +22,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_STATION_TRIP_DATA = "stationTripDatas";
     public static final String TABLE_EVENT = "events";
     public static final String TABLE_ROLLING_POINT = "rollingPoints";
-
-
-
     // Common column names
     public static final String KEY_ID = "id";
     public static final String KEY_LONGITUDE = "longitude";
@@ -41,45 +32,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_START_DATETIME = "startDatetime";
     public static final String KEY_END_DATETIME = "endDatetime";
     public static final String KEY_STEP = "step";
-
     // CITY Table - column names
     public static final String KEY_CITY_NAME = "cityName";
-
     // LINE Table - column names
     public static final String KEY_LINE_NAME = "lineName";
     public static final String KEY_CITY_ID = "city_id";
-
     // STATION Table - column names
     public static final String KEY_STATION_NAME = "stationName";
-
     // LINE_STATION Table - column names
     public static final String KEY_STATION_ID = "station_id";
-
     // TRIP Table - column names
     public static final String KEY_TRIP_NAME = "tripName";
     public static final String KEY_ATMO = "atmo";
     public static final String KEY_TEMPERATURE = "temperature";
     public static final String KEY_WEATHER = "weather";
     public static final String KEY_CAPACITY = "vehiculeCapacity";
-
     // ROLLING_POINT Table - column names
     public static final String KEY_TRAFFIC = "traffic";
-
     // STATION_TRIP_DATA Table - column names
     public static final String KEY_COME_IN = "comeIn";
     public static final String KEY_GO_OUT = "goOut";
-
     // EVENT Table - column names
     public static final String KEY_EVENT_NAME = "eventName";
     public static final String KEY_STATION_DATA_ID = "stationData_id";
-
-
     // Create table CITY
     public static final String CREATE_TABLE_CITY =
             "CREATE TABLE " + TABLE_CITY
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_CITY_NAME  + " TEXT" + ")";
-
     // Create table LINE
     public static final String CREATE_TABLE_LINE =
             "CREATE TABLE " + TABLE_LINE
@@ -87,13 +67,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LINE_NAME + " TEXT,"
                     + KEY_CREATION_DATE + " DATETIME"
                     + KEY_CITY_ID + " INTEGER" +")";
-
     // Create table STATION
     public static final String CREATE_TABLE_STATION =
             "CREATE TABLE " + TABLE_STATION
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                     + KEY_STATION_NAME  + " TEXT" + ")";
-
     // Create table LINE_STATION
     public static final String CREATE_TABLE_LINE_STATION =
             "CREATE TABLE " + TABLE_LINE_STATION
@@ -101,7 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LINE_ID + " INTEGER,"
                     + KEY_STATION_ID + " INTEGER,"
                     + KEY_STEP + "INTEGER" + ")";
-
     // Create table TRIP
     public static final String CREATE_TABLE_TRIP =
             "CREATE TABLE " + TABLE_TRIP
@@ -114,7 +91,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_WEATHER + " TEXT,"
                     + KEY_CAPACITY + " INTEGER,"
                     + KEY_LINE_ID + " INTEGER" +")";
-
     // Create table ROLLING_POINT
     public static final String CREATE_TABLE_ROLLING_POINT =
             "CREATE TABLE " + TABLE_ROLLING_POINT
@@ -124,7 +100,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER" +")";
-
     // Create table STATION_TRIP_DATA
     public static final String CREATE_TABLE_STATION_TRIP_DATA =
             "CREATE TABLE " + TABLE_STATION_TRIP_DATA
@@ -137,7 +112,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER" +")";
-
     // Create table EVENT
     public static final String CREATE_TABLE_EVENT =
             "CREATE TABLE " + TABLE_EVENT
@@ -149,6 +123,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_ID + " INTEGER"+")";
+    // Database Version
+    private static final int DATABASE_VERSION = 1;
+    // Database Name
+    private static final String DATABASE_NAME = "mobithink";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
