@@ -12,7 +12,7 @@ public class ExpendableEventListData {
 
     public static HashMap<String, List<String>> getData() {
         HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
-        List<String> listDataHeader  = new ArrayList<String>();
+        List<String> listDataHeader = new ArrayList<String>();
 
         listDataHeader.add("Stationnement");
         listDataHeader.add("Aménagement");

@@ -21,8 +21,8 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
-import com.mobithink.carbon.services.LocationService;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
+import com.mobithink.carbon.services.LocationService;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
 
@@ -61,11 +61,9 @@ public class DrivingActivity extends Activity {
     List<StationDTO> mStationList;
     StationDTO mDirection;
     CityDTO mCity;
+    FragmentManager fm = getFragmentManager();
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
-
-    FragmentManager fm = getFragmentManager();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +188,7 @@ public class DrivingActivity extends Activity {
 
     public void goToChooseEvent(){
 
-       EventDialogFragment dialogFragment = new EventDialogFragment ();
+        EventDialogFragment dialogFragment = new EventDialogFragment();
         dialogFragment.show(fm, "Choisir un évènement");
     }
 }

@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.station.model.EventType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +107,7 @@ public class EventDialogFragment extends DialogFragment {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                            }
+            }
         });
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
