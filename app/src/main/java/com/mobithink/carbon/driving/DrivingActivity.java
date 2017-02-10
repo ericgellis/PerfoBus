@@ -20,7 +20,6 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
-import com.mobithink.carbon.station.EventDialogFragment;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
@@ -184,8 +183,5 @@ public class DrivingActivity extends Activity {
 
        EventDialogFragment dialogFragment = new EventDialogFragment ();
         dialogFragment.show(fm, "Choisir un évènement");
-        /*Intent ToChoosePage = new Intent (this, EventDialogFragment.class);
-        this.startActivity(ToChoosePage);*/
-
     }
 }

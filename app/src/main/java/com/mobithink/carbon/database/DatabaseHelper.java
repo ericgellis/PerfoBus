@@ -232,6 +232,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(tripId) });
     }
 
+    /*************************** EVENT **************************************/
+
+   /* public long createEvent {
+
+
+        return event;
+    }*/
+
 
 
 
