@@ -67,7 +67,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         mParametersSettings = (ImageView) findViewById(R.id.parameterButton);
         mMobiThinkLogo = (ImageView) findViewById(R.id.mobithinkLogo);
         mServerStatusView = findViewById(R.id.server_status_view);
-        mServerStatusView.setBackground(getDrawable(R.drawable.server_offline_circle_status));
+        mServerStatusView.setBackground(getDrawable(R.drawable.server_pending_circle_status));
 
 
         mAnalyzeButton = (Button) findViewById(R.id.analyzeButton);

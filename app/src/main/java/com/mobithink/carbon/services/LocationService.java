@@ -99,7 +99,7 @@ public class LocationService extends Service implements LocationListener {
 
     private long getTimeInterval() {
         if(mTimeInterval == -1){
-            mTimeInterval =  PreferenceManager.getInstance().getDataInt(PreferenceManager.TIME_INTERVAL) * 1000;
+            mTimeInterval =  PreferenceManager.getInstance().getTimeFrequency() * 1000;
         }
 
         return mTimeInterval;

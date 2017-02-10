@@ -5,7 +5,7 @@
     <application
         android:name="com.mobithink.carbon.CarbonApplication"
         android:allowBackup="true"
-        android:icon="@drawable/mobithink_logo"
+        android:icon="@drawable/mobithink_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
