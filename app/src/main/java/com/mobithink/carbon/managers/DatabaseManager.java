@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.database.DatabaseHelper;
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 /**
@@ -79,5 +80,24 @@ public class DatabaseManager {
     private Long getDateTime() {
         return System.currentTimeMillis();
     }
+
+
+
+    /*************************** EVENT **************************************/
+
+   public void startNewEvent (Long tripID){
+
+       /*ContentValues values = new ContentValues();
+       values.put(DatabaseHelper.KEY_TRIP_ID, tripID);
+       values.put(DatabaseHelper.KEY_EVENT_NAME, eventDTO.getEventName());
+       values.put(DatabaseHelper.KEY_START_DATETIME, getDateTime());
+       values.put(DatabaseHelper.KEY_LATITUDE,);
+       values.put(DatabaseHelper.KEY_LONGITUDE,);
+
+       long eventId = getOpenedDatabase().insert(DatabaseHelper.TABLE_EVENT, null, values);*/
+
+
+       return;
+   }
 
 }
