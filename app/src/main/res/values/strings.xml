@@ -5,6 +5,7 @@
     <string name="fixed_text">Analyse des conditions d’exploitation de lignes de transports publics</string>
     <string name="analyze">Analyser</string>
     <string name="consult">Consulter</string>
+    <string name="server_status">Server status : </string>
 
     <!--choice_line_from_analyze-->
     <string name="cityName">Ville</string>

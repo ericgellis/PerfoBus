@@ -45,17 +45,13 @@ public class RetrofitManager {
                 HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
                 builder.addInterceptor(interceptor);
-                builder.connectTimeout(60, TimeUnit.SECONDS);
-                builder.readTimeout(60, TimeUnit.SECONDS);
-
                 baseURL = BASE_URL_INTEGRATION;
             } else {
                 baseURL = BASE_URL;
-                builder.connectTimeout(8, TimeUnit.SECONDS);
-                builder.readTimeout(8, TimeUnit.SECONDS);
             }
 
-
+            builder.connectTimeout(60, TimeUnit.SECONDS);
+            builder.readTimeout(60, TimeUnit.SECONDS);
             builder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Interceptor.Chain chain) throws IOException {
