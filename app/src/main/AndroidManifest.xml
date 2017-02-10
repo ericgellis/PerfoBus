@@ -25,6 +25,7 @@
         <activity android:name="com.mobithink.carbon.driving.DrivingActivity"></activity>
         <activity android:name="com.mobithink.carbon.station.StationActivity"></activity>
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"></activity>
+
     </application>
 
     <service android:name="com.mobithink.carbon.services.LocationService"></service>

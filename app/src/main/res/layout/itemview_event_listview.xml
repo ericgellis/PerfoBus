@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:layout_margin="1dp"
     android:id="@+id/user_list_relative">
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/event_icon"
         android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_height="56dp" />-->
 
     <TextView
         android:id="@+id/event_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:textSize="20sp"/>
 
 </LinearLayout>

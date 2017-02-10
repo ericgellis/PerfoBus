@@ -35,12 +35,19 @@
         android:layout_marginStart="@dimen/double_regular_margin"
         android:background="@mipmap/ic_red_arrow"/>
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/mobithink_bus"/>
+
     <TextView
         android:id="@+id/boardingPeopleTextView"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/decreaseNumberOfAddedPeopleButton"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="190dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -48,10 +55,10 @@
 
     <TextView
         android:id="@+id/exitPeopleTextView"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/decreaseNumberOfRemovedPeopleButton"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="190dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textSize="24sp"

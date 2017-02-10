@@ -1,6 +1,7 @@
-package com.mobithink.carbon.station;
+package com.mobithink.carbon.driving;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.station.model.EventType;
+import com.mobithink.carbon.webservices.EventService;
+
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by mplaton on 01/02/2017.
@@ -51,21 +60,21 @@ public class EventListViewAdapter extends ArrayAdapter<EventType> {
 
                 registerEvent();
 
-            }
+            };
         });
 
         return convertView;
-    }
-
-    private void registerEvent() {
-
-
     }
 
     private class EventViewHolder{
         public TextView eventTypeName;
         public ImageView eventIcon;
         public LinearLayout itemviewStationLinearLayout;
+    }
+
+    private void registerEvent(){
+
+
     }
 }
 
