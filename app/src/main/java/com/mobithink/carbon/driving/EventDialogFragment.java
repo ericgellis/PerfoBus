@@ -27,60 +27,6 @@ import java.util.List;
 
 public class EventDialogFragment extends DialogFragment {
 
-    /*ListView eventListView;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.event_dialog_box, container, false);
-        getDialog().setTitle("Choisir un évènement");
-
-        eventListView = (ListView) rootView.findViewById(R.id.event_list_view);
-
-        List<EventType> tweets = showEvent();
-
-        EventListViewAdapter adapter = new EventListViewAdapter(getActivity(), tweets);
-        eventListView.setAdapter(adapter);
-
-        return rootView;
-    }
-
-    public List <EventType> showEvent(){
-        List<EventType> eventType = new ArrayList<EventType>();
-        eventType.add(new EventType("Stationnement gênant", R.mipmap.ic_grey_parking_obstruction));
-        eventType.add(new EventType("Altération de la voirie", R.mipmap.ic_grey_alteration_road));
-        eventType.add(new EventType("Carrefour à feux", R.mipmap.ic_grey_crossroad_with_traffic_lights));
-        eventType.add(new EventType("Carrefour", R.mipmap.ic_grey_crossroad));
-        eventType.add(new EventType("Giratoire", R.mipmap.ic_grey_roundabout));
-        eventType.add(new EventType("Trafic", R.mipmap.ic_grey_traffic));
-        eventType.add(new EventType("Autre", R.mipmap.ic_grey_other));
-
-        return eventType;
-
-    }
-
-    @Override
-    public void onResume() {
-
-        Window window = getDialog().getWindow();
-        Point size = new Point();
-        // Store dimensions of the screen in `size`
-        Display display = window.getWindowManager().getDefaultDisplay();
-        display.getSize(size);
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setGravity(Gravity.CENTER);*/
-
-
-        /*// Get existing layout params for the window
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        // Assign window properties to fill the parent
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-
-        super.onResume();
-    }*/
-
     ExpandableListView expandableListView;
     EventExpendableListViewAdapter expandableListAdapter;
     List<String> expandableListTitle;
