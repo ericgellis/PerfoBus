@@ -58,31 +58,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create table CITY
     public static final String CREATE_TABLE_CITY =
             "CREATE TABLE " + TABLE_CITY
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_CITY_NAME  + " TEXT" + ")";
     // Create table LINE
     public static final String CREATE_TABLE_LINE =
             "CREATE TABLE " + TABLE_LINE
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_LINE_NAME + " TEXT,"
                     + KEY_CREATION_DATE + " DATETIME"
                     + KEY_CITY_ID + " INTEGER" +")";
     // Create table STATION
     public static final String CREATE_TABLE_STATION =
             "CREATE TABLE " + TABLE_STATION
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_STATION_NAME  + " TEXT" + ")";
     // Create table LINE_STATION
     public static final String CREATE_TABLE_LINE_STATION =
             "CREATE TABLE " + TABLE_LINE_STATION
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_LINE_ID + " INTEGER,"
                     + KEY_STATION_ID + " INTEGER,"
                     + KEY_STEP + "INTEGER" + ")";
     // Create table TRIP
     public static final String CREATE_TABLE_TRIP =
             "CREATE TABLE " + TABLE_TRIP
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_TRIP_NAME + " TEXT,"
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create table ROLLING_POINT
     public static final String CREATE_TABLE_ROLLING_POINT =
             "CREATE TABLE " + TABLE_ROLLING_POINT
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_TRAFFIC + " INTEGER,"
                     + KEY_CREATION_DATE + " DATETIME,"
                     + KEY_LATITUDE + " INTEGER,"
@@ -103,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create table STATION_TRIP_DATA
     public static final String CREATE_TABLE_STATION_TRIP_DATA =
             "CREATE TABLE " + TABLE_STATION_TRIP_DATA
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_COME_IN + " INTEGER,"
                     + KEY_GO_OUT + " DATETIME,"
                     + KEY_START_DATETIME + " DATETIME,"
@@ -115,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create table EVENT
     public static final String CREATE_TABLE_EVENT =
             "CREATE TABLE " + TABLE_EVENT
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_EVENT_NAME + " TEXT,"
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
@@ -136,19 +136,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // creating required tables
-        db.execSQL(CREATE_TABLE_CITY);
+        /*db.execSQL(CREATE_TABLE_CITY);
         db.execSQL(CREATE_TABLE_LINE);
         db.execSQL(CREATE_TABLE_STATION);
         db.execSQL(CREATE_TABLE_LINE_STATION);
         db.execSQL(CREATE_TABLE_TRIP);
         db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
         db.execSQL(CREATE_TABLE_ROLLING_POINT);
-        db.execSQL(CREATE_TABLE_EVENT);
+        db.execSQL(CREATE_TABLE_EVENT);*/
+
+        updateDatabase(db,0, DATABASE_VERSION);
+    }
+
+    public void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
+        if (oldVersion <= 1){
+            db.execSQL(CREATE_TABLE_CITY);
+            db.execSQL(CREATE_TABLE_LINE);
+            db.execSQL(CREATE_TABLE_STATION);
+            db.execSQL(CREATE_TABLE_LINE_STATION);
+            db.execSQL(CREATE_TABLE_TRIP);
+            db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
+            db.execSQL(CREATE_TABLE_ROLLING_POINT);
+            db.execSQL(CREATE_TABLE_EVENT);
+        }
+        if (oldVersion<2){
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_CITY);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_LINE);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_STATION);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_LINE_STATION);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_TRIP);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_STATION_TRIP_DATA);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ROLLING_POINT);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EVENT);
+
+            db.execSQL(CREATE_TABLE_CITY);
+            db.execSQL(CREATE_TABLE_LINE);
+            db.execSQL(CREATE_TABLE_STATION);
+            db.execSQL(CREATE_TABLE_LINE_STATION);
+            db.execSQL(CREATE_TABLE_TRIP);
+            db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
+            db.execSQL(CREATE_TABLE_ROLLING_POINT);
+            db.execSQL(CREATE_TABLE_EVENT);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        updateDatabase(db, oldVersion, newVersion);
     }
 
 

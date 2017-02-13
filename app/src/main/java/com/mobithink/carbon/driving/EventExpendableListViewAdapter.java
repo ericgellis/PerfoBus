@@ -1,6 +1,8 @@
 package com.mobithink.carbon.driving;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.event.EventActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +25,6 @@ import java.util.List;
 public class EventExpendableListViewAdapter extends BaseExpandableListAdapter {
 
     public TextView eventTypeName;
-    public ImageView eventIcon;
     public LinearLayout itemviewStationLinearLayout;
     private Context context;
     private List<String> expandableListTitle;
@@ -88,10 +90,9 @@ public class EventExpendableListViewAdapter extends BaseExpandableListAdapter {
         }
 
         eventTypeName = (TextView) convertView.findViewById(R.id.event_name_textview);
-        //eventIcon = (ImageView) convertView.findViewById(R.id.event_icon);
+        eventTypeName.setText(listTitle);
         itemviewStationLinearLayout = (LinearLayout) convertView.findViewById(R.id.itemview_station_linear_layout);
 
-        eventTypeName.setText(listTitle);
         return convertView;
     }
 
@@ -101,9 +102,7 @@ public class EventExpendableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean isChildSelectable(int listPosition, int expandedListPosition) {
-        return true;
-    }
+    public boolean isChildSelectable(int listPosition, int expandedListPosition) {return true;}
 
 
 }

@@ -35,5 +35,10 @@ dependencies {
     compile 'agency.tango.android:avatar-view:0.0.1'
     compile 'agency.tango.android:avatar-view-picasso:0.0.1'
     compile 'com.github.rey5137:material:1.2.4'
+
+    compile 'me.xiaopan:spiderwebscoreview:1.0.0'
+
+    compile 'com.google.android.gms:play-services:9.8.0'
+    compile 'com.google.android.gms:play-services-location:9.8.0'
     testCompile 'junit:junit:4.12'
 }

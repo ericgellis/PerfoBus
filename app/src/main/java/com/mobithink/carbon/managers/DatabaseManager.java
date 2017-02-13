@@ -6,7 +6,23 @@ import android.database.sqlite.SQLiteDatabase;
 import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.database.DatabaseHelper;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
+
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_COME_IN;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_END_DATETIME;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_GO_OUT;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_ID;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_LATITUDE;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_LONGITUDE;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_START_DATETIME;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_STATION_ID;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_STEP;
+import static com.mobithink.carbon.database.DatabaseHelper.KEY_TRIP_ID;
+import static com.mobithink.carbon.database.DatabaseHelper.TABLE_EVENT;
+import static com.mobithink.carbon.database.DatabaseHelper.TABLE_STATION;
+import static com.mobithink.carbon.database.DatabaseHelper.TABLE_STATION_TRIP_DATA;
 
 /**
  * Created by jpaput on 06/02/2017.
@@ -46,7 +62,7 @@ public class DatabaseManager {
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.KEY_LINE_ID, lineID);
-        values.put(DatabaseHelper.KEY_START_DATETIME, getDateTime());
+        values.put(KEY_START_DATETIME, getDateTime());
 
         // insert row
         long tripId = getOpenedDatabase().insert(DatabaseHelper.TABLE_TRIP, null, values);
@@ -68,10 +84,10 @@ public class DatabaseManager {
 
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.KEY_END_DATETIME, getDateTime());
+        values.put(KEY_END_DATETIME, getDateTime());
 
         getOpenedDatabase().update(
-                DatabaseHelper.TABLE_TRIP, values, DatabaseHelper.KEY_ID + " = ?",
+                DatabaseHelper.TABLE_TRIP, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(CarbonApplicationManager.getInstance().getCurrentTripId())});
 
     }
@@ -85,19 +101,54 @@ public class DatabaseManager {
 
     /*************************** EVENT **************************************/
 
-   public void startNewEvent (Long tripID){
+   public long createNewEvent (long tripId, EventDTO eventDTO){
 
-       /*ContentValues values = new ContentValues();
-       values.put(DatabaseHelper.KEY_TRIP_ID, tripID);
+       ContentValues values = new ContentValues();
+       values.put(DatabaseHelper.KEY_TRIP_ID, tripId);
        values.put(DatabaseHelper.KEY_EVENT_NAME, eventDTO.getEventName());
-       values.put(DatabaseHelper.KEY_START_DATETIME, getDateTime());
-       values.put(DatabaseHelper.KEY_LATITUDE,);
-       values.put(DatabaseHelper.KEY_LONGITUDE,);
+       values.put(KEY_START_DATETIME, eventDTO.getStartTime());
+       values.put(KEY_END_DATETIME, eventDTO.getEndTime());
+       values.put(KEY_LATITUDE,eventDTO.getGpsLat());
+       values.put(DatabaseHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
 
-       long eventId = getOpenedDatabase().insert(DatabaseHelper.TABLE_EVENT, null, values);*/
+       long eventId = getOpenedDatabase().insert(TABLE_EVENT, null, values);
 
-
-       return;
+       return eventId;
    }
+
+    public void deleteEvent (long eventId){
+        SQLiteDatabase db = mDataBase.getWritableDatabase();
+
+        db.delete(TABLE_EVENT, KEY_ID + " = ?",
+                new String[] { String.valueOf(eventId) });
+    }
+
+    /*************************** STATION **************************************/
+
+    public long createNewStation (StationDTO stationDTO){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_STATION_NAME, stationDTO.getStationName());
+
+        long stationId = getOpenedDatabase().insert(TABLE_STATION, null, values);
+        return stationId;
+    }
+
+    public void updateStation (long stationId, long tripId, StationDataDTO stationDataDTO){
+        SQLiteDatabase db = mDataBase.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_STATION_ID, stationId);
+        values.put(KEY_TRIP_ID, tripId);
+        values.put(KEY_COME_IN, stationDataDTO.getNumberOfComeIn());
+        values.put(KEY_GO_OUT, stationDataDTO.getNumberOfGoOut());
+        values.put(KEY_STEP, stationDataDTO.getStationStep());
+        values.put(KEY_START_DATETIME, stationDataDTO.getStartTime());
+        values.put(KEY_END_DATETIME, stationDataDTO.getEndTime());
+        values.put(KEY_LATITUDE, stationDataDTO.getGpsLat());
+        values.put(KEY_LONGITUDE, stationDataDTO.getGpsLong());
+
+        db.update(TABLE_STATION_TRIP_DATA, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(stationDataDTO.getId())});
+    }
 
 }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MobiThink</string>
 
+    <!-- API Key -->
+    <string name="google_api_key">AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo</string>
+
     <!-- Main Page-->
     <string name="fixed_text">Analyse des conditions d’exploitation de lignes de transports publics</string>
     <string name="analyze">Analyser</string>

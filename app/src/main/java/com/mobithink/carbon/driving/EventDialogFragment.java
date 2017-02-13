@@ -1,6 +1,7 @@
 package com.mobithink.carbon.driving;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -14,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.event.EventActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,14 +61,13 @@ public class EventDialogFragment extends DialogFragment {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getActivity(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
+                Toast.makeText(getActivity(),expandableListTitle.get(groupPosition)+ " -> "
+                                + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
+
+                Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
+                startActivity(goToEventActivity);
                 return false;
             }
         });
