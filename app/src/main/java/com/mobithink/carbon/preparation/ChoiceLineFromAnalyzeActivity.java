@@ -28,6 +28,7 @@ import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -160,6 +161,10 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     mSelectedDirection = directionAdapter.getItem(which);
                                     mDirectionEditText.setText(mSelectedDirection.getStationName());
+
+                                    if(mSelectedDirection.equals(directionAdapter.getItem(0))){
+                                        Collections.reverse(listStation);
+                                    }
                                 }
                             })
                             .create()

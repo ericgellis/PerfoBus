@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
+import com.mobithink.carbon.services.LocationService;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
 
@@ -38,8 +40,6 @@ public class DrivingActivity extends Activity {
     TextView mActualTime;
     TextView mActualDate;
     TextView mAtmoNumberTextView;
-    TextView mCourseTimeTextView;
-    TextView mSectionTimeTextView;
     TextView mNextStationNameTextView;
 
     Toolbar mDrivingToolBar;
@@ -50,6 +50,9 @@ public class DrivingActivity extends Activity {
     Button mCancelButton;
     Button mEventButton;
 
+    Chronometer mCourseChronometer;
+    Chronometer mSectionChronometer;
+
     RecyclerView mStationRecyclerView;
     StationAdapter mStationAdapter;
 
@@ -58,11 +61,9 @@ public class DrivingActivity extends Activity {
     List<StationDTO> mStationList;
     StationDTO mDirection;
     CityDTO mCity;
+    FragmentManager fm = getFragmentManager();
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
-
-    FragmentManager fm = getFragmentManager();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +99,11 @@ public class DrivingActivity extends Activity {
         mActualTime = (TextView) findViewById(R.id.actualTime);
         mActualDate = (TextView) findViewById(R.id.actualDate);
         mAtmoNumberTextView = (TextView) findViewById(R.id.atmoNumberTextView);
-        mCourseTimeTextView = (TextView) findViewById(R.id.courseTimeTextView);
-        mSectionTimeTextView = (TextView) findViewById(R.id.sectionTimeTextView);
+
+        //Chrono
+        mCourseChronometer = (Chronometer) findViewById(R.id.chronometerCourse);
+        mSectionChronometer = (Chronometer) findViewById(R.id.chronometerSection);
+
         mNextStationNameTextView = (TextView) findViewById(R.id.nextStationNameTextView);
 
         mEventButton = (Button) findViewById(R.id.eventButton);
@@ -130,6 +134,8 @@ public class DrivingActivity extends Activity {
             mLine = (BusLineDTO) extras.getSerializable("line");
         }
 
+        startService(new Intent(getApplicationContext(),LocationService.class));
+
     }
 
     @Override
@@ -146,8 +152,9 @@ public class DrivingActivity extends Activity {
         mActualTime.setText("13:34");
         mActualDate.setText ("Lun. 9 Janv.");
         mAtmoNumberTextView.setText("5");
-        mCourseTimeTextView.setText("1 h 02 min");
-        mSectionTimeTextView.setText("3 min 34 s");
+
+        mCourseChronometer.start();
+        mSectionChronometer.start();
     }
 
     public void goToStationPage(){
@@ -181,7 +188,7 @@ public class DrivingActivity extends Activity {
 
     public void goToChooseEvent(){
 
-       EventDialogFragment dialogFragment = new EventDialogFragment ();
+        EventDialogFragment dialogFragment = new EventDialogFragment();
         dialogFragment.show(fm, "Choisir un évènement");
     }
 }

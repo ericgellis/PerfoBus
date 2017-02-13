@@ -1,6 +1,5 @@
 package com.mobithink.carbon.webservices;
 
-import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.EventDTO;
 
 import retrofit2.Call;

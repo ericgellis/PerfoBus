@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.mobithink.carbon.managers.PreferenceManager;
 
@@ -18,6 +19,7 @@ import com.mobithink.carbon.managers.PreferenceManager;
  */
 public class LocationService extends Service implements LocationListener {
 
+    private static final String TAG = "LocationService";
     private static LocationService instance = null;
 
     // flag for GPS status
@@ -39,6 +41,7 @@ public class LocationService extends Service implements LocationListener {
     protected LocationManager locationManager;
 
     private long mTimeInterval = -1;
+    private LocationManager mLocationManager;
 
 
     public static LocationService getLocationManager(Context context)     {
@@ -99,7 +102,7 @@ public class LocationService extends Service implements LocationListener {
 
     private long getTimeInterval() {
         if(mTimeInterval == -1){
-            mTimeInterval =  PreferenceManager.getInstance().getDataInt(PreferenceManager.TIME_INTERVAL) * 1000;
+            mTimeInterval =  PreferenceManager.getInstance().getTimeFrequency() * 1000;
         }
 
         return mTimeInterval;
@@ -107,7 +110,9 @@ public class LocationService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
+        Log.d(this.getClass().getName(), "New location ! long  : " + location.getLongitude() + ", lat : " +location.getLatitude());
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         //TODO Store Location in Database
 
     }
@@ -129,5 +134,61 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        Log.e(TAG, "onStartCommand");
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+    }
+
+    @Override
+    public void onCreate()
+    {
+        Log.e(TAG, "onCreate");
+        initializeLocationManager();
+        try {
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
+                    this);
+        } catch (java.lang.SecurityException ex) {
+            Log.i(TAG, "fail to request location update, ignore", ex);
+        } catch (IllegalArgumentException ex) {
+            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+        }
+        try {
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
+                    this);
+        } catch (java.lang.SecurityException ex) {
+            Log.i(TAG, "fail to request location update, ignore", ex);
+        } catch (IllegalArgumentException ex) {
+            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+        }
+    }
+    @Override
+    public void onDestroy()
+    {
+        Log.e(TAG, "onDestroy");
+        super.onDestroy();
+        if (mLocationManager != null) {
+                if (
+                    ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED &&
+                            ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mLocationManager.removeUpdates(this);
+
+                    Log.i(TAG, "fail to remove location listners, ignore");
+
+            }
+        }
+    }
+
+    private void initializeLocationManager() {
+        Log.e(TAG, "initializeLocationManager");
+        if (mLocationManager == null) {
+            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        }
     }
 }

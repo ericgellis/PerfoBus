@@ -87,8 +87,8 @@
                 android:layout_marginTop="80dp"
                 android:text="@string/course" />
 
-            <TextView
-                android:id="@+id/courseTimeTextView"
+            <Chronometer
+                android:id="@+id/chronometerCourse"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignBottom="@+id/coursetextView"
@@ -105,8 +105,8 @@
                 android:layout_marginTop="@dimen/double_regular_margin"
                 android:text="@string/section" />
 
-            <TextView
-                android:id="@+id/sectionTimeTextView"
+            <Chronometer
+                android:id="@+id/chronometerSection"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignBottom="@+id/sectiontextView"
@@ -126,19 +126,13 @@
         </RelativeLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/bottom_sheet"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="true"
-        android:elevation="10dp"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
-
         <LinearLayout
+            android:id="@+id/bottom_sheet"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
         <RelativeLayout
             android:id="@+id/nextStationRelativeLayout"
@@ -169,5 +163,4 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/station_recyclerview"/>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

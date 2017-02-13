@@ -42,14 +42,25 @@ public class PreferenceManager {
         return mGeneralPreference.getString(key, null);
     }
 
-    public void setDataInt(String key, int value){
+    public void setStationRadius(int value){
         SharedPreferences.Editor editor = mGeneralPreference.edit();
-        editor.putInt(key, value);
+        editor.putInt(STATION_RADIUS, value);
         editor.apply();
     }
 
-    public int getDataInt(String key){
-        return mGeneralPreference.getInt(key, -1);
+    public int getStationRadius(){
+        return mGeneralPreference.getInt(STATION_RADIUS, 50);
+    }
+
+
+    public void setTimeFrequency(int value){
+        SharedPreferences.Editor editor = mGeneralPreference.edit();
+        editor.putInt(TIME_INTERVAL, value);
+        editor.apply();
+    }
+
+    public int getTimeFrequency(){
+        return mGeneralPreference.getInt(TIME_INTERVAL, 20);
     }
 
     public void clear(){

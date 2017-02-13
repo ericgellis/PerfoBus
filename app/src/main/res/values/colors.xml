@@ -34,4 +34,8 @@
 
     <!--Error-->
     <color name="red_color_error">#ffff0000</color>
+
+    <!--Error-->
+    <color name="server_offline">#ffff0000</color>
+    <color name="server_online">#ff00ff00</color>
 </resources>

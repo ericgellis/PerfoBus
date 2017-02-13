@@ -42,8 +42,7 @@
         android:layout_below="@+id/frequency"
         android:layout_marginStart="@dimen/double_regular_margin"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:progress="0"
-        android:max="60"
+        android:max="100"
         android:progressTint="@color/mobiThinkBlue"
         android:thumbTint="@color/mobiThinkBlue"/>
 
@@ -72,13 +71,12 @@
         android:layout_height="60dp"
         android:layout_below="@+id/radius"
         android:layout_marginStart="@dimen/double_regular_margin"
-        android:max="1000"
-        android:progress="0"
+        android:max="950"
         android:progressTint="@color/mobiThinkBlue"
         android:thumbTint="@color/mobiThinkBlue"/>
 
     <Button
-        android:id="@+id/start_button"
+        android:id="@+id/register_parameter_button"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
