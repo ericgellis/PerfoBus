@@ -28,7 +28,7 @@ public class ExpendableEventListData {
         crossroadWithTrafficLights.add("Conception/Giration");
         crossroadWithTrafficLights.add("Conception/Iot-refuge");
         crossroadWithTrafficLights.add("Conception/TAG");
-        crossroadWithTrafficLights.add("Trafic, saturé");
+        crossroadWithTrafficLights.add("Trafic saturé");
         crossroadWithTrafficLights.add("Gestion des cycles/trop courts");
         crossroadWithTrafficLights.add("Gestion des cycles/trop longs");
         crossroadWithTrafficLights.add("Gestion des cycles/piétons");

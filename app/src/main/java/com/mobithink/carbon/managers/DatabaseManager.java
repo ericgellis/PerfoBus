@@ -1,6 +1,7 @@
 package com.mobithink.carbon.managers;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobithink.carbon.CarbonApplication;
@@ -106,9 +107,8 @@ public class DatabaseManager {
        ContentValues values = new ContentValues();
        values.put(DatabaseHelper.KEY_TRIP_ID, tripId);
        values.put(DatabaseHelper.KEY_EVENT_NAME, eventDTO.getEventName());
-       values.put(KEY_START_DATETIME, eventDTO.getStartTime());
-       values.put(KEY_END_DATETIME, eventDTO.getEndTime());
-       values.put(KEY_LATITUDE,eventDTO.getGpsLat());
+       values.put(DatabaseHelper.KEY_START_DATETIME, eventDTO.getStartTime());
+       values.put(DatabaseHelper.KEY_LATITUDE,eventDTO.getGpsLat());
        values.put(DatabaseHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
 
        long eventId = getOpenedDatabase().insert(TABLE_EVENT, null, values);
@@ -116,12 +116,18 @@ public class DatabaseManager {
        return eventId;
    }
 
+    public void updateEvent (long eventId, long tripId, EventDTO eventDTO){
+        ContentValues values = new ContentValues();
+        values.put(KEY_END_DATETIME, eventDTO.getEndTime());
+    }
+
     public void deleteEvent (long eventId){
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         db.delete(TABLE_EVENT, KEY_ID + " = ?",
                 new String[] { String.valueOf(eventId) });
     }
+
 
     /*************************** STATION **************************************/
 

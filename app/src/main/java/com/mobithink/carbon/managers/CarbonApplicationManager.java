@@ -1,5 +1,6 @@
 package com.mobithink.carbon.managers;
 
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 /**
@@ -43,4 +44,6 @@ public class CarbonApplicationManager {
     public long getCurrentTripId() {
         return mCurrentTripId;
     }
+
+
 }

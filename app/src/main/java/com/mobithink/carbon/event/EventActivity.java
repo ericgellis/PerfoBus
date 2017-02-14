@@ -3,6 +3,7 @@ package com.mobithink.carbon.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,12 +29,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.DatabaseHelper;
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 
 import java.io.File;
 import java.io.IOException;
+
+import static com.mobithink.carbon.R.string.event;
 
 
 /**
@@ -63,6 +74,10 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
     private String file_exts[] = { AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP };
 
+    EventDTO eventDTO;
+    private SQLiteDatabase db;
+    private DatabaseHelper myBaseHelper;
+    int iDPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +87,11 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
         mGoogleApiClient.connect();
 
         mEventMap = (MapView) findViewById(R.id.event_map_mapview);
+        mEventMap.onCreate(savedInstanceState);
+        mEventMap.onResume();
 
         try {
             MapsInitializer.initialize(this.getApplicationContext());
@@ -94,6 +110,8 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
                 enableLocationForGoogleMap();
             }
         });
+
+
         mCancelledTimecodeButton = (Button) findViewById(R.id.cancelled_timecode_button);
         mVoiceMemoButton = (Button) findViewById(R.id.voice_memo_button);
         mEventPhotoButton = (Button) findViewById(R.id.event_photo_button);
@@ -102,7 +120,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         mCancelledTimecodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelTimeCode();
+                cancelEvent();
             }
         });
         mVoiceMemoButton.setOnTouchListener(new View.OnTouchListener() {
@@ -138,7 +156,23 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+    public void onLocationAuthorizationGranted() {
+
+        enableLocationForGoogleMap();
+        requestLocationUpdate();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        /*mGoogleMap.addMarker(new MarkerOptions().position(
+                new LatLng(eventDTO.getEventLocation().getLatitude(), eventDTO.getEventLocation().getLongitude())).icon(
+                BitmapDescriptorFactory.defaultMarker()));*/
+
 
     }
 
@@ -148,14 +182,14 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
             mGoogleMap.setMyLocationEnabled(true);
         } else {
 
-            /*if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mGoogleMap.setMyLocationEnabled(true);
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         BFConstant.PERMISSIONS_REQUEST_FINE_LOCATION);
-            }*/
+            }
         }
     }
 
@@ -194,13 +228,17 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     }
 
-    public void cancelTimeCode(){
 
-        //TODO cancel timecode in database
+    public void cancelEvent(){
+
+        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentEventId());
+        Toast toast = Toast.makeText(this, "Incident supprimé", Toast.LENGTH_SHORT);
+        toast.show();
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
     }
+
 
     private String getFilename(){
         String filepath = Environment.getExternalStorageDirectory().getPath();
@@ -256,6 +294,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         }
     }
 
+
     public void takePhoto(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -263,5 +302,12 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         }
     }
 
-    public void confirmEvent(){}
+
+    public void confirmEvent(){
+
+        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentEventId(), eventDTO);
+
+        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
+        this.startActivity(toDrivingPage);
+    }
 }

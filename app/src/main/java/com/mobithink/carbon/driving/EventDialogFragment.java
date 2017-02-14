@@ -2,6 +2,7 @@ package com.mobithink.carbon.driving;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -14,8 +15,13 @@ import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.DatabaseHelper;
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +37,8 @@ public class EventDialogFragment extends DialogFragment {
     EventExpendableListViewAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+
+    EventDTO eventDTO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +73,21 @@ public class EventDialogFragment extends DialogFragment {
                                 + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
+
+                /*String eventName = parent.expandableListDetail.get(expandableListTitle.get(groupPosition)).get(
+                        childPosition).toString;*/
+
+                String eventName = (String) expandableListAdapter.getChild(groupPosition, childPosition);
+
+
+                /*  TODO
+                Long eventStartingTime = ;
+                Long eventLat = //CarbonApplicationManager.getInstance().getCurrentLocation().getlat;
+                Long eventLong = ;*/
+
+                /*eventDTO = new EventDTO(eventName, eventStartingTime, eventLat, eventLong);
+
+                DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);*/
 
                 Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
                 startActivity(goToEventActivity);

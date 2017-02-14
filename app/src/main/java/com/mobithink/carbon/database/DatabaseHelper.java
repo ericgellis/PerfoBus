@@ -3,10 +3,17 @@ package com.mobithink.carbon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.mobithink.carbon.database.model.TripDTO;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by jpaput on 07/02/2017.
@@ -126,14 +133,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
-    private static final String DATABASE_NAME = "mobithink";
+    private static final String DATABASE_NAME = "mobithink.db";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db)  {
 
         // creating required tables
         /*db.execSQL(CREATE_TABLE_CITY);
@@ -145,7 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ROLLING_POINT);
         db.execSQL(CREATE_TABLE_EVENT);*/
 
-        updateDatabase(db,0, DATABASE_VERSION);
+            updateDatabase(db,0, DATABASE_VERSION);
     }
 
     public void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion){

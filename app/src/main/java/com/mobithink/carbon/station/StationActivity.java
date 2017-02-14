@@ -53,9 +53,33 @@ public class StationActivity extends Activity {
         mTimeCodeTextView.setText("1:05");
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
+        mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countBoardingPeople(v);
+            }
+        });
         mDecreaseNumberOfRemovedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfRemovedPeopleButton);
+        mDecreaseNumberOfRemovedPeopleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countExitPeople(v);
+            }
+        });
         mAddPeopleButton = (Button) findViewById(R.id.addPeopleButton);
+        mAddPeopleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countBoardingPeople(v);
+            }
+        });
         mRemovePeopleButton = (Button) findViewById(R.id.removePeopleButton);
+        mRemovePeopleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countExitPeople(v);
+            }
+        });
         mChooseEventButton = (Button) findViewById(R.id.chooseEventButton);
         mUnrealizedStopButton = (Button) findViewById(R.id.unrealizedStopButton);
         mStopTimeButton = (Button) findViewById(R.id.stopTimeButton);

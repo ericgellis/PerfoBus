@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<ListView
-        android:id="@+id/event_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>-->
-
     <ExpandableListView
         android:id="@+id/event_expendable_list_view"
         android:layout_width="match_parent"
