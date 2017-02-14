@@ -9,17 +9,19 @@ import java.io.Serializable;
 public class RollingPointDTO implements Serializable {
 
     private Long id;
+    private Long tripId;
     private Long pointTime;
-    private Long gpsLat;
-    private Long gpsLong;
+    private Double gpsLat;
+    private Double gpsLong;
     private int trafficIndex;
 
 
     public RollingPointDTO() {
     }
 
-    public RollingPointDTO(Long id, Long pointTime, Long gpsLat, Long gpsLong, int trafficIndex) {
+    public RollingPointDTO(Long id, Long tripId, Long pointTime, Double gpsLat, Double gpsLong, int trafficIndex) {
         this.id = id;
+        this.tripId = tripId;
         this.pointTime = pointTime;
         this.gpsLat = gpsLat;
         this.gpsLong = gpsLong;
@@ -34,6 +36,14 @@ public class RollingPointDTO implements Serializable {
         this.id = id;
     }
 
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
+    }
+
     public Long getPointTime() {
         return pointTime;
     }
@@ -42,19 +52,19 @@ public class RollingPointDTO implements Serializable {
         this.pointTime = pointTime;
     }
 
-    public Long getGpsLat() {
+    public Double getGpsLat() {
         return gpsLat;
     }
 
-    public void setGpsLat(Long gpsLat) {
+    public void setGpsLat(Double gpsLat) {
         this.gpsLat = gpsLat;
     }
 
-    public Long getGpsLong() {
+    public Double getGpsLong() {
         return gpsLong;
     }
 
-    public void setGpsLong(Long gpsLong) {
+    public void setGpsLong(Double gpsLong) {
         this.gpsLong = gpsLong;
     }
 

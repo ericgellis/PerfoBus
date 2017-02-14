@@ -26,10 +26,13 @@
         <activity android:name="com.mobithink.carbon.station.StationActivity"></activity>
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"></activity>
 
+
+        <service
+            android:name="com.mobithink.carbon.services.LocationService"
+            android:enabled="true"
+            android:label="Carbon Location Service" />
+
     </application>
-
-    <service android:name="com.mobithink.carbon.services.LocationService"></service>
-
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>

@@ -10,6 +10,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -21,18 +22,28 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
+import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.services.LocationService;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
+import com.mobithink.carbon.webservices.TripService;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by mplaton on 01/02/2017.
  */
 
 public class DrivingActivity extends Activity {
+
+    private static final String TAG = "DrivingActivity";
 
     ImageView mWeatherImageView;
 
@@ -89,7 +100,8 @@ public class DrivingActivity extends Activity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteData();
+
+                stopTrip();
             }
         });
 
@@ -134,7 +146,8 @@ public class DrivingActivity extends Activity {
             mLine = (BusLineDTO) extras.getSerializable("line");
         }
 
-        startService(new Intent(getApplicationContext(),LocationService.class));
+        Intent serviceIntent = new Intent(this, LocationService.class);
+        startService(serviceIntent);
 
     }
 
@@ -163,7 +176,7 @@ public class DrivingActivity extends Activity {
 
     }
 
-    public void deleteData(){
+    public void stopTrip() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setCancelable(true);
@@ -172,9 +185,14 @@ public class DrivingActivity extends Activity {
         alertDialogBuilder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                long tripId = DatabaseManager.getInstance().finishCurrentTrip();
 
+                //TODO this is make just for dev. Change this by a call to a method which delete current trip in dataBase
+                //TODO the call of sendTripDto must be done by another way
+                sendTripDto(tripId);
             }
         });
+
         alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -184,6 +202,33 @@ public class DrivingActivity extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void sendTripDto(long tripId) {
+        TripDTO tripDto = DatabaseManager.getInstance().getFullTripDTODataToSend(tripId);
+
+        TripService tripService = RetrofitManager.build().create(TripService.class);
+
+        Call<String> call = tripService.register(tripDto);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.i(TAG, "Succes youhoo " + response.body());
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void goToChooseEvent(){
