@@ -30,6 +30,8 @@ public class RetrofitManager {
     private static final String BASE_URL = "https://mobithink.herokuapp.com/";
     private static final String BASE_URL_INTEGRATION = "https://mobithink.herokuapp.com/";
 
+    private static final String BASE_URL_AXEL = "http://172.20.70.71:8080/";
+
     private static final String SECURITY_TOKEN = "Basic ZXJpYzptb2JpMjAxN3RoaW5r";
 
     static Retrofit mRetrofitInstance;

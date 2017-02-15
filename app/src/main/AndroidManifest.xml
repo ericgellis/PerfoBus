@@ -18,14 +18,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity"></activity>
-        <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity"></activity>
-        <activity android:name="com.mobithink.carbon.preparation.ParametersActivity"></activity>
-        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity"></activity>
-        <activity android:name="com.mobithink.carbon.driving.DrivingActivity"></activity>
-        <activity android:name="com.mobithink.carbon.station.StationActivity"></activity>
-        <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"></activity>
-        <activity android:name="com.mobithink.carbon.event.EventActivity"></activity>
+        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity"/>
+        <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity"/>
+        <activity android:name="com.mobithink.carbon.preparation.ParametersActivity"/>
+        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity"/>
+        <activity android:name="com.mobithink.carbon.driving.DrivingActivity"/>
+        <activity android:name="com.mobithink.carbon.station.StationActivity"/>
+        <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"/>
+        <activity android:name="com.mobithink.carbon.event.EventActivity"/>
 
         <uses-library android:name="com.google.android.maps" />
 
@@ -36,9 +36,13 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-    </application>
 
-    <service android:name="com.mobithink.carbon.services.LocationService"></service>
+        <service
+            android:name="com.mobithink.carbon.services.LocationService"
+            android:enabled="true"
+            android:label="Carbon Location Service" />
+
+    </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
