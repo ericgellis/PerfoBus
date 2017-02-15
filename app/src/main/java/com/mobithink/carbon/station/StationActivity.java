@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
@@ -19,7 +20,7 @@ import com.mobithink.carbon.driving.DrivingActivity;
  * Created by mplaton on 02/02/2017.
  */
 
-public class StationActivity extends Activity {
+public class StationActivity extends Activity implements IEventSelectedListener{
 
     private Button mDecreaseNumberOfAddedPeopleButton;
     private Button mDecreaseNumberOfRemovedPeopleButton;
@@ -31,6 +32,10 @@ public class StationActivity extends Activity {
 
     private TextView mBoardingPeopleTextView;
     private TextView mExitPeopleTextView;
+
+    private ListView mStationEventCustomListView;
+    private StationEventCustomListViewAdapter mStationEventCustomListViewAdapter;
+    private String [] eventTypeList;
 
     private Toolbar mStationToolBar;
     private Button mChangeStationNameButton;
@@ -54,6 +59,7 @@ public class StationActivity extends Activity {
         mStationNameTextView = (TextView) findViewById(R.id.stationNameTextView);
         mStationNameTextView.setText("Jean Jaures");
         mTimeCodeChronometer = (Chronometer) findViewById(R.id.timeCodeChronometer);
+        mStationEventCustomListView = (ListView) findViewById(R.id.station_event_custom_listview);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +119,9 @@ public class StationActivity extends Activity {
             }
         });
 
+        mStationEventCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
+        mStationEventCustomListView.setAdapter(mStationEventCustomListViewAdapter);
+
     }
 
     @Override
@@ -120,6 +129,7 @@ public class StationActivity extends Activity {
         super.onResume();
 
         mTimeCodeChronometer.start();
+
     }
 
     public void changeStationName(){
@@ -137,43 +147,49 @@ public class StationActivity extends Activity {
 
     //Select number of boarding people
     public void countBoardingPeople(View v) {
-        String getString = String.valueOf(mBoardingPeopleTextView.getText());
+        java.lang.String getString = java.lang.String.valueOf(mBoardingPeopleTextView.getText());
         int current = Integer.parseInt(getString);
         if (v == mAddPeopleButton) {
             if (current < nEndingPersonNumber) {
                 current++;
-                mBoardingPeopleTextView.setText(String.valueOf(current));
+                mBoardingPeopleTextView.setText(java.lang.String.valueOf(current));
             }
         }
         if (v == mDecreaseNumberOfAddedPeopleButton) {
             if (current > nStartingPersonNumber) {
                 current--;
-                mBoardingPeopleTextView.setText(String.valueOf(current));
+                mBoardingPeopleTextView.setText(java.lang.String.valueOf(current));
             }
         }
     }
 
     //Select number of exit people
     public void countExitPeople(View v) {
-        String getString = String.valueOf(mExitPeopleTextView.getText());
+        java.lang.String getString = java.lang.String.valueOf(mExitPeopleTextView.getText());
         int current = Integer.parseInt(getString);
         if (v == mRemovePeopleButton) {
             if (current < nEndingPersonNumber) {
                 current++;
-                mExitPeopleTextView.setText(String.valueOf(current));
+                mExitPeopleTextView.setText(java.lang.String.valueOf(current));
             }
         }
         if (v == mDecreaseNumberOfRemovedPeopleButton) {
             if (current > nStartingPersonNumber) {
                 current--;
-                mExitPeopleTextView.setText(String.valueOf(current));
+                mExitPeopleTextView.setText(java.lang.String.valueOf(current));
             }
         }
     }
 
     public void goTochooseStationEvent(){
         StationEventDialogFragment dialogFragment = new  StationEventDialogFragment();
+        dialogFragment.setListener(this);
         dialogFragment.show(fm, "Choisir un évènement");
     }
 
+    @Override
+    public void onEventSelected(String eventType) {
+        mStationEventCustomListViewAdapter.addData(eventType);
+        mStationEventCustomListViewAdapter.notifyDataSetChanged();
+    }
 }
