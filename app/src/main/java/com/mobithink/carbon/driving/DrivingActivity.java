@@ -215,7 +215,7 @@ public class DrivingActivity extends Activity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 switch (response.code()) {
-                    case 200:
+                    case 201:
                         Log.i(TAG, "Succes youhoo " + response.body());
                         break;
                     default:

@@ -95,7 +95,7 @@ public class DatabaseManager {
         c.moveToFirst();
 
         TripDTO tripDTO = new TripDTO();
-        tripDTO.setId(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_ID)));
+        tripDTO.setId(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_ID)));
         tripDTO.setTripName((c.getString(c.getColumnIndex(DatabaseOpenHelper.KEY_TRIP_NAME))));
         tripDTO.setStartTime(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
         tripDTO.setEndTime(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
@@ -103,7 +103,7 @@ public class DatabaseManager {
         tripDTO.setTemperature(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_TEMPERATURE)));
         tripDTO.setWeather(c.getString(c.getColumnIndex(DatabaseOpenHelper.KEY_WEATHER)));
         tripDTO.setVehiculeCapacity(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_CAPACITY)));
-        tripDTO.setLineId(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_LINE_ID)));
+        tripDTO.setBusLineId(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_LINE_ID)));
 
         c.close();
 
