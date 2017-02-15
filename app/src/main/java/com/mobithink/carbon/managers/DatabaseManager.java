@@ -9,8 +9,6 @@ import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.database.DatabaseOpenHelper;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.RollingPointDTO;
-import com.mobithink.carbon.database.model.StationDataDTO;
-import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -223,39 +221,42 @@ public class DatabaseManager {
     }
 
 
+    /***************************
+     * EVENT
+     **************************************/
 
-    /*************************** EVENT **************************************/
+    public long createNewEvent(long tripId, EventDTO eventDTO) {
 
-   public long createNewEvent (long tripId, EventDTO eventDTO){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
+        values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
+        values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
+        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
+        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
 
-       ContentValues values = new ContentValues();
-       values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
-       values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
-       values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
-       values.put(DatabaseOpenHelper.KEY_LATITUDE,eventDTO.getGpsLat());
-       values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
+        long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
 
-       long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
+        return eventId;
+    }
 
-       return eventId;
-   }
-
-    public void updateEvent (long eventId, long tripId, EventDTO eventDTO){
+    public void updateEvent(long eventId, long tripId, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
     }
 
-    public void deleteEvent (long eventId){
+    public void deleteEvent(long eventId) {
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         db.delete(DatabaseOpenHelper.TABLE_EVENT, DatabaseOpenHelper.KEY_ID + " = ?",
-                new String[] { String.valueOf(eventId) });
+                new String[]{String.valueOf(eventId)});
     }
 
 
-    /*************************** STATION **************************************/
+    /***************************
+     * STATION
+     **************************************/
 
-    public long createNewStation (StationDTO stationDTO){
+    public long createNewStation(StationDTO stationDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDTO.getStationName());
 
@@ -263,7 +264,7 @@ public class DatabaseManager {
         return stationId;
     }
 
-    public void updateStation (long stationId, long tripId, StationDataDTO stationDataDTO){
+    public void updateStation(long stationId, long tripId, StationDataDTO stationDataDTO) {
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -278,7 +279,7 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, stationDataDTO.getGpsLong());
 
         db.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
-                new String[] { String.valueOf(stationDataDTO.getId())});
+                new String[]{String.valueOf(stationDataDTO.getId())});
     }
 
 }

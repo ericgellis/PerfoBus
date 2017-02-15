@@ -18,14 +18,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity"/>
-        <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity"/>
-        <activity android:name="com.mobithink.carbon.preparation.ParametersActivity"/>
-        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity"/>
-        <activity android:name="com.mobithink.carbon.driving.DrivingActivity"/>
-        <activity android:name="com.mobithink.carbon.station.StationActivity"/>
-        <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"/>
-        <activity android:name="com.mobithink.carbon.event.EventActivity"/>
+        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity" />
+        <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity" />
+        <activity android:name="com.mobithink.carbon.preparation.ParametersActivity" />
+        <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity" />
+        <activity android:name="com.mobithink.carbon.driving.DrivingActivity" />
+        <activity android:name="com.mobithink.carbon.station.StationActivity" />
+        <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity" />
+        <activity android:name="com.mobithink.carbon.event.EventActivity" />
 
         <uses-library android:name="com.google.android.maps" />
 
