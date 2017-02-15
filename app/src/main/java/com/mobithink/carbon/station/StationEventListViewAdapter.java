@@ -1,6 +1,8 @@
 package com.mobithink.carbon.station;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.event.EventActivity;
 import com.mobithink.carbon.station.model.EventType;
 
 import java.util.List;
@@ -40,6 +43,13 @@ public class StationEventListViewAdapter extends ArrayAdapter<EventType> {
         EventType eventType = getItem(position);
 
         viewHolder.stationEventName.setText(eventType.getName());
+        viewHolder.stationEventName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent goToStationActivity = new Intent (g,StationActivity.class);
+                startActivity(goToStationActivity);*/
+            }
+        });
 
         return convertView;
     }

@@ -35,6 +35,7 @@
     <string name="boarding">Montée</string>
     <string name="exit">Descente</string>
     <string name="cancellation">Annulation</string>
+    <string name="running">en cours</string>
 
     <!--parameters-->
     <string name="parameters">Paramètres</string>
