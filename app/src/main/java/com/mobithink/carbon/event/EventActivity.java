@@ -25,11 +25,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
@@ -225,7 +227,22 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     @Override
     public void onLocationChanged(Location location) {
+        moveCamera(location);
 
+    }
+
+    private void moveCamera(Location location) {
+
+        if (mGoogleMap != null) {
+            LatLng latlong = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+
+            CameraPosition newCamPos = new CameraPosition(latlong,
+                    15.5f,
+                    mGoogleMap.getCameraPosition().tilt, //use old tilt
+                    mGoogleMap.getCameraPosition().bearing); //use old bearing
+            mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(newCamPos), 1250, null);
+        }
     }
 
 

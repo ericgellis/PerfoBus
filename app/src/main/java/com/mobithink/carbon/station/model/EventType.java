@@ -9,11 +9,11 @@ import android.widget.ImageView;
 public class EventType {
 
     private String Name;
-    private int Icon;
 
-    public EventType(String name, int icon) {
+
+    public EventType(String name) {
         Name = name;
-        Icon = icon;
+
     }
 
     public String getName() {
@@ -24,12 +24,6 @@ public class EventType {
         Name = name;
     }
 
-    public int getIcon() {
-        return Icon;
-    }
 
-    public void setIcon(int icon) {
-        Icon = icon;
-    }
 }
 

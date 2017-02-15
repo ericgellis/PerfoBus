@@ -1,16 +1,18 @@
 package com.mobithink.carbon.station;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.driving.DrivingActivity;
+
 
 
 /**
@@ -34,7 +36,9 @@ public class StationActivity extends Activity {
     private Button mChangeStationNameButton;
     private Button mDeleteTimeCodeButton;
     private TextView mStationNameTextView;
-    private TextView mTimeCodeTextView;
+    private Chronometer mTimeCodeChronometer;
+
+    FragmentManager fm = getFragmentManager();
 
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
@@ -49,8 +53,7 @@ public class StationActivity extends Activity {
         mDeleteTimeCodeButton = (Button) findViewById(R.id.deleteTimeCodeButton);
         mStationNameTextView = (TextView) findViewById(R.id.stationNameTextView);
         mStationNameTextView.setText("Jean Jaures");
-        mTimeCodeTextView = (TextView) findViewById(R.id.timeCodeTextView);
-        mTimeCodeTextView.setText("1:05");
+        mTimeCodeChronometer = (Chronometer) findViewById(R.id.timeCodeChronometer);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +106,20 @@ public class StationActivity extends Activity {
             }
         });
 
+        mChooseEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goTochooseStationEvent();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mTimeCodeChronometer.start();
     }
 
     public void changeStationName(){
@@ -152,6 +169,11 @@ public class StationActivity extends Activity {
                 mExitPeopleTextView.setText(String.valueOf(current));
             }
         }
+    }
+
+    public void goTochooseStationEvent(){
+        StationEventDialogFragment dialogFragment = new  StationEventDialogFragment();
+        dialogFragment.show(fm, "Choisir un évènement");
     }
 
 }
