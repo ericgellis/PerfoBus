@@ -28,7 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitManager {
 
     private static final String BASE_URL = "https://mobithink.herokuapp.com/";
-    private static final String BASE_URL_INTEGRATION = "https://mobithink.herokuapp.com/";
+
+    private static final String BASE_URL_AXEL = "http://172.20.70.71:8080/";
 
     private static final String SECURITY_TOKEN = "Basic ZXJpYzptb2JpMjAxN3RoaW5r";
 
@@ -45,7 +46,8 @@ public class RetrofitManager {
                 HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
                 builder.addInterceptor(interceptor);
-                baseURL = BASE_URL_INTEGRATION;
+                //Change this if you want to try an other server in integration or developement need
+                baseURL = BASE_URL;
             } else {
                 baseURL = BASE_URL;
             }

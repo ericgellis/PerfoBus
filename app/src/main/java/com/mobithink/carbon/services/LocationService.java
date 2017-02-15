@@ -12,6 +12,9 @@ import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.mobithink.carbon.database.model.RollingPointDTO;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.PreferenceManager;
 
 /**
@@ -20,39 +23,34 @@ import com.mobithink.carbon.managers.PreferenceManager;
 public class LocationService extends Service implements LocationListener {
 
     private static final String TAG = "LocationService";
+    // The minimum distance to change Updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 1 meter
     private static LocationService instance = null;
-
+    // Declaring a Location Manager
+    protected LocationManager locationManager;
     // flag for GPS status
     boolean isGPSEnabled = false;
-
     // flag for network status
     boolean isNetworkEnabled = false;
-
     boolean locationServiceAvailable  = false;
-
     Location mLastKnowlocation; // mLastKnowlocation
     double latitude; // latitude
     double longitude; // longitude
-
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 1 meter
-
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
-
     private long mTimeInterval = -1;
     private LocationManager mLocationManager;
 
+    public LocationService() {
+    }
+
+    private LocationService(Context context) {
+        initLocationService(context);
+    }
 
     public static LocationService getLocationManager(Context context)     {
         if (instance == null) {
             instance = new LocationService(context);
         }
         return instance;
-    }
-
-    private LocationService(Context context) {
-        initLocationService(context);
     }
 
     private void initLocationService(Context context) {
@@ -113,7 +111,15 @@ public class LocationService extends Service implements LocationListener {
         Log.d(this.getClass().getName(), "New location ! long  : " + location.getLongitude() + ", lat : " +location.getLatitude());
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        //TODO Store Location in Database
+
+        RollingPointDTO rollingPointDTO = new RollingPointDTO();
+        rollingPointDTO.setTripId(CarbonApplicationManager.getInstance().getCurrentTripId());
+        rollingPointDTO.setGpsLat(location.getLatitude());
+        rollingPointDTO.setGpsLong(location.getLongitude());
+
+
+        DatabaseManager.getInstance().registerRollingPoint(rollingPointDTO);
+
 
     }
 
@@ -139,15 +145,23 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        Log.e(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
+
+        Log.d(TAG, "onStartCommand");
         return START_STICKY;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Log.d(TAG, "onStart");
     }
 
     @Override
     public void onCreate()
     {
-        Log.e(TAG, "onCreate");
+        Log.d(TAG, "onCreate");
         initializeLocationManager();
         try {
             mLocationManager.requestLocationUpdates(
@@ -168,10 +182,12 @@ public class LocationService extends Service implements LocationListener {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
     }
+
+
     @Override
     public void onDestroy()
     {
-        Log.e(TAG, "onDestroy");
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         if (mLocationManager != null) {
                 if (
@@ -186,7 +202,7 @@ public class LocationService extends Service implements LocationListener {
     }
 
     private void initializeLocationManager() {
-        Log.e(TAG, "initializeLocationManager");
+        Log.d(TAG, "initializeLocationManager");
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }

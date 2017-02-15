@@ -2,7 +2,6 @@ package com.mobithink.carbon.driving;
 
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -15,13 +14,9 @@ import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.mobithink.carbon.CarbonApplication;
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.DatabaseHelper;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
-import com.mobithink.carbon.managers.CarbonApplicationManager;
-import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

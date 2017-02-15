@@ -5,13 +5,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,11 +21,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
-        import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
@@ -41,6 +43,7 @@ import retrofit2.Response;
 
 public class ChoiceLineFromAnalyzeActivity extends Activity {
 
+    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 101;
     Button mCreateNewLineButton;
     Button mStartButton;
 
@@ -122,7 +125,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         mCreateNewLineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePageToCreateNewLine();
+                createNewLine();
             }
         });
 
@@ -188,10 +191,25 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDriving();
+                prepareDriving();
             }
         });
 
+
+    }
+
+    private void prepareDriving() {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            startDriving();
+
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_FINE_LOCATION);
+        }
 
     }
 
@@ -262,6 +280,21 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_FINE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    prepareDriving();
+                }
+                break;
+            }
+        }
+    }
+
     private void getCities() {
         LineService groupService = RetrofitManager.build().create(LineService.class);
 
@@ -289,7 +322,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         });
     }
 
-    public void changePageToCreateNewLine() {
+    public void createNewLine() {
 
         if (mSelectedCityDTO == null){
             Intent createLine = new Intent(this, CreateLineActivity.class);

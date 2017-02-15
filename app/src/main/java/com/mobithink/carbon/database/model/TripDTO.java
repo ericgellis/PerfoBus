@@ -1,6 +1,7 @@
 package com.mobithink.carbon.database.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jpaput on 07/02/2017.
@@ -8,7 +9,7 @@ import java.io.Serializable;
 
 public class TripDTO implements Serializable {
 
-    public int id;
+    public Long id;
 
     public String tripName;
 
@@ -24,16 +25,22 @@ public class TripDTO implements Serializable {
 
     public int vehiculeCapacity;
 
-    public int lineId;
+    public Long busLineid;
+
+    public List<StationDataDTO> stationDataDTOList;
+
+    public List<RollingPointDTO> rollingPointDTOList;
+
+    public List<EventDTO> eventDTOList;
 
     public TripDTO() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,12 +100,12 @@ public class TripDTO implements Serializable {
         this.vehiculeCapacity = vehiculeCapacity;
     }
 
-    public int getLineId() {
-        return lineId;
+    public Long getBusLineId() {
+        return busLineid;
     }
 
-    public void setLineId(int lineId) {
-        this.lineId = lineId;
+    public void setBusLineId(Long busLineDTO) {
+        this.busLineid = busLineDTO;
     }
 
 

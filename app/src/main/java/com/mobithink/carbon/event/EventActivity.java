@@ -3,7 +3,6 @@ package com.mobithink.carbon.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -30,22 +28,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.DatabaseHelper;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
-import com.mobithink.carbon.managers.CarbonApplicationManager;
-import com.mobithink.carbon.managers.DatabaseManager;
-
 
 import java.io.File;
 import java.io.IOException;
-
-import static com.mobithink.carbon.R.string.event;
 
 
 /**
@@ -56,30 +46,36 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    MapView mEventMap;
     public static final int UPDATE_LOCATION_INTERVAL = 10000;
-    private GoogleMap mGoogleMap;
-    private GoogleApiClient mGoogleApiClient;
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
+    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
+    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    MapView mEventMap;
     Button mCancelledTimecodeButton;
     Button mVoiceMemoButton;
     Button mEventPhotoButton;
     Button mConfirmPositionEventButton;
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
-    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
-    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    EventDTO eventDTO;
+    int iDPosition;
+    private GoogleMap mGoogleMap;
+    private GoogleApiClient mGoogleApiClient;
     private MediaRecorder recorder = null;
     private int currentFormat = 0;
     private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
     private String file_exts[] = { AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP };
-
-    EventDTO eventDTO;
-    private SQLiteDatabase db;
-    private DatabaseHelper myBaseHelper;
-    int iDPosition;
+    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener() {
+        @Override
+        public void onError(MediaRecorder mr, int what, int extra) {
+            AppLog.logString("Error: " + what + ", " + extra);
+        }
+    };
+    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
+        @Override
+        public void onInfo(MediaRecorder mr, int what, int extra) {
+            AppLog.logString("Warning: " + what + ", " + extra);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +158,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         super.onResume();
 
     }
+
     public void onLocationAuthorizationGranted() {
 
         enableLocationForGoogleMap();
@@ -245,7 +242,6 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         }
     }
 
-
     public void cancelEvent(){
 
         //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentEventId());
@@ -255,7 +251,6 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
     }
-
 
     private String getFilename(){
         String filepath = Environment.getExternalStorageDirectory().getPath();
@@ -286,20 +281,6 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
             e.printStackTrace();
         }
     }
-
-    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener() {
-        @Override
-        public void onError(MediaRecorder mr, int what, int extra) {
-            AppLog.logString("Error: " + what + ", " + extra);
-        }
-    };
-
-    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
-        @Override
-        public void onInfo(MediaRecorder mr, int what, int extra) {
-            AppLog.logString("Warning: " + what + ", " + extra);
-        }
-    };
 
     private void stopRecording(){
         if(null != recorder){

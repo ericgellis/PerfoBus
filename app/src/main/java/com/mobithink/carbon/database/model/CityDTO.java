@@ -8,12 +8,11 @@ import java.io.Serializable;
 
 public class CityDTO implements Serializable {
 
+    private Long id;
+    private String name;
+
     public CityDTO() {
     }
-
-    private long id;
-
-    private String name;
 
     public String getName() {
         return name;
@@ -23,11 +22,11 @@ public class CityDTO implements Serializable {
         name = city;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
