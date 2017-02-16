@@ -13,5 +13,5 @@ import retrofit2.http.POST;
 public interface TripService {
 
     @POST("/mobithink/trip/create")
-    Call<String> register(@Body TripDTO tripDTO);
+    Call<Void> register(@Body TripDTO tripDTO);
 }

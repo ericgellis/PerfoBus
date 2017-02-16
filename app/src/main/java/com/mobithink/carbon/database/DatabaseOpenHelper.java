@@ -21,7 +21,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_EVENT = "events";
     public static final String TABLE_ROLLING_POINT = "rollingPoints";
     // Common column names
-    public static final String KEY_ID = "id";
+    public static final String KEY_ID = "_id";
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_CREATION_DATE = "creationDate";

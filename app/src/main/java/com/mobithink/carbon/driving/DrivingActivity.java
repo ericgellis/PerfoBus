@@ -10,7 +10,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -19,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.SplashScreenActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -100,8 +100,7 @@ public class DrivingActivity extends Activity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                stopTrip();
+                showQuitConfirmationDialog();
             }
         });
 
@@ -176,8 +175,7 @@ public class DrivingActivity extends Activity {
 
     }
 
-    public void stopTrip() {
-
+    private void showQuitConfirmationDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setCancelable(true);
         alertDialogBuilder.setTitle("Supprimer la saisie ?");
@@ -185,11 +183,7 @@ public class DrivingActivity extends Activity {
         alertDialogBuilder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                long tripId = DatabaseManager.getInstance().finishCurrentTrip();
-
-                //TODO this is make just for dev. Change this by a call to a method which delete current trip in dataBase
-                //TODO the call of sendTripDto must be done by another way
-                sendTripDto(tripId);
+                stopTrip();
             }
         });
 
@@ -204,19 +198,33 @@ public class DrivingActivity extends Activity {
         alertDialog.show();
     }
 
+    public void stopTrip() {
+        long tripId = DatabaseManager.getInstance().finishCurrentTrip();
+        stopService(new Intent(this, LocationService.class));
+        sendTripDto(tripId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //intercept backpress
+    }
+
     private void sendTripDto(long tripId) {
         TripDTO tripDto = DatabaseManager.getInstance().getFullTripDTODataToSend(tripId);
 
         TripService tripService = RetrofitManager.build().create(TripService.class);
 
-        Call<String> call = tripService.register(tripDto);
+        Call<Void> call = tripService.register(tripDto);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 201:
-                        Log.i(TAG, "Succes youhoo " + response.body());
+                        Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                         break;
                     default:
                         break;
@@ -224,7 +232,7 @@ public class DrivingActivity extends Activity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
 
             }
         });
