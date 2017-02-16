@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/splashactivity_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mobithink.carbon.SplashScreenActivity">
     <LinearLayout
         android:id="@+id/status_container_view"
-        android:layout_alignTop="@+id/parameterButton"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="@dimen/regular_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/parameterButton"
+        android:layout_marginBottom="@dimen/regular_margin"
+        android:layout_marginStart="16dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_gravity="center_vertical"
-            android:text="@string/server_status"/>
+            android:text="@string/server_status"
+            android:textSize="14sp" />
         <View
             android:id="@+id/server_status_view"
-            android:layout_marginStart="10dp"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp" />
     </LinearLayout>
     <TextView
+        android:id="@+id/appversion_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="14sp"
         android:layout_below="@+id/status_container_view"
-        android:id="@+id/appversion_textview"/>
+        android:layout_marginStart="16dp"
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/parameterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/regular_margin"
+        android:layout_marginEnd="16dp"
+        android:elevation="5dp"
         android:src="@mipmap/ic_parameters"/>
 
     <ImageView
         android:id="@+id/mobithinkLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/parameterButton"
-        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginTop="60dp"
         android:scaleType="fitCenter"
         android:src="@drawable/mobithink_logo" />
 
@@ -60,31 +60,31 @@
         android:id="@+id/fixed_text"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/mobithinkLogo"
-        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/regular_margin"
+        android:layout_marginTop="@dimen/regular_margin"
         android:text= "@string/fixed_text"
-        android:textColor="@color/grey"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/grey" />
 
     <Button
         android:id="@+id/analyzeButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:elevation="5dp"
         android:layout_above ="@+id/consultButton"
+        android:background="@color/veryLightGrey"
+        android:elevation="5dp"
         android:text="@string/analyze"
-        android:textColor="@color/mobiThinkBlue"
-        android:background="@color/veryLightGrey"/>
+        android:textColor="@color/mobiThinkBlue" />
 
     <Button
         android:id="@+id/consultButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:elevation="5dp"
         android:layout_alignParentBottom="true"
         android:background="@color/mobiThinkBlue"
+        android:elevation="5dp"
         android:text="@string/consult"
         android:textColor="@color/veryLightGrey"/>
 

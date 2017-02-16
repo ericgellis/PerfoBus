@@ -1,14 +1,13 @@
-package com.mobithink.carbon.preparation;
+package com.mobithink.carbon.parameter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.managers.PreferenceManager;
@@ -52,14 +51,14 @@ public class ParametersActivity extends Activity {
             }
         });
 
-        mFrequencyValue = (PreferenceManager.getInstance().getTimeFrequency() - MINIMUM_FREQUENCY_VALUE);
-        mRadiusValue = (PreferenceManager.getInstance().getStationRadius() - MINIMUM_RADIUS_VALUE);
+        mFrequencyValue = (PreferenceManager.getInstance().getTimeFrequency());
+        mRadiusValue = (PreferenceManager.getInstance().getStationRadius());
 
         mFrequencySeekBar = (SeekBar) findViewById(R.id.frequency_seekbar);
-        mFrequencySeekBar.setProgress(mFrequencyValue);
+        mFrequencySeekBar.setProgress(mFrequencyValue - MINIMUM_FREQUENCY_VALUE);
 
         mRadiusSeekBar = (SeekBar) findViewById(R.id.radius_seekbar);
-        mRadiusSeekBar.setProgress(mRadiusValue);
+        mRadiusSeekBar.setProgress(mRadiusValue - MINIMUM_RADIUS_VALUE);
 
         mFrequencyNumberTextView = (TextView) findViewById(R.id.frequencyNumber);
         mFrequencyNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getTimeFrequency()));
@@ -112,13 +111,13 @@ public class ParametersActivity extends Activity {
                 registerPreference();
             }
         });
-
-
     }
 
     private void registerPreference() {
         PreferenceManager.getInstance().setTimeFrequency(mFrequencyValue);
         PreferenceManager.getInstance().setStationRadius(mRadiusValue);
-        this.finish();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

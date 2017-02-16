@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +45,9 @@ import retrofit2.Response;
 public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 101;
+    public static final int CREATE_LINE = 1;
+
+    View mRootView;
     Button mCreateNewLineButton;
     Button mStartButton;
 
@@ -76,6 +80,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_line_from_analyze);
 
+        mRootView = findViewById(R.id.choicelineactivity_rootview);
 
         mAnalyzeLineToolBar = (Toolbar) findViewById(R.id.analyzeLineToolBar);
         mAnalyzeLineToolBar.setTitle("Choix d'une ligne");
@@ -206,11 +211,15 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             startDriving();
 
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_FINE_LOCATION);
+            askPermissions();
         }
 
+    }
+
+    private void askPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSIONS_REQUEST_FINE_LOCATION);
     }
 
     private void getLineStations() {
@@ -234,13 +243,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                         }
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<StationDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -262,13 +272,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<BusLineDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -282,13 +293,21 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
+                                           @NonNull final String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_FINE_LOCATION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     prepareDriving();
+                } else {
+                    Snackbar.make(mRootView, "Vous devez accepter cette authorisation pour continuer", Snackbar.LENGTH_LONG)
+                            .setAction("Recommencer", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    askPermissions();
+                                }
+                            }).show();
                 }
                 break;
             }
@@ -311,13 +330,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -332,7 +352,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             createNewlineBundle.putSerializable("chosenCity", mSelectedCityDTO);
             Intent createNewLineIntent = new Intent(this, CreateLineActivity.class);
             createNewLineIntent.putExtras(createNewlineBundle);
-            this.startActivity(createNewLineIntent);
+            this.startActivityForResult(createNewLineIntent, CREATE_LINE);
 
         }
 
@@ -378,6 +398,20 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             bundle.putSerializable("line",mSelectedLineDTO);
             startDriving.putExtras(bundle);
             this.startActivity(startDriving);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CREATE_LINE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Snackbar.make(mRootView, "Ligne crée avec succès", Snackbar.LENGTH_LONG).show();
+                getCityLines();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Snackbar.make(mRootView, "La création d'une nouvelle ligne à été annulée", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }
