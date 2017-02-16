@@ -1,6 +1,7 @@
 package com.mobithink.carbon.station;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.station.model.EventType;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,8 @@ public class StationEventDialogFragment extends DialogFragment {
 
     private ListView mStationEventListView;
 
+    private IEventSelectedListener mListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,10 +38,19 @@ public class StationEventDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.station_event_dialog_fragment, container, false);
 
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
-        List<EventType> eventType = stationEventNameList();
+        final List<String> eventType = stationEventNameList();
 
         StationEventListViewAdapter adapter = new StationEventListViewAdapter(getActivity(), eventType);
         mStationEventListView.setAdapter(adapter);
+        mStationEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //String item = eventType.get(position);
+                mListener.onEventSelected(eventType.get(position));
+                dismiss();
+
+            }
+        });
 
         return rootView;
     }
@@ -55,14 +68,18 @@ public class StationEventDialogFragment extends DialogFragment {
         super.onResume();
     }
 
-    public List<EventType> stationEventNameList(){
-        List<EventType> eventType = new ArrayList<EventType>();
-        eventType.add(new EventType("Aménagement : implantation, accessibilité PMR"));
-        eventType.add(new EventType("Aménagement : position en pied de feu ou intersection"));
-        eventType.add(new EventType("Localisation : optimisation du nombre/regroupements"));
-        eventType.add(new EventType("Attente pour correspondance"));
-        eventType.add(new EventType("Trop de véhicules à l'arrêt"));
-        eventType.add(new EventType("Incident technique bus"));
+    public List<String> stationEventNameList(){
+        List<String> eventType = new ArrayList<String>();
+        eventType.add(new String("Aménagement : implantation, accessibilité PMR"));
+        eventType.add(new String("Aménagement : position en pied de feu ou intersection"));
+        eventType.add(new String("Localisation : optimisation du nombre/regroupements"));
+        eventType.add(new String("Attente pour correspondance"));
+        eventType.add(new String("Trop de véhicules à l'arrêt"));
+        eventType.add(new String("Incident technique bus"));
         return eventType;
+    }
+
+    public void setListener(IEventSelectedListener stationActivity) {
+        mListener = stationActivity;
     }
 }
