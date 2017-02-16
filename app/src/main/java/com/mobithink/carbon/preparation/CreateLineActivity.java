@@ -2,14 +2,45 @@ package com.mobithink.carbon.preparation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.CheckBox;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.RetrofitManager;
+import com.mobithink.carbon.webservices.LineService;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by mplaton on 31/01/2017.
@@ -17,67 +48,279 @@ import com.mobithink.carbon.R;
 
 public class CreateLineActivity extends Activity {
 
-    TextInputLayout mWriteLineTextInputLayout;
-    TextInputLayout mWriteCityNameTextInputLayout;
-    TextInputLayout mWriteDepartureStationTextInputLayout;
-    TextInputLayout mAddFirstStationTextInputLayout;
-    TextInputLayout mAddSecondStationTextInputLayout;
+    private TextInputLayout mWriteLineTextInputLayout;
+    private TextInputLayout mWriteCityNameTextInputLayout;
 
-    TextInputEditText mWriteLineTextInputEditText;
-    TextInputEditText mWriteCityNameTextInputEditText;
-    TextInputEditText mWriteDepartureStationTextInputEditText;
-    TextInputEditText mAddFirstStationTextInputEditText;
-    TextInputEditText mAddSecondStationTextInputEditText;
+    AutoCompleteTextView mCityAutocompleteView;
+    ArrayAdapter<CityDTO> cityAdapter;
 
-    Button mCreateLineButton;
+    private LinearLayout mStationEditTextContainer;
+
+    private TextInputEditText mWriteLineTextInputEditText;
+
+    private ArrayList<EditText> mListStationEditText = new ArrayList<>();
+    CityDTO mSelectedCityDTO;
+
+    CityDTO mChosenCity;
+
+    private Button mCreateLineButton;
+
+    private Toolbar mNewLineToolBar;
+
+    private CheckBox interUrbanCheckBox;
+    private ArrayList<StationDTO> mStationDTOList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_line);
 
+        mStationEditTextContainer = (LinearLayout) findViewById(R.id.stationEditTextContainer);
+
+        mNewLineToolBar = (Toolbar) findViewById(R.id.newLineToolBar);
+        mNewLineToolBar.setTitle("Nouvelle ligne");
+        mNewLineToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Line_Name_TextInputLayout);
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.City_Name_TextInputLayout);
-        mWriteDepartureStationTextInputLayout = (TextInputLayout) findViewById(R.id.Departure_Station_TextInputLayout);
-        mAddFirstStationTextInputLayout = (TextInputLayout) findViewById(R.id.Adding_Station_TextInputLayout);
-        mAddSecondStationTextInputLayout = (TextInputLayout) findViewById(R.id.Adding_Second_Station_TextInputLayout);
 
         mWriteLineTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Line_Name);
-        mWriteCityNameTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_City_Name);
-        mWriteDepartureStationTextInputEditText = (TextInputEditText) findViewById(R.id.Writing_Departure_Station);
-        mAddFirstStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_Station);
-        mAddSecondStationTextInputEditText = (TextInputEditText) findViewById(R.id.Adding_second_Station);
+
+
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
+
+        mCityAutocompleteView = (AutoCompleteTextView) findViewById(R.id.Writing_City_Name);
+        mCityAutocompleteView.setThreshold(1);//will start working from first character
+        mCityAutocompleteView.setAdapter(cityAdapter);
+
+        mCityAutocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long arg3) {
+                //hide keyboard
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(parent.getApplicationWindowToken(), 0);
+
+                mSelectedCityDTO = (CityDTO) parent.getAdapter().getItem(position);
+
+            }
+        });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mChosenCity = (CityDTO) extras.getSerializable("chosenCity");
+            if(mChosenCity!= null){
+                mCityAutocompleteView.setText(mChosenCity.getName());
+            }
+        }
+
+        addTextInputLayout();
+
+        interUrbanCheckBox = (CheckBox) findViewById(R.id.interurbanCheckBox);
+        interUrbanCheckBox.setChecked(false);
+        interUrbanCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+
+                } else {
+
+                }
+            }
+        });
 
         mCreateLineButton = (Button) findViewById(R.id.createLine);
 
         mCreateLineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createLine();
+                controlEditText();
+            }
+        });
+
+    }
+
+    private void addTextInputLayout() {
+        final TextInputLayout textInputLayout = (TextInputLayout) LayoutInflater.from(this).inflate(R.layout.text_input_layout, null);
+
+        final EditText stationEditText = (EditText) textInputLayout.findViewById(R.id.station_field);
+        stationEditText.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                            if(mListStationEditText.get(mListStationEditText.size()-1).equals(stationEditText)){
+                                addTextInputLayout();
+                            }
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+        mStationEditTextContainer.addView(textInputLayout);
+        mListStationEditText.add(stationEditText);
+
+        if(!mListStationEditText.get(0).equals(stationEditText)){
+            stationEditText.requestFocus();
+        }
+    }
+
+    public void createLine(){
+
+        final BusLineDTO busLineDTO = new BusLineDTO();
+        final CityDTO cityDTO;
+
+        if(mSelectedCityDTO != null){
+            cityDTO = mSelectedCityDTO;
+        }else{
+            cityDTO = new CityDTO();
+            cityDTO.setName(mCityAutocompleteView.getText().toString());
+        }
+
+        Calendar c=Calendar.getInstance();
+        c.setTime(new Date());
+
+        busLineDTO.setCityDto(cityDTO);
+        busLineDTO.setName(mWriteLineTextInputEditText.getText().toString());
+        busLineDTO.setStationDTOList(mStationDTOList);
+        busLineDTO.setDateOfCreation(c.getTimeInMillis());
+
+        registerLine(busLineDTO);
+
+    }
+
+    public void registerLine(BusLineDTO busLineDTO){
+        LineService lineService = RetrofitManager.build().create(LineService.class);
+
+        Call<BusLineDTO> call = lineService.register(busLineDTO);
+
+        call.enqueue(new Callback<BusLineDTO>() {
+            @Override
+            public void onResponse(Call<BusLineDTO> call, Response<BusLineDTO> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d("Success", "youhoo");
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("city",mSelectedCityDTO);
+                        BusLineDTO mWrittenLine = new BusLineDTO();
+                        bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
+                        Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
+                        intent.putExtras(bundle);
+                        getApplication().startActivity(intent);
+
+                        break;
+
+                    default:
+
+                        break;
+                }
+            }
+            @Override
+            public void onFailure(Call<BusLineDTO> call, Throwable t) {
+
             }
         });
     }
 
-    public void createLine(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setCancelable(true);
-        alertDialogBuilder.setTitle("Confirmer les stations");
-        alertDialogBuilder.setMessage("");
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        getCities();
+
+
+
+    }
+
+    private void getCities() {
+        LineService groupService = RetrofitManager.build().create(LineService.class);
+
+        Call<List<CityDTO>> call = groupService.getCities();
+
+        call.enqueue(new Callback<List<CityDTO>>() {
+            @Override
+            public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
+                switch (response.code()) {
+                    case 200:
+
+                        cityAdapter.addAll(response.body());
+                        cityAdapter.notifyDataSetChanged();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CityDTO>> call, Throwable t) {
+                //TODO
             }
         });
-        alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+    }
+
+    public void controlEditText() {
+        boolean hasError = false;
+
+        if ((mCityAutocompleteView.getText().toString().equals(""))) {
+            hasError = true;
+            mWriteCityNameTextInputLayout.setErrorEnabled(true);
+            mWriteCityNameTextInputLayout.setError("Vous devez sélectionner une ville");
+        }
+
+        if ((mWriteLineTextInputEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mWriteLineTextInputLayout.setErrorEnabled(true);
+            mWriteLineTextInputLayout.setError("Vous devez sélectionner une ligne");
+        }
+
+        if (!hasError) {
+
+            mStationDTOList = new ArrayList<>();
+            int step = 0;
+
+            for(EditText et : mListStationEditText){
+                if(! et.getText().toString().isEmpty()){
+                    mStationDTOList.add(
+                            new StationDTO(et.getText().toString(), step )
+                    );
+                    step ++;
+                }
             }
-        });
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateLineActivity.this);
+            alertDialogBuilder.setCancelable(true);
+            alertDialogBuilder.setTitle("Confirmer les stations");
+            alertDialogBuilder.setMessage(mStationDTOList.toString());
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    createLine();
 
+                }
+            });
+            alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        }
     }
 }

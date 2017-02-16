@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">MobiThink</string>
 
+    <!-- API Key -->
+    <string name="google_maps_api">AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo</string>
+
     <!-- Main Page-->
     <string name="fixed_text">Analyse des conditions d’exploitation de lignes de transports publics</string>
     <string name="analyze">Analyser</string>
     <string name="consult">Consulter</string>
+    <string name="server_status">Server status : </string>
 
     <!--choice_line_from_analyze-->
     <string name="cityName">Ville</string>
@@ -16,6 +20,7 @@
     <!--new_line-->
     <string name="departureStation">Station de départ</string>
     <string name="addStation">Ajouter une station</string>
+    <string name="interurban">Interurbain</string>
     <string name="create">Créer</string>
 
     <!--Driving-->
@@ -24,15 +29,18 @@
     <string name="course">Parcours :</string>
     <string name="section">Tronçon :</string>
     <string name="atmo">ATMO</string>
+    <string name="dir">dir.</string>
 
     <!--StationActivity-->
     <string name="boarding">Montée</string>
     <string name="exit">Descente</string>
     <string name="cancellation">Annulation</string>
+    <string name="running">en cours</string>
 
     <!--parameters-->
-    <string name="frequency">Fréquence relevée en roulage (en sec)</string>
-    <string name="radius">Rayon de couverture des stations (en m)</string>
+    <string name="parameters">Paramètres</string>
+    <string name="frequency">Fréquence relevée en roulage (en sec) : </string>
+    <string name="radius">Rayon de couverture des stations (en m) : </string>
     <string name="register">Enregistrer</string>
 
     <!--event_tab3-->

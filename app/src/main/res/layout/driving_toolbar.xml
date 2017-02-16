@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drivingToolBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/veryLightGrey"
+    android:minHeight="?attr/actionBarSize"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/dir"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/directionNameTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/direction"
+            android:lines="1"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/cityNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/regular_margin"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/lineNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cityNameTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/ic_black_cross"/>
+
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.Toolbar>
