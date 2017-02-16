@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,9 @@
 package com.mobithink.carbon.station;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,11 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
 
     private final LayoutInflater mInflater;
     List<String> eventTypeList = new ArrayList<>();
+    String eventType;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    EventDTO eventDTO;
 
     public StationEventCustomListViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -67,8 +77,24 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
 
-        String eventType = getItem(position);
+        eventType = getItem(position);
         viewHolder.stationEventName.setText(eventType);
+
+        viewHolder.stationEventChronometer.start();
+
+        viewHolder.photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePhoto();
+            }
+        });
+
+        viewHolder.stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopAndRegisterEvent();
+            }
+        });
 
         
 
@@ -85,6 +111,18 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         Button microButton;
         Button photoButton;
         Button stopButton;
+
+    }
+
+    public void takePhoto(){
+        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }*/
+    }
+
+    public void stopAndRegisterEvent(){
+        DatabaseManager.getInstance().updateEvent(eventDTO);
 
     }
 }

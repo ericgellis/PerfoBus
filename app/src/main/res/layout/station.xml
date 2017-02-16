@@ -40,7 +40,7 @@
         android:id="@+id/bus_imageView"
         android:layout_width="100dp"
         android:layout_height="250dp"
-        android:layout_marginStart="85dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="70dp"
         android:background="@drawable/mobithink_bus_picto" />
 
@@ -49,7 +49,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/decreaseNumberOfAddedPeopleButton"
-        android:layout_marginStart="190dp"
+        android:layout_marginStart="200dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textColor="@color/green_button"
@@ -60,7 +60,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/decreaseNumberOfRemovedPeopleButton"
-        android:layout_marginStart="190dp"
+        android:layout_marginStart="200dp"
         android:background="@color/white"
         android:textAlignment="center"
         android:textColor="@color/red_button"
@@ -93,7 +93,8 @@
     <ListView
         android:id="@+id/station_event_custom_listview"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/chooseEventButton"
         android:layout_below="@+id/bus_imageView"
         android:layout_marginTop="@dimen/double_regular_margin">
     </ListView>
@@ -103,9 +104,9 @@
         android:layout_width="@dimen/regular_size_rounded_button"
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/unrealizedStopButton"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginEnd="@dimen/regular_margin"
-        android:layout_marginStart="150dp"
         android:background="@mipmap/ic_event_information"/>
 
     <Button
@@ -115,10 +116,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginEnd="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_marginRight="@dimen/regular_margin"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_toEndOf="@+id/chooseEventButton"
+        android:layout_toStartOf="@+id/stopTimeButton"
         android:background="@mipmap/ic_unrealized_stop"/>
 
     <Button
@@ -126,12 +124,9 @@
         android:layout_width="@dimen/regular_size_rounded_button"
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginEnd="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_marginRight="@dimen/regular_margin"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_toEndOf="@+id/unrealizedStopButton"
+        android:layout_marginEnd="16dp"
         android:background="@mipmap/ic_stop"/>
 
 </RelativeLayout>

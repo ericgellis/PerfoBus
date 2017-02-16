@@ -239,9 +239,13 @@ public class DatabaseManager {
         return eventId;
     }
 
-    public void updateEvent(long eventId, long tripId, EventDTO eventDTO) {
+    public void updateEvent(EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
+
+        getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
+                new String[]{String.valueOf(eventDTO.getId())});
+
     }
 
     public void deleteEvent(long eventId) {
@@ -277,6 +281,20 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, stationDataDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_LATITUDE, stationDataDTO.getGpsLat());
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, stationDataDTO.getGpsLong());
+
+        db.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
+                new String[]{String.valueOf(stationDataDTO.getId())});
+    }
+
+    public void deleteStationData(long stationId, StationDataDTO stationDataDTO){
+        SQLiteDatabase db = mDataBase.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseOpenHelper.KEY_COME_IN, "null");
+        values.put(DatabaseOpenHelper.KEY_GO_OUT, "null");
+        values.put(DatabaseOpenHelper.KEY_STEP, "null");
+        values.put(DatabaseOpenHelper.KEY_START_DATETIME, "null");
+        values.put(DatabaseOpenHelper.KEY_END_DATETIME, "null");
 
         db.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(stationDataDTO.getId())});

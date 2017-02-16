@@ -1,19 +1,26 @@
 package com.mobithink.carbon.station;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
+import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
-
+import com.mobithink.carbon.managers.DatabaseManager;
 
 
 /**
@@ -45,8 +52,15 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     FragmentManager fm = getFragmentManager();
 
+    TripDTO tripDTO;
+    StationDTO stationDTO;
+    StationDataDTO stationDataDTO;
+
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
+
+    int numberOfPeopleIn = 0;
+    int numberOfPeopleOut = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +133,20 @@ public class StationActivity extends Activity implements IEventSelectedListener{
             }
         });
 
+        mUnrealizedStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stationSkip();
+            }
+        });
+
+        mStopTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerStationData();
+            }
+        });
+
         mStationEventCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
         mStationEventCustomListView.setAdapter(mStationEventCustomListViewAdapter);
 
@@ -133,50 +161,82 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     }
 
     public void changeStationName(){
-        mStationNameTextView.setEnabled(true);
-        mStationNameTextView.getEditableText();
-        mStationNameTextView.setCursorVisible(true);
-        mStationNameTextView.setFocusable(true);
-        mStationNameTextView.setFocusableInTouchMode(true);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(this);
+        alertDialog.setTitle("Ce n'est pas "+ mStationNameTextView.getText().toString()+"?");
+        alertDialog.setMessage("Entrer le nouveau nom de la station");
+        alertDialog.setView(edittext);
+
+        alertDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String item = edittext.getEditableText().toString();
+                mStationNameTextView.setText(item);
+            }
+        });
+
+        alertDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alertDialog.show();
+
     }
 
     public void goToDrivingPage(){
+
+        DatabaseManager.getInstance().deleteStationData(stationDTO.getId(),stationDataDTO );
+
+        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
+        this.startActivity(toDrivingPage);
+    }
+
+    public void stationSkip(){
+
+    }
+
+    public void registerStationData(){
+
+        stationDataDTO = new StationDataDTO();
+        stationDataDTO.setNumberOfComeIn(numberOfPeopleIn);
+        stationDataDTO.setNumberOfGoOut(numberOfPeopleOut);
+
+
+        DatabaseManager.getInstance().updateStation(stationDTO.getId(), tripDTO.getId(), stationDataDTO);
+
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
     }
 
     //Select number of boarding people
     public void countBoardingPeople(View v) {
-        java.lang.String getString = java.lang.String.valueOf(mBoardingPeopleTextView.getText());
-        int current = Integer.parseInt(getString);
+
         if (v == mAddPeopleButton) {
-            if (current < nEndingPersonNumber) {
-                current++;
-                mBoardingPeopleTextView.setText(java.lang.String.valueOf(current));
+            if (numberOfPeopleIn < nEndingPersonNumber) {
+                numberOfPeopleIn++;
+                mBoardingPeopleTextView.setText(java.lang.String.valueOf(numberOfPeopleIn));
             }
         }
         if (v == mDecreaseNumberOfAddedPeopleButton) {
-            if (current > nStartingPersonNumber) {
-                current--;
-                mBoardingPeopleTextView.setText(java.lang.String.valueOf(current));
+            if (numberOfPeopleIn > nStartingPersonNumber) {
+                numberOfPeopleIn--;
+                mBoardingPeopleTextView.setText(java.lang.String.valueOf(numberOfPeopleIn));
             }
         }
     }
 
     //Select number of exit people
     public void countExitPeople(View v) {
-        java.lang.String getString = java.lang.String.valueOf(mExitPeopleTextView.getText());
-        int current = Integer.parseInt(getString);
         if (v == mRemovePeopleButton) {
-            if (current < nEndingPersonNumber) {
-                current++;
-                mExitPeopleTextView.setText(java.lang.String.valueOf(current));
+            if (numberOfPeopleOut < nEndingPersonNumber) {
+                numberOfPeopleOut++;
+                mExitPeopleTextView.setText(java.lang.String.valueOf(numberOfPeopleOut));
             }
         }
         if (v == mDecreaseNumberOfRemovedPeopleButton) {
-            if (current > nStartingPersonNumber) {
-                current--;
-                mExitPeopleTextView.setText(java.lang.String.valueOf(current));
+            if (numberOfPeopleOut > nStartingPersonNumber) {
+                numberOfPeopleOut--;
+                mExitPeopleTextView.setText(java.lang.String.valueOf(numberOfPeopleOut));
             }
         }
     }
