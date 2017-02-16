@@ -22,7 +22,9 @@
         <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity" />
         <activity android:name="com.mobithink.carbon.preparation.ParametersActivity" />
         <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity" />
-        <activity android:name="com.mobithink.carbon.driving.DrivingActivity" />
+        <activity
+            android:name="com.mobithink.carbon.driving.DrivingActivity"
+            android:launchMode="singleTask" />
         <activity android:name="com.mobithink.carbon.station.StationActivity" />
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity" />
         <activity android:name="com.mobithink.carbon.event.EventActivity" />
