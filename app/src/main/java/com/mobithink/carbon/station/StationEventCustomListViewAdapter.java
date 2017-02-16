@@ -70,6 +70,8 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         String eventType = getItem(position);
         viewHolder.stationEventName.setText(eventType);
 
+        
+
         return convertView;
     }
 
