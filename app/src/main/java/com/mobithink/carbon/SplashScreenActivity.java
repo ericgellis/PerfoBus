@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobithink.carbon.managers.RetrofitManager;
-import com.mobithink.carbon.parameter.ParametersActivity;
 import com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity;
 import com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity;
+import com.mobithink.carbon.preparation.ParametersActivity;
 import com.mobithink.carbon.webservices.TechnicalService;
 
 import retrofit2.Call;
