@@ -34,7 +34,7 @@
 
         <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity" />
         <activity android:name="com.mobithink.carbon.preparation.CreateLineActivity" />
-        <activity android:name="com.mobithink.carbon.parameter.ParametersActivity" />
+        <activity android:name="com.mobithink.carbon.preparation.ParametersActivity" />
         <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity" />
         <activity
             android:name="com.mobithink.carbon.driving.DrivingActivity"

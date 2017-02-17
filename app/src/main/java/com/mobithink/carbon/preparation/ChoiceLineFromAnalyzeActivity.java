@@ -44,8 +44,8 @@ import retrofit2.Response;
 
 public class ChoiceLineFromAnalyzeActivity extends Activity {
 
-    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 101;
     public static final int CREATE_LINE = 1;
+    private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 101;
 
     View mRootView;
     Button mCreateNewLineButton;
@@ -196,31 +196,39 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prepareDriving();
+                checkPermission();
             }
         });
 
-
     }
 
-    private void prepareDriving() {
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+    private void checkPermission() {
 
+        List<String> permissionNeeded = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            permissionNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (permissionNeeded.size() == 0) {
             startDriving();
-
         } else {
-            askPermissions();
+            askPermissions(permissionNeeded.toArray(new String[permissionNeeded.size()]));
         }
 
     }
 
-    private void askPermissions() {
+    private void askPermissions(String[] permissionNeeded) {
         ActivityCompat.requestPermissions(this,
-                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                PERMISSIONS_REQUEST_FINE_LOCATION);
+                permissionNeeded,
+                ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
     }
+
 
     private void getLineStations() {
         LineService groupService = RetrofitManager.build().create(LineService.class);
@@ -296,16 +304,18 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                                            @NonNull final String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    prepareDriving();
+            case ASK_MULTIPLE_PERMISSION_REQUEST_CODE: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    startDriving();
+
                 } else {
                     Snackbar.make(mRootView, "Vous devez accepter cette authorisation pour continuer", Snackbar.LENGTH_LONG)
                             .setAction("Recommencer", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    askPermissions();
+                                    checkPermission();
                                 }
                             }).show();
                 }
