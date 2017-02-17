@@ -13,6 +13,8 @@ public class CarbonApplicationManager {
 
     private long mCurrentTripId = -1;
 
+    private long mCurrentStationId = -1;
+
     public static CarbonApplicationManager getInstance() {
 
         if (mInstance == null)
@@ -45,5 +47,7 @@ public class CarbonApplicationManager {
         return mCurrentTripId;
     }
 
-
+    public long getCurrentStationId(){
+        return mCurrentStationId;
+    }
 }

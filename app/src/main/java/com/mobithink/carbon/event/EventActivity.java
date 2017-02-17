@@ -39,6 +39,8 @@ import com.mobithink.carbon.managers.DatabaseManager;
 import java.io.File;
 import java.io.IOException;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by mplaton on 13/02/2017.
@@ -59,7 +61,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     Button mEventPhotoButton;
     Button mConfirmPositionEventButton;
     EventDTO eventDTO;
-    int iDPosition;
+
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private MediaRecorder recorder = null;
@@ -305,7 +307,12 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     public void confirmEvent(){
 
-        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentEventId(), eventDTO);
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEndTime(System.currentTimeMillis());
+
+        DatabaseManager.getInstance().updateEvent(eventDTO);
+
+        Log.i(TAG, "onChildClick: event registered");
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);

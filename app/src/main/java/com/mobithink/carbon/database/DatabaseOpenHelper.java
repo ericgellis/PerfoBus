@@ -103,11 +103,12 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_STATION_TRIP_DATA =
             "CREATE TABLE " + TABLE_STATION_TRIP_DATA
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                    + KEY_STATION_NAME + " TEXT,"
                     + KEY_COME_IN + " INTEGER,"
-                    + KEY_GO_OUT + " DATETIME,"
+                    + KEY_GO_OUT + " INTEGER,"
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
-                    + KEY_STEP + "INTEGER"
+                    + KEY_STEP + " INTEGER,"
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER" + ")";

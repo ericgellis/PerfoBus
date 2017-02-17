@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -20,7 +20,10 @@ import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -198,14 +201,21 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     public void registerStationData(){
 
         stationDataDTO = new StationDataDTO();
+        stationDataDTO.setStationName(mStationNameTextView.getText().toString());
         stationDataDTO.setNumberOfComeIn(numberOfPeopleIn);
         stationDataDTO.setNumberOfGoOut(numberOfPeopleOut);
+        stationDataDTO.setStartTime(System.currentTimeMillis());
+        stationDataDTO.setEndTime(System.currentTimeMillis());
+        stationDataDTO.setGpsLat(null);
+        stationDataDTO.setGpsLong(null);
+        stationDataDTO.setStationStep(1);
 
-
-        DatabaseManager.getInstance().updateStation(stationDTO.getId(), tripDTO.getId(), stationDataDTO);
+        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentStationId(), CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
+
+        Log.i(TAG, "registerStationData: Station has been updated");
     }
 
     //Select number of boarding people

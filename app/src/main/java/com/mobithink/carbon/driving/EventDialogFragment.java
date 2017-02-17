@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,10 +18,14 @@ import android.widget.Toast;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mplaton on 09/02/2017.
@@ -69,20 +74,15 @@ public class EventDialogFragment extends DialogFragment {
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
 
-                /*String eventName = parent.expandableListDetail.get(expandableListTitle.get(groupPosition)).get(
-                        childPosition).toString;*/
-
                 String eventName = (String) expandableListAdapter.getChild(groupPosition, childPosition);
 
+                EventDTO eventDTO = new EventDTO();
+                eventDTO.setEventName(eventName);
+                eventDTO.setStartTime(System.currentTimeMillis());
+                eventDTO.getGpsLat();
+                eventDTO.getGpsLong();
 
-                /*  TODO
-                Long eventStartingTime = ;
-                Long eventLat = //CarbonApplicationManager.getInstance().getCurrentLocation().getlat;
-                Long eventLong = ;*/
-
-                /*eventDTO = new EventDTO(eventName, eventStartingTime, eventLat, eventLong);
-
-                DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);*/
+                DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);
 
                 Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
                 startActivity(goToEventActivity);

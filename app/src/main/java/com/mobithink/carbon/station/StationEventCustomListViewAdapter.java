@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mplaton on 15/02/2017.
@@ -59,13 +62,13 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             convertView = mInflater.inflate(R.layout.station_event_layout,parent, false);
         }
 
-       EventViewHolder viewHolder = (EventViewHolder) convertView.getTag();
+        EventViewHolder viewHolder = (EventViewHolder) convertView.getTag();
         if(viewHolder == null){
             viewHolder = new StationEventCustomListViewAdapter.EventViewHolder();
             viewHolder.stationEventName = (TextView) convertView.findViewById(R.id.station_event_name);
@@ -81,6 +84,7 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         viewHolder.stationEventName.setText(eventType);
 
         viewHolder.stationEventChronometer.start();
+        final Chronometer copi = viewHolder.stationEventChronometer;
 
         viewHolder.photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,25 +97,24 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 stopAndRegisterEvent();
+                copi.stop();
             }
         });
 
-        
-
         return convertView;
     }
+
 
     public void addData(String eventType) {
         eventTypeList.add(eventType);
     }
 
     private class EventViewHolder {
-        TextView stationEventName;
-        Chronometer stationEventChronometer;
-        Button microButton;
-        Button photoButton;
-        Button stopButton;
-
+        public TextView stationEventName;
+        public Chronometer stationEventChronometer;
+        public Button microButton;
+        public Button photoButton;
+        public Button stopButton;
     }
 
     public void takePhoto(){
@@ -122,7 +125,13 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
     }
 
     public void stopAndRegisterEvent(){
+
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEndTime(System.currentTimeMillis());
+
         DatabaseManager.getInstance().updateEvent(eventDTO);
+
+        Log.i(TAG, "stopAndRegisterEvent: Event has been registered");
 
     }
 }

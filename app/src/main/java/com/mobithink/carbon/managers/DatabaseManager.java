@@ -201,7 +201,35 @@ public class DatabaseManager {
 
     private List<EventDTO> getEventsForTripId(long tripId) {
         //TODO
-        return null;
+
+        List<EventDTO> eventDTO = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + DatabaseOpenHelper.TABLE_EVENT + " WHERE "
+                + DatabaseOpenHelper.KEY_TRIP_ID + " = " + tripId;
+
+        Cursor cursor = getOpenedDatabase().rawQuery(selectQuery, null);
+
+        if (cursor == null) {
+            return null;
+        }
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+
+                EventDTO ev = new EventDTO();
+
+                //ev.setTripId(tripId);
+
+                eventDTO.add(ev);
+
+                cursor.moveToNext();
+            }
+        }
+
+        cursor.close();
+
+        return eventDTO;
+
     }
 
 
@@ -212,6 +240,34 @@ public class DatabaseManager {
 
     private List<StationDataDTO> getStationDatasForTripId() {
         //TODO
+        /*List<StationDataDTO> stationDataDTOList = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + DatabaseOpenHelper.TABLE_STATION_TRIP_DATA + " WHERE "
+                + DatabaseOpenHelper.KEY_TRIP_ID + " = " + tripId;
+
+        Cursor cursor = getOpenedDatabase().rawQuery(selectQuery, null);
+
+        if (cursor == null) {
+            return null;
+        }
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+
+                StationDataDTO sdDTO = new StationDataDTO();
+
+                //sdDTO.setStation(stationId);
+
+                stationDataDTOList.add(sdDTO);
+
+                cursor.moveToNext();
+            }
+        }
+
+        cursor.close();
+
+        return stationDataDTOList;*/
+
         return null;
     }
 
@@ -268,12 +324,13 @@ public class DatabaseManager {
         return stationId;
     }
 
-    public void updateStation(long stationId, long tripId, StationDataDTO stationDataDTO) {
+    public void updateStationData(long stationId, long tripId, StationDataDTO stationDataDTO) {
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_STATION_ID, stationId);
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
+        values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDataDTO.getStationName());
         values.put(DatabaseOpenHelper.KEY_COME_IN, stationDataDTO.getNumberOfComeIn());
         values.put(DatabaseOpenHelper.KEY_GO_OUT, stationDataDTO.getNumberOfGoOut());
         values.put(DatabaseOpenHelper.KEY_STEP, stationDataDTO.getStationStep());
