@@ -328,7 +328,7 @@ public class DatabaseManager {
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseOpenHelper.KEY_STATION_ID, stationId);
+        //values.put(DatabaseOpenHelper.KEY_STATION_ID, stationId);
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
         values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDataDTO.getStationName());
         values.put(DatabaseOpenHelper.KEY_COME_IN, stationDataDTO.getNumberOfComeIn());

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.SplashScreenActivity;
@@ -27,6 +29,10 @@ import com.mobithink.carbon.driving.adapters.StationAdapter;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.services.LocationService;
+import com.mobithink.carbon.services.WeatherService;
+import com.mobithink.carbon.services.WeatherServiceCallback;
+import com.mobithink.carbon.services.weatherdata.Channel;
+import com.mobithink.carbon.services.weatherdata.Item;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
 import com.mobithink.carbon.webservices.TripService;
@@ -41,9 +47,11 @@ import retrofit2.Response;
  * Created by mplaton on 01/02/2017.
  */
 
-public class DrivingActivity extends Activity {
+public class DrivingActivity extends Activity implements WeatherServiceCallback {
 
     private static final String TAG = "DrivingActivity";
+
+    private WeatherService weatherService;
 
     ImageView mWeatherImageView;
 
@@ -145,6 +153,9 @@ public class DrivingActivity extends Activity {
             mLine = (BusLineDTO) extras.getSerializable("line");
         }
 
+        weatherService = new WeatherService(this);
+        weatherService.refreshWeather(mCity.getName() + ", France");
+
         Intent serviceIntent = new Intent(this, LocationService.class);
         startService(serviceIntent);
 
@@ -159,8 +170,8 @@ public class DrivingActivity extends Activity {
         mDirectionNameTextView.setText(mDirection.getStationName());
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
 
-        mWeatherImageView.setImageResource(R.drawable.meteo);
-        mWeatherTemperatureTextView.setText("12°C");
+        //mWeatherImageView.setImageResource(R.drawable.meteo);
+        //mWeatherTemperatureTextView.setText("12°C");
         mActualTime.setText("13:34");
         mActualDate.setText ("Lun. 9 Janv.");
         mAtmoNumberTextView.setText("5");
@@ -243,5 +254,22 @@ public class DrivingActivity extends Activity {
 
         EventDialogFragment dialogFragment = new EventDialogFragment();
         dialogFragment.show(fm, "Choisir un évènement");
+    }
+
+    @Override
+    public void ServiceSuccess(Channel channel) {
+
+        Item item = channel.getItem();
+        int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+        mWeatherImageView.setImageResource(resourceId);
+        mWeatherTemperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+
+
+    }
+
+    @Override
+    public void ServiceFailure(Exception exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+
     }
 }
