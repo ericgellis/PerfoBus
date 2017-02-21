@@ -169,8 +169,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         mDirectionNameTextView.setText(mDirection.getStationName());
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
 
-        //mWeatherImageView.setImageResource(R.drawable.meteo);
-        //mWeatherTemperatureTextView.setText("12°C");
         mActualTime.setText("13:34");
         mActualDate.setText ("Lun. 9 Janv.");
         mAtmoNumberTextView.setText("5");
@@ -209,6 +207,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     }
 
     public void stopTrip() {
+        TripDTO tripDTO = new TripDTO();
+        tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
+        tripDTO.setTemperature(Integer.parseInt(mWeatherTemperatureTextView.getText().toString()));
+
+        DatabaseManager.getInstance().updateTrip(tripDTO);
+
+        tripDTO.setEndTime(System.currentTimeMillis());
+
         long tripId = DatabaseManager.getInstance().finishCurrentTrip();
         stopService(new Intent(this, LocationService.class));
         sendTripDto(tripId);
