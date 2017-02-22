@@ -16,6 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 
 import java.util.ArrayList;
@@ -31,6 +34,8 @@ public class StationEventDialogFragment extends DialogFragment {
 
     private IEventSelectedListener mListener;
 
+    EventDTO eventDTO;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,8 +50,13 @@ public class StationEventDialogFragment extends DialogFragment {
         mStationEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String item = eventType.get(position);
                 mListener.onEventSelected(eventType.get(position));
+
+                eventDTO = new EventDTO();
+                eventDTO.setEventName(eventType.get(position));
+                eventDTO.setStartTime(System.currentTimeMillis());
+
+                long stationEventId = DatabaseManager.getInstance().createNewStationEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
                 dismiss();
 
             }

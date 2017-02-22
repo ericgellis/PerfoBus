@@ -295,13 +295,28 @@ public class DatabaseManager {
         return eventId;
     }
 
-    public void updateEvent(EventDTO eventDTO) {
+    public long createNewStationEvent(long tripId, long stationDataId, EventDTO eventDTO) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
+        values.put(DatabaseOpenHelper.KEY_STATION_DATA_ID, stationDataId);
+        values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
+        values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
+        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
+        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
+
+        long stationEventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
+
+        return stationEventId;
+    }
+
+    public void updateEvent(long tripId, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
 
         getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(eventDTO.getId())});
-
+        Log.i(TAG, "A station has been updated : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", with endTime "+ eventDTO.getEndTime());
     }
 
     public void deleteEvent(long eventId) {
@@ -316,34 +331,35 @@ public class DatabaseManager {
      * STATION
      **************************************/
 
-    public long createNewStation(StationDTO stationDTO) {
+    public long createNewStation(long tripId, StationDataDTO stationDataDTO) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDTO.getStationName());
-
-        long stationId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION, null, values);
-        return stationId;
-    }
-
-    public void updateStationData(long stationId, long tripId, StationDataDTO stationDataDTO) {
-        SQLiteDatabase db = mDataBase.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        //values.put(DatabaseOpenHelper.KEY_STATION_ID, stationId);
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
         values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDataDTO.getStationName());
+        values.put(DatabaseOpenHelper.KEY_START_DATETIME, stationDataDTO.getStartTime());
+
+        long stationDataId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, null, values);
+        Log.i(TAG, "A new station has been created : id = " +  stationDataId + ", for TripId " + tripId);
+        return stationDataId;
+    }
+
+    public void updateStationData(long tripId, StationDataDTO stationDataDTO) {
+         openedDatabase = mDataBase.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_COME_IN, stationDataDTO.getNumberOfComeIn());
         values.put(DatabaseOpenHelper.KEY_GO_OUT, stationDataDTO.getNumberOfGoOut());
         values.put(DatabaseOpenHelper.KEY_STEP, stationDataDTO.getStationStep());
-        values.put(DatabaseOpenHelper.KEY_START_DATETIME, stationDataDTO.getStartTime());
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, stationDataDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_LATITUDE, stationDataDTO.getGpsLat());
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, stationDataDTO.getGpsLong());
 
-        db.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
+        openedDatabase.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(stationDataDTO.getId())});
+
+        Log.i(TAG, "A station has been updated : id = " +  stationDataDTO.getId() + ", for TripId " + tripId + ", with endTime "+ stationDataDTO.getEndTime());
     }
 
-    public void deleteStationData(long stationId, StationDataDTO stationDataDTO){
+    public void deleteStationData(StationDataDTO stationDataDTO){
         SQLiteDatabase db = mDataBase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -357,4 +373,31 @@ public class DatabaseManager {
                 new String[]{String.valueOf(stationDataDTO.getId())});
     }
 
+    StationDataDTO getStationData(long stationDataId) {
+
+        String selectQuery = "SELECT  * FROM " + DatabaseOpenHelper.TABLE_STATION_TRIP_DATA + " WHERE "
+                + DatabaseOpenHelper.KEY_ID + " = " + stationDataId;
+
+        Cursor c = getOpenedDatabase().rawQuery(selectQuery, null);
+
+        if (c == null) {
+            return null;
+        }
+
+        c.moveToFirst();
+
+        StationDataDTO stationDataDTO = new StationDataDTO();
+
+        stationDataDTO.setId(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_ID)));
+        stationDataDTO.setStartTime(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
+        stationDataDTO.setEndTime(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
+        stationDataDTO.setNumberOfComeIn(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_COME_IN)));
+        stationDataDTO.setNumberOfGoOut(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_GO_OUT)));
+        stationDataDTO.setGpsLong(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+        stationDataDTO.setGpsLat(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+
+        c.close();
+
+        return stationDataDTO;
+    }
 }

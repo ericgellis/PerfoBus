@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.DatabaseOpenHelper;
+import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -58,6 +60,7 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     TripDTO tripDTO;
     StationDTO stationDTO;
     StationDataDTO stationDataDTO;
+    long stationId;
 
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
@@ -77,6 +80,11 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         mStationNameTextView.setText("Jean Jaures");
         mTimeCodeChronometer = (Chronometer) findViewById(R.id.timeCodeChronometer);
         mStationEventCustomListView = (ListView) findViewById(R.id.station_event_custom_listview);
+
+        stationDataDTO = new StationDataDTO();
+        Bundle extras = getIntent().getExtras();
+        stationId = (long) extras.getSerializable("stationId");
+        stationDataDTO.setId(stationId);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +123,9 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         mExitPeopleTextView = (TextView) findViewById(R.id.exitPeopleTextView);
         mExitPeopleTextView.setText("0");
 
+        mStationEventCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
+        mStationEventCustomListView.setAdapter(mStationEventCustomListViewAdapter);
+
         mChangeStationNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,9 +160,6 @@ public class StationActivity extends Activity implements IEventSelectedListener{
                 registerStationData();
             }
         });
-
-        mStationEventCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
-        mStationEventCustomListView.setAdapter(mStationEventCustomListViewAdapter);
 
     }
 
@@ -188,7 +196,7 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     public void goToDrivingPage(){
 
-        DatabaseManager.getInstance().deleteStationData(stationDTO.getId(),stationDataDTO );
+        DatabaseManager.getInstance().deleteStationData(stationDataDTO );
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
@@ -200,17 +208,16 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     public void registerStationData(){
 
-        stationDataDTO = new StationDataDTO();
+        stationDataDTO.setId(stationId);
         stationDataDTO.setStationName(mStationNameTextView.getText().toString());
         stationDataDTO.setNumberOfComeIn(numberOfPeopleIn);
         stationDataDTO.setNumberOfGoOut(numberOfPeopleOut);
-        stationDataDTO.setStartTime(System.currentTimeMillis());
         stationDataDTO.setEndTime(System.currentTimeMillis());
         stationDataDTO.setGpsLat(null);
         stationDataDTO.setGpsLong(null);
         stationDataDTO.setStationStep(1);
 
-        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentStationId(), CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
@@ -252,7 +259,7 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     }
 
     public void goTochooseStationEvent(){
-        StationEventDialogFragment dialogFragment = new  StationEventDialogFragment();
+        StationEventDialogFragment dialogFragment = new StationEventDialogFragment();
         dialogFragment.setListener(this);
         dialogFragment.show(fm, "Choisir un évènement");
     }

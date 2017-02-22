@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
@@ -61,6 +62,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     Button mEventPhotoButton;
     Button mConfirmPositionEventButton;
     EventDTO eventDTO;
+    long eventId;
 
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
@@ -112,6 +114,11 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
                 enableLocationForGoogleMap();
             }
         });
+
+        eventDTO = new EventDTO();
+        Bundle extras = getIntent().getExtras();
+        eventId = (long) extras.getSerializable("eventId");
+        eventDTO.setId(eventId);
 
 
         mCancelledTimecodeButton = (Button) findViewById(R.id.cancelled_timecode_button);
@@ -307,10 +314,10 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     public void confirmEvent(){
 
-        EventDTO eventDTO = new EventDTO();
+        eventDTO.setId(eventId);
         eventDTO.setEndTime(System.currentTimeMillis());
 
-        DatabaseManager.getInstance().updateEvent(eventDTO);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(),eventDTO);
 
         Log.i(TAG, "onChildClick: event registered");
 

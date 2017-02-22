@@ -23,8 +23,10 @@ import com.mobithink.carbon.SplashScreenActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.services.LocationService;
@@ -178,7 +180,16 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     }
 
     public void goToStationPage(){
+
+        StationDataDTO stationDataDTO = new StationDataDTO();
+        stationDataDTO.setStationName( mNextStationNameTextView.getText().toString());
+        stationDataDTO.setStartTime(System.currentTimeMillis());
+        long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stationId", stationId);
         Intent toStationPage = new Intent (this, StationActivity.class);
+        toStationPage.putExtras(bundle);
         this.startActivity(toStationPage);
 
     }
@@ -268,8 +279,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
         mWeatherImageView.setImageResource(resourceId);
         mWeatherTemperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
-
-
     }
 
     @Override

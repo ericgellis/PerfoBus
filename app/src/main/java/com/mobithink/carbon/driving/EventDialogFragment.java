@@ -20,6 +20,7 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.station.StationActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,12 +80,13 @@ public class EventDialogFragment extends DialogFragment {
                 EventDTO eventDTO = new EventDTO();
                 eventDTO.setEventName(eventName);
                 eventDTO.setStartTime(System.currentTimeMillis());
-                eventDTO.getGpsLat();
-                eventDTO.getGpsLong();
 
-                DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);
+                long eventId = DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);
 
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("eventId", eventId);
                 Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
+                goToEventActivity.putExtras(bundle);
                 startActivity(goToEventActivity);
                 return false;
             }
