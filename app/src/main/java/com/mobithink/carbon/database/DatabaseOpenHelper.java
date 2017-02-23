@@ -86,7 +86,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
                     + KEY_ATMO + " INTEGER,"
-                    + KEY_TEMPERATURE + " INTEGER,"
+                    + KEY_TEMPERATURE + " TEXT,"
                     + KEY_WEATHER + " TEXT,"
                     + KEY_CAPACITY + " INTEGER,"
                     + KEY_LINE_ID + " INTEGER" + ")";

@@ -188,6 +188,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("stationId", stationId);
+        bundle.putSerializable("stationName", stationDataDTO.getStationName());
         Intent toStationPage = new Intent (this, StationActivity.class);
         toStationPage.putExtras(bundle);
         this.startActivity(toStationPage);
@@ -219,14 +220,16 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
     public void stopTrip() {
         TripDTO tripDTO = new TripDTO();
-        tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
-        tripDTO.setTemperature(Integer.parseInt(mWeatherTemperatureTextView.getText().toString()));
-
-        DatabaseManager.getInstance().updateTrip(tripDTO);
-
         tripDTO.setEndTime(System.currentTimeMillis());
+        tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
+        if (mWeatherTemperatureTextView != null){
+            tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());}
+        else {
+            tripDTO.setTemperature("200");
+        }
 
-        long tripId = DatabaseManager.getInstance().finishCurrentTrip();
+        long tripId = DatabaseManager.getInstance().updateTrip(CarbonApplicationManager.getInstance().getCurrentTripId(), tripDTO);
+
         stopService(new Intent(this, LocationService.class));
         sendTripDto(tripId);
     }

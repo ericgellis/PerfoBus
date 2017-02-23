@@ -3,6 +3,8 @@ package com.mobithink.carbon.driving;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Point;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -20,6 +22,8 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.services.LocationService;
+import com.mobithink.carbon.services.weatherdata.Location;
 import com.mobithink.carbon.station.StationActivity;
 
 import java.util.ArrayList;
@@ -40,11 +44,14 @@ public class EventDialogFragment extends DialogFragment {
     HashMap<String, List<String>> expandableListDetail;
 
     EventDTO eventDTO;
+    LocationService locationService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.event_dialog_box, container, false);
+
+        locationService = new LocationService();
 
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.event_expendable_list_view);
         expandableListDetail = ExpendableEventListData.getData();
@@ -80,7 +87,6 @@ public class EventDialogFragment extends DialogFragment {
                 EventDTO eventDTO = new EventDTO();
                 eventDTO.setEventName(eventName);
                 eventDTO.setStartTime(System.currentTimeMillis());
-
                 long eventId = DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);
 
                 Bundle bundle = new Bundle();

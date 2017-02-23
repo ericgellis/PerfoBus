@@ -85,8 +85,6 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         eventType = getItem(position);
         viewHolder.stationEventName.setText(eventType);
 
-        //createNewStationEvent();
-
         viewHolder.stationEventChronometer.start();
         final Chronometer copi = viewHolder.stationEventChronometer;
 
@@ -128,20 +126,13 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         }*/
     }
 
-    /*public void createNewStationEvent(){
-        eventDTO = new EventDTO();
-        eventDTO.setEventName(eventType);
-        eventDTO.setStartTime(System.currentTimeMillis());
-
-        long stationEventId = DatabaseManager.getInstance().createNewStationEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
-    }*/
 
     public void stopAndRegisterEvent(){
 
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEndTime(System.currentTimeMillis());
 
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(),eventDTO);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(),eventDTO);
 
         Log.i(TAG, "stopAndRegisterEvent: Event has been registered");
 

@@ -255,7 +255,10 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     public void cancelEvent(){
 
-        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentEventId());
+        eventDTO.setStartTime(null);
+        eventDTO.setGpsLat(null);
+        eventDTO.setGpsLong(null);
+        DatabaseManager.getInstance().deleteEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
         Toast toast = Toast.makeText(this, "Incident supprimé", Toast.LENGTH_SHORT);
         toast.show();
 
@@ -317,7 +320,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         eventDTO.setId(eventId);
         eventDTO.setEndTime(System.currentTimeMillis());
 
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(),eventDTO);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(),eventDTO);
 
         Log.i(TAG, "onChildClick: event registered");
 

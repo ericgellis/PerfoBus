@@ -47,7 +47,7 @@ public class StationEventListViewAdapter extends ArrayAdapter<String> {
 
         final String eventType = getItem(position);
         viewHolder.stationEventName.setText(eventType);
-       
+
         return convertView;
     }
 

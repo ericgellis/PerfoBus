@@ -57,10 +57,9 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     FragmentManager fm = getFragmentManager();
 
-    TripDTO tripDTO;
-    StationDTO stationDTO;
     StationDataDTO stationDataDTO;
     long stationId;
+    String stationName;
 
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
@@ -77,14 +76,15 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         mChangeStationNameButton = (Button) findViewById(R.id.changeStationNameButton);
         mDeleteTimeCodeButton = (Button) findViewById(R.id.deleteTimeCodeButton);
         mStationNameTextView = (TextView) findViewById(R.id.stationNameTextView);
-        mStationNameTextView.setText("Jean Jaures");
         mTimeCodeChronometer = (Chronometer) findViewById(R.id.timeCodeChronometer);
         mStationEventCustomListView = (ListView) findViewById(R.id.station_event_custom_listview);
 
         stationDataDTO = new StationDataDTO();
         Bundle extras = getIntent().getExtras();
         stationId = (long) extras.getSerializable("stationId");
+        stationName = (String) extras.getSerializable("stationName");
         stationDataDTO.setId(stationId);
+        mStationNameTextView.setText(stationName);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +196,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     public void goToDrivingPage(){
 
-        DatabaseManager.getInstance().deleteStationData(stationDataDTO );
+        stationDataDTO.setStartTime(null);
+        DatabaseManager.getInstance().deleteStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO );
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);

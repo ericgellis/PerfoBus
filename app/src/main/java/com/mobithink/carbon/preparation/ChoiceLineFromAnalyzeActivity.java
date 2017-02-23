@@ -24,6 +24,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
@@ -367,7 +368,12 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
         if (!hasError) {
 
-            DatabaseManager.getInstance().startNewTrip(mSelectedLineDTO.getId());
+            TripDTO tripDTO = new TripDTO();
+            tripDTO.setStartTime(System.currentTimeMillis());
+            tripDTO.setVehicleCapacity(Integer.parseInt(mCapacityEditText.getText().toString()));
+            tripDTO.setBusLineId(mSelectedLineDTO.getId());
+
+            DatabaseManager.getInstance().startNewTrip(mSelectedLineDTO.getId(), tripDTO);
 
             Intent startDriving = new Intent(this, DrivingActivity.class);
 
