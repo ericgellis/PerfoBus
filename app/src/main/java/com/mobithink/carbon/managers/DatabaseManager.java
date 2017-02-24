@@ -188,9 +188,8 @@ public class DatabaseManager {
      ****************************/
 
     private List<EventDTO> getEventsForTripId(long tripId) {
-        //TODO
 
-        List<EventDTO> eventDTO = new ArrayList<>();
+        List<EventDTO> eventDTOList = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + DatabaseOpenHelper.TABLE_EVENT + " WHERE "
                 + DatabaseOpenHelper.KEY_TRIP_ID + " = " + tripId;
@@ -203,20 +202,22 @@ public class DatabaseManager {
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-
                 EventDTO ev = new EventDTO();
 
-                //ev.setTripId(tripId);
+                ev.setEventName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_EVENT_NAME)));
+                ev.setStartTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
+                ev.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
+                ev.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+                ev.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
 
-                eventDTO.add(ev);
-
+                eventDTOList.add(ev);
                 cursor.moveToNext();
             }
         }
 
         cursor.close();
 
-        return eventDTO;
+        return eventDTOList;
 
     }
 
@@ -224,7 +225,6 @@ public class DatabaseManager {
     /***************************
      * StationData
      ***********************/
-
 
     private List<StationDataDTO> getStationDatasForTripId(long tripId) {
         //TODO
@@ -244,7 +244,14 @@ public class DatabaseManager {
 
                 StationDataDTO sdDTO = new StationDataDTO();
 
-                //sdDTO.setId();
+                sdDTO.setNumberOfComeIn(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.KEY_COME_IN)));
+                sdDTO.setNumberOfGoOut(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.KEY_GO_OUT)));
+                sdDTO.setStartTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
+                sdDTO.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
+                sdDTO.setStationStep(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STEP)));
+                sdDTO.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+                sdDTO.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+                sdDTO.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_NAME)));
 
                 stationDataDTOList.add(sdDTO);
 
@@ -268,7 +275,7 @@ public class DatabaseManager {
      * EVENT
      **************************************/
 
-    public long createNewEvent(long tripId, EventDTO eventDTO) {
+    public long createNewEvent(long tripId, long stationDataId, EventDTO eventDTO) {
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
@@ -276,27 +283,13 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
         values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
+        values.put(DatabaseOpenHelper.KEY_STATION_DATA_ID, stationDataId);
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
-
+        CarbonApplicationManager.getInstance().setCurrentStationDataId(eventId);
+        Log.i(TAG, "A station event has been created : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataId " + stationDataId + ", with endTime "+ eventDTO.getEndTime());
 
         return eventId;
-    }
-
-    public long createNewStationEvent(long tripId, long stationDataId, EventDTO eventDTO) {
-
-        ContentValues values = new ContentValues();
-        values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
-        values.put(DatabaseOpenHelper.KEY_STATION_DATA_ID, stationDataId);
-        values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
-        values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
-        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
-        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
-
-        long stationEventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
-        CarbonApplicationManager.getInstance().setCurrentStationDataId(stationEventId);
-        Log.i(TAG, "A station event has been created : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataId " + stationDataId + ", with endTime "+ eventDTO.getEndTime());
-        return stationEventId;
     }
 
     public void updateEvent(long tripId, long stationDataId, EventDTO eventDTO) {
@@ -331,6 +324,7 @@ public class DatabaseManager {
 
         long stationDataId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, null, values);
         Log.i(TAG, "A new station has been created : id = " +  stationDataId + ", for TripId " + tripId);
+        CarbonApplicationManager.getInstance().setCurrentStationDataId(stationDataId);
         return stationDataId;
     }
 
@@ -344,6 +338,7 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, stationDataDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_LATITUDE, stationDataDTO.getGpsLat());
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, stationDataDTO.getGpsLong());
+        values.put(DatabaseOpenHelper.KEY_STATION_NAME, stationDataDTO.getStationName());
 
         openedDatabase.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(stationDataDTO.getId())});

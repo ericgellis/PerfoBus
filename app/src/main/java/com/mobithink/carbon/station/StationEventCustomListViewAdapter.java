@@ -1,14 +1,10 @@
 package com.mobithink.carbon.station;
 
 import android.content.Context;
-import android.content.Intent;
-import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -31,12 +27,12 @@ import static android.content.ContentValues.TAG;
 public class StationEventCustomListViewAdapter extends BaseAdapter {
 
     private final LayoutInflater mInflater;
-    List<String> eventTypeList = new ArrayList<>();
-    String eventType;
+    List<EventDTO> eventDTOList = new ArrayList<>();
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     EventDTO eventDTO;
+
 
     public StationEventCustomListViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -44,17 +40,17 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(eventTypeList == null){
+        if(eventDTOList == null){
             return 0;
         }else{
-            return eventTypeList.size();
+            return eventDTOList.size();
         }
 
     }
 
     @Override
     public String getItem(int position) {
-        return eventTypeList.get(position);
+        return eventDTOList.get(position).getEventName();
     }
 
     @Override
@@ -81,9 +77,10 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
 
+        final EventDTO event = eventDTOList.get(position);
 
-        eventType = getItem(position);
-        viewHolder.stationEventName.setText(eventType);
+
+        viewHolder.stationEventName.setText(getItem(position));
 
         viewHolder.stationEventChronometer.start();
         final Chronometer copi = viewHolder.stationEventChronometer;
@@ -98,7 +95,7 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         viewHolder.stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopAndRegisterEvent();
+                stopAndRegisterEvent(event);
                 copi.stop();
             }
         });
@@ -107,8 +104,8 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
     }
 
 
-    public void addData(String eventType) {
-        eventTypeList.add(eventType);
+    public void addData(EventDTO event) {
+        eventDTOList.add(event);
     }
 
     private class EventViewHolder {
@@ -127,12 +124,10 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
     }
 
 
-    public void stopAndRegisterEvent(){
+    public void stopAndRegisterEvent(EventDTO event){
 
-        EventDTO eventDTO = new EventDTO();
-        eventDTO.setEndTime(System.currentTimeMillis());
-
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(),eventDTO);
+        event.setEndTime(System.currentTimeMillis());
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), event);
 
         Log.i(TAG, "stopAndRegisterEvent: Event has been registered");
 

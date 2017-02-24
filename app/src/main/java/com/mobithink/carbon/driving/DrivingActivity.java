@@ -38,6 +38,8 @@ import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
 import com.mobithink.carbon.webservices.TripService;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -171,8 +173,13 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         mDirectionNameTextView.setText(mDirection.getStationName());
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE. d MMM.");
+        String dateString = dateFormat.format(c.getTime());
+        mActualDate.setText (dateString);
+
         mActualTime.setText("13:34");
-        mActualDate.setText ("Lun. 9 Janv.");
+
         mAtmoNumberTextView.setText("5");
 
         mCourseChronometer.start();
@@ -183,12 +190,15 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
         StationDataDTO stationDataDTO = new StationDataDTO();
         stationDataDTO.setStationName( mNextStationNameTextView.getText().toString());
-        stationDataDTO.setStartTime(System.currentTimeMillis());
+        long stationStartTime = System.currentTimeMillis();
+        stationDataDTO.setStartTime(stationStartTime);
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("stationId", stationId);
         bundle.putSerializable("stationName", stationDataDTO.getStationName());
+        bundle.putSerializable("stationStep", mStationAdapter.getStep());
+        bundle.putSerializable("stationStartTime", stationStartTime);
         Intent toStationPage = new Intent (this, StationActivity.class);
         toStationPage.putExtras(bundle);
         this.startActivity(toStationPage);

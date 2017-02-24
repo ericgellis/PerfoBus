@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.DatabaseOpenHelper;
 import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -60,6 +61,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     StationDataDTO stationDataDTO;
     long stationId;
     String stationName;
+    int stationStep;
+    long stationStartTime;
 
     int nStartingPersonNumber = 0;
     int nEndingPersonNumber = 50;
@@ -83,6 +86,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         Bundle extras = getIntent().getExtras();
         stationId = (long) extras.getSerializable("stationId");
         stationName = (String) extras.getSerializable("stationName");
+        stationStep = (int) extras.getSerializable("stationStep");
+        stationStartTime = (long) extras.getSerializable("stationStartTime");
         stationDataDTO.setId(stationId);
         mStationNameTextView.setText(stationName);
 
@@ -205,6 +210,10 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     public void stationSkip(){
 
+        stationDataDTO.setEndTime(stationStartTime);
+        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
+        this.startActivity(toDrivingPage);
     }
 
     public void registerStationData(){
@@ -216,7 +225,7 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         stationDataDTO.setEndTime(System.currentTimeMillis());
         stationDataDTO.setGpsLat(null);
         stationDataDTO.setGpsLong(null);
-        stationDataDTO.setStationStep(1);
+        stationDataDTO.setStationStep(stationStep);
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
@@ -266,8 +275,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     }
 
     @Override
-    public void onEventSelected(String eventType) {
-        mStationEventCustomListViewAdapter.addData(eventType);
+    public void onEventSelected(EventDTO event) {
+        mStationEventCustomListViewAdapter.addData(event);
         mStationEventCustomListViewAdapter.notifyDataSetChanged();
     }
 }

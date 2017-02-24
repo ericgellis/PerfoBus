@@ -50,13 +50,14 @@ public class StationEventDialogFragment extends DialogFragment {
         mStationEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onEventSelected(eventType.get(position));
+
 
                 eventDTO = new EventDTO();
                 eventDTO.setEventName(eventType.get(position));
                 eventDTO.setStartTime(System.currentTimeMillis());
 
-                long stationEventId = DatabaseManager.getInstance().createNewStationEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
+                eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO));
+                mListener.onEventSelected(eventDTO);
                 dismiss();
 
             }

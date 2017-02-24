@@ -28,6 +28,8 @@ public class StationAdapter extends  RecyclerView.Adapter<StationAdapter.ViewHol
         this.step = step;
     }
 
+    public int getStep(){return step;}
+
     @Override
     public StationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

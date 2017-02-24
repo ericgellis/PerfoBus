@@ -320,7 +320,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         eventDTO.setId(eventId);
         eventDTO.setEndTime(System.currentTimeMillis());
 
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(),eventDTO);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), -1, eventDTO);
 
         Log.i(TAG, "onChildClick: event registered");
 
