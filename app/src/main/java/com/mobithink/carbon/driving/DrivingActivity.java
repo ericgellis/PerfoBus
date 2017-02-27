@@ -87,6 +87,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
 
+    int resourceId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +180,9 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         String dateString = dateFormat.format(c.getTime());
         mActualDate.setText (dateString);
 
-        mActualTime.setText("13:34");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String timeString = timeFormat.format(c.getTime());
+        mActualTime.setText(timeString);
 
         mAtmoNumberTextView.setText("5");
 
@@ -220,7 +224,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                deleteTrip();
+                //dialog.cancel();
             }
         });
 
@@ -237,7 +242,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         else {
             tripDTO.setTemperature("200");
         }
-
+        tripDTO.setEndTime(System.currentTimeMillis());
+        tripDTO.setWeather(Integer.toString(resourceId));
         long tripId = DatabaseManager.getInstance().updateTrip(CarbonApplicationManager.getInstance().getCurrentTripId(), tripDTO);
 
         stopService(new Intent(this, LocationService.class));
@@ -289,7 +295,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     public void ServiceSuccess(Channel channel) {
 
         Item item = channel.getItem();
-        int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+        resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
         mWeatherImageView.setImageResource(resourceId);
         mWeatherTemperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
     }
@@ -298,5 +304,12 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     public void ServiceFailure(Exception exception) {
         Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
 
+    }
+
+    public void deleteTrip(){
+        DatabaseManager.getInstance().deleteTrip(CarbonApplicationManager.getInstance().getCurrentTripId());
+
+        Intent toGoSplashScreenactivity = new Intent(this, SplashScreenActivity.class);
+        startActivity(toGoSplashScreenactivity);
     }
 }

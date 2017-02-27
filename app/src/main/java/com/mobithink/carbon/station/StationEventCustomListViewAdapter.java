@@ -1,6 +1,7 @@
 package com.mobithink.carbon.station;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,7 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
             viewHolder = new StationEventCustomListViewAdapter.EventViewHolder();
             viewHolder.stationEventName = (TextView) convertView.findViewById(R.id.station_event_name);
             viewHolder.stationEventChronometer = (Chronometer) convertView.findViewById(R.id.station_event_chronometer);
+            viewHolder.stationEventChronometer.setBase(SystemClock.elapsedRealtime());
             viewHolder.microButton = (Button) convertView.findViewById(R.id.micro_button);
             viewHolder.photoButton = (Button) convertView.findViewById(R.id.photo_button);
             viewHolder.stopButton = (Button) convertView.findViewById(R.id.station_event_stop_button);
@@ -78,7 +80,6 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         }
 
         final EventDTO event = eventDTOList.get(position);
-
 
         viewHolder.stationEventName.setText(getItem(position));
 

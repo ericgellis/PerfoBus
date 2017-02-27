@@ -66,6 +66,9 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
+    double longitude;
+    double latitude;
+
     private MediaRecorder recorder = null;
     private int currentFormat = 0;
     private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
@@ -236,6 +239,8 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     @Override
     public void onLocationChanged(Location location) {
         moveCamera(location);
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
 
     }
 
@@ -319,6 +324,8 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
         eventDTO.setId(eventId);
         eventDTO.setEndTime(System.currentTimeMillis());
+        eventDTO.setGpsLat((long) latitude);
+        eventDTO.setGpsLong((long) longitude);
 
         DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), -1, eventDTO);
 

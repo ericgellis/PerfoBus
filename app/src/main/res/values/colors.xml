@@ -29,6 +29,12 @@
     <!--Parameters-->
     <color name="parametersToolBar">#757575</color>
 
+    <!-- -->
+    <color name="purple_chart"> #715696</color>
+    <color name="orange_chart">#FF7F27</color>
+    <color name="green_chart">#A7E0A5</color>
+    <color name="red_chart">#FA7470</color>
+
     <!--Dark texts on light backgrounds-->
     <color name="primary_text">#87000000</color>
 

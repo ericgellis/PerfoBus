@@ -94,6 +94,7 @@ public class EventDialogFragment extends DialogFragment {
                 Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
                 goToEventActivity.putExtras(bundle);
                 startActivity(goToEventActivity);
+                dismiss();
                 return false;
             }
         });

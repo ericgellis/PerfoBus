@@ -281,8 +281,6 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
         values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
-        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
-        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
         values.put(DatabaseOpenHelper.KEY_STATION_DATA_ID, stationDataId);
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
@@ -295,6 +293,8 @@ public class DatabaseManager {
     public void updateEvent(long tripId, long stationDataId, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
+        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
+        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
 
         getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(eventDTO.getId())});

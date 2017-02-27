@@ -95,6 +95,9 @@
     <string name="radius">Rayon de couverture des stations (en m) : </string>
     <string name="register">Enregistrer</string>
 
+    <!--choice_line_from_consult-->
+    <string name="recorded">Saisie du</string>
+
     <!--event_tab3-->
     <string name="enteringData">Saisi le</string>
     <string name="includingLoss">dont perte :</string>

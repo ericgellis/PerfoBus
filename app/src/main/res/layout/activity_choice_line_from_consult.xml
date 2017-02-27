@@ -69,6 +69,14 @@
             android:hint="@string/directionName" />
     </android.support.design.widget.TextInputLayout>
 
+    <ListView
+        android:id="@+id/tripResultListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/direction_textinputlayout"
+        android:layout_above="@+id/consultButton"
+        android:visibility="invisible"></ListView>
+
     <Button
         android:id="@+id/consultButton"
         android:layout_width="match_parent"

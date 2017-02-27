@@ -9,22 +9,27 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.ConsultationActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
+import com.mobithink.carbon.webservices.TripService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,6 +62,10 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
     Toolbar mConsultLineToolBar;
 
+    ListView tripResultListView;
+    TripResultListViewAdapter tripResultListViewAdapter;
+    ArrayList<TripDTO> mTripList;
+
     Button mConsultButton;
 
     @Override
@@ -64,10 +73,13 @@ public class ChoiceLineFromConsultActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_line_from_consult);
 
+        tripResultListView = (ListView)findViewById(R.id.tripResultListView);
+
         cityAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         lineAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         directionAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         listStation = new ArrayList<>();
+
 
         mConsultLineToolBar = (Toolbar) findViewById(R.id.consultLineToolBar);
         mConsultLineToolBar.setTitle("Choix d'une ligne");
@@ -160,6 +172,9 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //
+                // showResultListView();
+
                 goToRestitution();
             }
         });
@@ -171,6 +186,31 @@ public class ChoiceLineFromConsultActivity extends Activity {
         super.onResume();
         getCities();
 
+    }
+
+    public void showResultListView(){
+
+        TripService tripService = RetrofitManager.build().create(TripService.class);
+        Call<Collection<TripDTO>> call = tripService.showTripList(mSelectedLineDTO.getId());
+        call.enqueue(new Callback<Collection<TripDTO>>() {
+            @Override
+            public void onResponse(Call<Collection<TripDTO>> call, Response<Collection<TripDTO>> response) {
+                Log.i("retrofit", "Chargement réussi");
+                /*if (response.body() != null  && response.body().getData() != null ) {
+                    Collection<TripDTO> listDto = response.body().getData();
+                    if(listDto.size() > 0) {
+                        mTripList.addAll(listDto);
+                        tripResultListViewAdapter.setData(mTripList);
+                        tripResultListViewAdapter.notifyDataSetChanged();
+                        tripResultListView.setVisibility(View.VISIBLE);
+                    }
+                }*/
+            }
+
+            @Override
+            public void onFailure(Call<Collection<TripDTO>> call, Throwable t) {
+            }
+        });
     }
 
     public void goToRestitution(){

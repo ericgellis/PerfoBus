@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.RollingPointDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
@@ -119,7 +120,6 @@ public class LocationService extends Service implements LocationListener {
 
 
         DatabaseManager.getInstance().registerRollingPoint(rollingPointDTO);
-
 
     }
 

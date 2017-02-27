@@ -42,6 +42,10 @@ public class StationEventDialogFragment extends DialogFragment {
 
         View rootView = inflater.inflate(R.layout.station_event_dialog_fragment, container, false);
 
+        Bundle bundle = getArguments();
+        final double stationLongitude = (double) bundle.getSerializable("stationLongitude");
+        final double stationLatitude = (double) bundle.getSerializable("stationLatitude");
+
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
         final List<String> eventType = stationEventNameList();
 
@@ -51,11 +55,11 @@ public class StationEventDialogFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 eventDTO = new EventDTO();
                 eventDTO.setEventName(eventType.get(position));
                 eventDTO.setStartTime(System.currentTimeMillis());
-
+                eventDTO.setGpsLat((long) stationLatitude);
+                eventDTO.setGpsLong((long) stationLongitude);
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();

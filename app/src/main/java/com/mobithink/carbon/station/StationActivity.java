@@ -1,11 +1,18 @@
 package com.mobithink.carbon.station;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -15,13 +22,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.DatabaseOpenHelper;
-import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
-import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
@@ -33,7 +39,7 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 02/02/2017.
  */
 
-public class StationActivity extends Activity implements IEventSelectedListener{
+public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback{
 
     private Button mDecreaseNumberOfAddedPeopleButton;
     private Button mDecreaseNumberOfRemovedPeopleButton;
@@ -70,6 +76,10 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     int numberOfPeopleIn = 0;
     int numberOfPeopleOut = 0;
 
+    Location location = null;
+    double longitude;
+    double latitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +100,30 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         stationStartTime = (long) extras.getSerializable("stationStartTime");
         stationDataDTO.setId(stationId);
         mStationNameTextView.setText(stationName);
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+        final LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            public void onProviderEnabled(String s) {
+            }
+
+            public void onProviderDisabled(String s) {
+            }
+        };
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long)2000, (float)10, locationListener);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +210,11 @@ public class StationActivity extends Activity implements IEventSelectedListener{
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
     public void changeStationName(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
@@ -211,6 +250,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     public void stationSkip(){
 
         stationDataDTO.setEndTime(stationStartTime);
+        stationDataDTO.setGpsLat((long) latitude);
+        stationDataDTO.setGpsLong((long) longitude);
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);
@@ -223,8 +264,8 @@ public class StationActivity extends Activity implements IEventSelectedListener{
         stationDataDTO.setNumberOfComeIn(numberOfPeopleIn);
         stationDataDTO.setNumberOfGoOut(numberOfPeopleOut);
         stationDataDTO.setEndTime(System.currentTimeMillis());
-        stationDataDTO.setGpsLat(null);
-        stationDataDTO.setGpsLong(null);
+        stationDataDTO.setGpsLat((long) latitude);
+        stationDataDTO.setGpsLong((long) longitude);
         stationDataDTO.setStationStep(stationStep);
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
@@ -269,7 +310,15 @@ public class StationActivity extends Activity implements IEventSelectedListener{
     }
 
     public void goTochooseStationEvent(){
+
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stationLongitude",longitude);
+        bundle.putSerializable("stationLatitude",latitude);
+
+
         StationEventDialogFragment dialogFragment = new StationEventDialogFragment();
+        dialogFragment.setArguments(bundle);
         dialogFragment.setListener(this);
         dialogFragment.show(fm, "Choisir un évènement");
     }
