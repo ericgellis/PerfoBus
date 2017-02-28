@@ -1,13 +1,74 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.consultation.fragments.ProvisionTab1">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/interstation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="@dimen/tablet_regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/interstation"
+        android:textColor="@color/grey_provision"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/minDistanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/interstation"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="@dimen/tablet_regular_margin"
+        android:text="@string/min"
+        android:textColor="@color/green_chart"/>
+
+    <TextView
+        android:id="@+id/minDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/minDistanceTextView"
+        android:layout_toEndOf="@+id/minDistanceTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:textColor="@color/green_chart"/>
+
+    <TextView
+        android:id="@+id/averageDistanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/minDistanceTextView"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="@dimen/tablet_regular_margin"
+        android:text="@string/average"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/averageDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/averageDistanceTextView"
+        android:layout_toEndOf="@+id/averageDistanceTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/maxDistanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/averageDistanceTextView"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="@dimen/tablet_regular_margin"
+        android:text="@string/max"
+        android:textColor="@color/red_chart"/>
+
+    <TextView
+        android:id="@+id/maxDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/maxDistanceTextView"
+        android:layout_toEndOf="@+id/maxDistanceTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:textColor="@color/red_chart"/>
+
+</RelativeLayout>

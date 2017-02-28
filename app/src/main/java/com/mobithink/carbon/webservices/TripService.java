@@ -3,6 +3,7 @@ package com.mobithink.carbon.webservices;
 import com.mobithink.carbon.database.model.TripDTO;
 
 import java.util.Collection;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,6 +20,6 @@ public interface TripService {
     @POST("/mobithink/trip/create")
     Call<Void> register(@Body TripDTO tripDTO);
 
-    @GET("/mobithink/trip/findTripListByBusLineId/{busLineId}")
-    Call<Collection<TripDTO>> showTripList(@Path("busLineId") Long busLineId);
+    @GET("/mobithink/trip/find/{busLineId}")
+    Call<List<TripDTO>> showTripList(@Path("busLineId") Long busLineId);
 }

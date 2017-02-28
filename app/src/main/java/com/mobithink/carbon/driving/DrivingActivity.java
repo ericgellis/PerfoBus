@@ -41,6 +41,7 @@ import com.mobithink.carbon.webservices.TripService;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -176,7 +177,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE. d MMM.");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
         String dateString = dateFormat.format(c.getTime());
         mActualDate.setText (dateString);
 

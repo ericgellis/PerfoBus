@@ -60,7 +60,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginTop="100dp"
-        android:layout_marginStart="275dp"
+        android:layout_marginStart="300dp"
         android:background="@drawable/texview_circle_design"
         android:textColor="@color/white"
         android:textAlignment="center"
@@ -72,7 +72,7 @@
         android:layout_height="30dp"
         android:layout_below="@+id/atmoNumberTextView"
         android:layout_marginTop="@dimen/regular_margin"
-        android:layout_marginStart="278dp"
+        android:layout_marginStart="305dp"
         android:text="@string/atmo"
         android:textColor="@color/black"
         android:textSize="18sp"/>

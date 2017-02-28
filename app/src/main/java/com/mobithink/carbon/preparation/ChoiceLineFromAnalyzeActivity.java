@@ -157,7 +157,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(mSelectedLineDTO != null) {
-
                     new AlertDialog.Builder(ChoiceLineFromAnalyzeActivity.this)
                             .setCancelable(true)
                             .setAdapter(directionAdapter, new DialogInterface.OnClickListener() {
@@ -183,10 +182,10 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         if(bundle != null){
-            mCity = (CityDTO) bundle.getSerializable("city");
-            mBusLine = (BusLineDTO) bundle.getSerializable("line");
-            mCityAutocompleteView.setText(mCity.getName());
-            mLineEditText.setText(mBusLine.getName());
+            String mCity = (String) bundle.getSerializable("city");
+            String mBusLine = (String) bundle.getSerializable("line");
+            mCityAutocompleteView.setText(mCity);
+            mLineEditText.setText(mBusLine);
         }
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +194,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                 prepareDriving();
             }
         });
-
 
     }
 
@@ -211,7 +209,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_FINE_LOCATION);
         }
-
     }
 
     private void getLineStations() {

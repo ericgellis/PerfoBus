@@ -13,8 +13,6 @@
             android:layout_height="@dimen/regular_size_rounded_button"
             android:layout_marginTop="20dp"
             android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:layout_marginEnd="@dimen/double_regular_margin"/>
 
         <TextView
@@ -23,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/weatherImageView"
             android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
             android:textColor="@color/black"
             android:textSize="18sp"/>
 
@@ -32,10 +29,9 @@
             android:layout_width="@dimen/regular_size_rounded_button"
             android:layout_height="@dimen/regular_size_rounded_button"
             android:layout_toEndOf="@+id/weatherImageView"
-            android:layout_toRightOf="@+id/weatherImageView"
             android:layout_alignBottom="@+id/weatherImageView"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginLeft="@dimen/double_regular_margin"
+            android:layout_marginBottom="@dimen/double_regular_margin"
             android:background="@drawable/texview_circle_design"
             android:textColor="@color/white"
             android:textAlignment="center"/>
@@ -43,14 +39,12 @@
         <TextView
             android:id="@+id/atmoTextView"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/atmoNumberTextView"
-            android:layout_alignBottom="@+id/weatherTemperatureTextView"
+            android:layout_alignBaseline="@+id/weatherTemperatureTextView"
             android:layout_toEndOf="@+id/weatherImageView"
-            android:layout_toRightOf="@+id/weatherImageView"
             android:layout_marginTop="@dimen/double_regular_margin"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginLeft="@dimen/double_regular_margin"
             android:text="@string/atmo"
             android:textColor="@color/black"
             android:textSize="18sp"/>
@@ -86,9 +80,7 @@
             android:layout_height="wrap_content"
             android:text="@string/enteringData"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginEnd="50dp"
-            android:layout_marginRight="50dp"
             android:layout_alignBottom="@+id/cityNameTextView"/>
 
         <TextView
@@ -96,9 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginEnd="90dp"
-            android:layout_marginRight="90dp"
             android:layout_below="@+id/enteringDataTextView"
             android:layout_marginTop="@dimen/regular_margin"
             android:layout_marginBottom="@dimen/regular_margin"
@@ -110,11 +100,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/enteredTimeTextView"
             android:layout_marginTop="@dimen/regular_margin"
             android:layout_marginEnd="90dp"
-            android:layout_marginRight="90dp"
             android:textAlignment="center"/>
 
         <TextView
@@ -135,9 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/courseTextView"
-            android:layout_toRightOf="@+id/courseTextView"
             android:layout_alignBottom="@+id/courseTextView"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:layout_marginEnd="@dimen/double_regular_margin"/>
 
         <TextView
@@ -146,7 +132,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/courseTextView"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginLeft="@dimen/double_regular_margin"
             android:layout_marginBottom="@dimen/double_regular_margin"
             android:text="@string/includingLoss"/>
 
@@ -156,8 +141,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lossTextView"
             android:layout_toEndOf="@+id/lossTextView"
-            android:layout_toRightOf="@+id/lossTextView"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:layout_marginEnd="@dimen/double_regular_margin"/>
 
         <TextView
@@ -167,7 +150,6 @@
             android:layout_below="@+id/lossTextView"
             android:layout_marginTop="@dimen/double_regular_margin"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginLeft="@dimen/double_regular_margin"
             android:layout_marginBottom="@dimen/double_regular_margin"
             android:text="@string/averageSection"/>
 
@@ -176,9 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/sectionTextView"
-            android:layout_toRightOf="@+id/sectionTextView"
             android:layout_alignBottom="@+id/sectionTextView"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:layout_marginEnd="@dimen/double_regular_margin"/>
 
         <TextView
@@ -187,7 +167,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sectionTextView"
             android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginLeft="@dimen/double_regular_margin"
             android:layout_marginBottom="@dimen/double_regular_margin"
             android:text="@string/includingLoss"/>
 
@@ -197,8 +176,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lossTextView2"
             android:layout_toEndOf="@+id/lossTextView2"
-            android:layout_toRightOf="@+id/lossTextView2"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:layout_marginEnd="@dimen/double_regular_margin"/>
 
         <TextView
@@ -206,10 +183,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/courseTextView"
             android:layout_marginEnd="@dimen/double_regular_margin"
-            android:layout_marginRight="@dimen/double_regular_margin"
             android:text="@string/detourRouteMaps"/>
 
         <TextView
@@ -218,9 +193,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/detourRouteMapsTextView"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginEnd="80dp"
-            android:layout_marginRight="80dp"
             android:layout_alignBottom="@+id/lossTextView"/>
 
         <Button
@@ -228,11 +201,9 @@
             android:layout_width="@dimen/regular_size_rounded_button"
             android:layout_height="@dimen/regular_size_rounded_button"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/tablet_regular_margin"
+            android:layout_marginBottom="@dimen/tablet_regular_margin"
             android:background="@mipmap/ic_blue_pdf"/>
     </RelativeLayout>
 </ScrollView>

@@ -6,6 +6,7 @@
     <!--Margin-->
     <dimen name="regular_margin">5dp</dimen>
     <dimen name="double_regular_margin">10dp</dimen>
+    <dimen name="tablet_regular_margin">24dp</dimen>
 
     <!-- For labels and edit texts.-->
     <dimen name="input_text_size">16sp</dimen>

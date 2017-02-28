@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/weatherImageView"
         android:layout_marginStart="40dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
         android:textColor="@color/black"
         android:textSize="18sp"/>
 
@@ -35,9 +36,9 @@
     <TextView
         android:id="@+id/atmoTextView"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/atmoNumberTextView"
-        android:layout_alignBottom="@+id/weatherTemperatureTextView"
+        android:layout_alignBaseline="@+id/weatherTemperatureTextView"
         android:layout_toEndOf="@+id/weatherImageView"
         android:layout_marginTop="@dimen/double_regular_margin"
         android:layout_marginStart="@dimen/double_regular_margin"
@@ -100,6 +101,106 @@
         android:layout_marginTop="@dimen/regular_margin"
         android:layout_marginEnd="90dp"
         android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/interstationNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/interstation"
+        android:layout_marginStart="400dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/interstation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:layout_marginStart="425dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/interstation"/>
+
+    <TextView
+        android:id="@+id/commercialSpeedNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/commercialSpeed"
+        android:layout_marginStart="400dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="2"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/commercialSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/interstation"
+        android:layout_marginStart="425dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/commercial_speed"/>
+
+    <TextView
+        android:id="@+id/averageLossNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/averageLoss"
+        android:layout_marginStart="400dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="3"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/averageLoss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/commercialSpeed"
+        android:layout_marginStart="425dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/average_loss"/>
+
+    <TextView
+        android:id="@+id/capacityNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/capacity"
+        android:layout_marginStart="400dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="4"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/averageLoss"
+        android:layout_marginStart="425dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/capacity"/>
+
+    <TextView
+        android:id="@+id/trafficNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/traffic"
+        android:layout_marginStart="400dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="5"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/traffic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/capacity"
+        android:layout_marginStart="425dp"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/traffic"/>
 
     <Button
         android:id="@+id/pdfButton"

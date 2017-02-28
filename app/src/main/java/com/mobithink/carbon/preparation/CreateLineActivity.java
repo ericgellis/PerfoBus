@@ -213,7 +213,7 @@ public class CreateLineActivity extends Activity {
                         Log.d("Success", "youhoo");
 
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("city",mSelectedCityDTO);
+                        bundle.putSerializable("city",mSelectedCityDTO.getName());
                         BusLineDTO mWrittenLine = new BusLineDTO();
                         bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
                         Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);

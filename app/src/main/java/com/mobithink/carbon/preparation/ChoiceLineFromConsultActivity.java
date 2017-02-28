@@ -109,7 +109,6 @@ public class ChoiceLineFromConsultActivity extends Activity {
                 //hide keyboard
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(parent.getApplicationWindowToken(), 0);
-
                 mSelectedCityDTO = (CityDTO) parent.getAdapter().getItem(position);
                 getCityLines();
 
@@ -172,9 +171,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                // showResultListView();
-
+                //showResultListView();
                 goToRestitution();
             }
         });
@@ -191,24 +188,28 @@ public class ChoiceLineFromConsultActivity extends Activity {
     public void showResultListView(){
 
         TripService tripService = RetrofitManager.build().create(TripService.class);
-        Call<Collection<TripDTO>> call = tripService.showTripList(mSelectedLineDTO.getId());
-        call.enqueue(new Callback<Collection<TripDTO>>() {
+        Call<List<TripDTO>> call = tripService.showTripList(mSelectedLineDTO.getId());
+        call.enqueue(new Callback<List<TripDTO>>() {
             @Override
-            public void onResponse(Call<Collection<TripDTO>> call, Response<Collection<TripDTO>> response) {
+            public void onResponse(Call<List<TripDTO>> call, Response<List<TripDTO>> response) {
                 Log.i("retrofit", "Chargement réussi");
-                /*if (response.body() != null  && response.body().getData() != null ) {
-                    Collection<TripDTO> listDto = response.body().getData();
-                    if(listDto.size() > 0) {
-                        mTripList.addAll(listDto);
-                        tripResultListViewAdapter.setData(mTripList);
+
+                switch (response.code()) {
+                    case 200:
+
+                        tripResultListViewAdapter.clear();
+                        tripResultListViewAdapter.addAll(response.body());
                         tripResultListViewAdapter.notifyDataSetChanged();
                         tripResultListView.setVisibility(View.VISIBLE);
-                    }
-                }*/
+
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
-            public void onFailure(Call<Collection<TripDTO>> call, Throwable t) {
+            public void onFailure(Call<List<TripDTO>> call, Throwable t) {
             }
         });
     }

@@ -30,7 +30,9 @@
             android:textSize="@dimen/input_text_size"
             android:textColor="@color/primary_text"
             android:maxLines="1"
-            android:hint="@string/cityName" />
+            android:hint="@string/cityName"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -48,6 +50,9 @@
             android:textSize="@dimen/input_text_size"
             android:textColor="@color/primary_text"
             android:maxLines="1"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:hint="@string/lineName" />
     </android.support.design.widget.TextInputLayout>
 
@@ -66,6 +71,9 @@
             android:textSize="@dimen/input_text_size"
             android:textColor="@color/primary_text"
             android:maxLines="2"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false"
             android:hint="@string/directionName" />
     </android.support.design.widget.TextInputLayout>
 
