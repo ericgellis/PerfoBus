@@ -24,7 +24,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 
-public class CapacityTab4 extends Fragment {
+public class CapacityTab4 extends GenericTabFragment {
 
     /*LinearLayout capacityChartLinearLayout;
 
@@ -90,7 +90,7 @@ public class CapacityTab4 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+           getTripDTO();
 
          /*if (mCombinedChart == null) {
             initCombinedChart();

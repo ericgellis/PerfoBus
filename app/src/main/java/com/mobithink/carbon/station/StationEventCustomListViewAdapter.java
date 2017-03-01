@@ -128,7 +128,7 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
     public void stopAndRegisterEvent(EventDTO event){
 
         event.setEndTime(System.currentTimeMillis());
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), event);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), event);
 
         Log.i(TAG, "stopAndRegisterEvent: Event has been registered");
 

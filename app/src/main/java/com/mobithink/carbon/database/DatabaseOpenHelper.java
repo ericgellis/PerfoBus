@@ -52,7 +52,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_GO_OUT = "goOut";
     // EVENT Table - column names
     public static final String KEY_EVENT_NAME = "eventName";
-    public static final String KEY_STATION_DATA_ID = "stationData_id";
+    public static final String KEY_STATION_DATA_NAME = "stationData_name";
 
     // Create table CITY
     private static final String CREATE_TABLE_CITY =
@@ -122,7 +122,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER,"
-                    + KEY_STATION_DATA_ID + " INTEGER" + ")";
+                    + KEY_STATION_DATA_NAME + " TEXT" + ")";
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name

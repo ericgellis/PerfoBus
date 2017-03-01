@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 
-public class SummaryTab5 extends Fragment {
+public class SummaryTab5 extends GenericTabFragment {
 
     ImageView mWeatherImageView;
 
@@ -73,6 +73,7 @@ public class SummaryTab5 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getTripDTO();
 
         /*mWeatherTemperatureTextView.setText(tripDTO.getTemperature());
         mAtmoNumberTextView.setText(tripDTO.getAtmo());
@@ -105,4 +106,5 @@ public class SummaryTab5 extends Fragment {
 
         alertDialog.show();
     }
+
 }

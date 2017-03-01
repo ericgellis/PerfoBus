@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.consultation.fragments.ProvisionTab1">
 
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/tripMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.google.android.gms.maps.MapView>
+
     <TextView
         android:id="@+id/interstation"
         android:layout_width="wrap_content"

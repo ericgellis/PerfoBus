@@ -263,7 +263,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         eventDTO.setStartTime(null);
         eventDTO.setGpsLat(null);
         eventDTO.setGpsLong(null);
-        DatabaseManager.getInstance().deleteEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
+        DatabaseManager.getInstance().deleteEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO);
         Toast toast = Toast.makeText(this, "Incident supprimé", Toast.LENGTH_SHORT);
         toast.show();
 
@@ -327,7 +327,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
         eventDTO.setGpsLat((long) latitude);
         eventDTO.setGpsLong((long) longitude);
 
-        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), -1, eventDTO);
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO);
 
         Log.i(TAG, "onChildClick: event registered");
 

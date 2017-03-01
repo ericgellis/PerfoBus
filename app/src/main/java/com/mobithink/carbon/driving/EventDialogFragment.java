@@ -87,7 +87,8 @@ public class EventDialogFragment extends DialogFragment {
                 EventDTO eventDTO = new EventDTO();
                 eventDTO.setEventName(eventName);
                 eventDTO.setStartTime(System.currentTimeMillis());
-                long eventId = DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataId(), eventDTO);
+                eventDTO.setStationName(null);
+                long eventId = DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("eventId", eventId);

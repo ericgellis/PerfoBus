@@ -315,7 +315,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         Bundle bundle = new Bundle();
         bundle.putSerializable("stationLongitude",longitude);
         bundle.putSerializable("stationLatitude",latitude);
-
+        bundle.putSerializable("stationName", mStationNameTextView.getText().toString());
 
         StationEventDialogFragment dialogFragment = new StationEventDialogFragment();
         dialogFragment.setArguments(bundle);

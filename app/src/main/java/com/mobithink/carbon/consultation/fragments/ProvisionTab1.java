@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapView;
 import com.mobithink.carbon.R;
 
 
-public class ProvisionTab1 extends Fragment {
+public class ProvisionTab1 extends GenericTabFragment {
 
+    MapView mtripMapView;
     TextView minDistanceBetweenStations;
     TextView averageDistanceBetweenStations;
     TextView maxDistanceBetweenStations;
@@ -24,6 +26,8 @@ public class ProvisionTab1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_provision_tab1, container, false);
 
+        mtripMapView = (MapView) rootView.findViewById(R.id.tripMapView);
+
         minDistanceBetweenStations = (TextView) rootView.findViewById(R.id.minDistance);
         averageDistanceBetweenStations = (TextView) rootView.findViewById(R.id.averageDistance);
         maxDistanceBetweenStations = (TextView) rootView.findViewById(R.id.maxDistance);
@@ -34,5 +38,6 @@ public class ProvisionTab1 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getTripDTO();
     }
 }

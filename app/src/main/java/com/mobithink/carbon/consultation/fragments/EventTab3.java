@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.mobithink.carbon.R;
 
 
-public class EventTab3 extends Fragment {
+public class EventTab3 extends GenericTabFragment {
 
     ImageView mWeatherImageView;
 
@@ -64,6 +64,12 @@ public class EventTab3 extends Fragment {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_tab3, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTripDTO();
     }
 
     public void sendPDFByEmail(){

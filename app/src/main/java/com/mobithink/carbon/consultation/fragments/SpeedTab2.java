@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.mobithink.carbon.R;
 
 
-public class SpeedTab2 extends Fragment {
+public class SpeedTab2 extends GenericTabFragment {
 
     public SpeedTab2() {
         // Required empty public constructor
@@ -20,6 +20,12 @@ public class SpeedTab2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_speed_tab2, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTripDTO();
     }
 
 }

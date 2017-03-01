@@ -1,6 +1,5 @@
 package com.mobithink.carbon.managers;
 
-import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
@@ -14,7 +13,7 @@ public class CarbonApplicationManager {
 
     private long mCurrentTripId = -1;
 
-    private long mCurrentStationDataId = -1;
+    private String mCurrentStationDataName = null;
 
     public static CarbonApplicationManager getInstance() {
 
@@ -49,13 +48,14 @@ public class CarbonApplicationManager {
     }
 
 
-    public void setCurrentStationDataId(long stationDataId) {mCurrentStationDataId = stationDataId;}
+    public void setCurrentStationDataName(String stationDataDTOName) {
+        mCurrentStationDataName = stationDataDTOName;}
 
     public StationDataDTO getCurrentStationData(){
-        return DatabaseManager.getInstance().getStationData(mCurrentStationDataId);
+        return DatabaseManager.getInstance().getStationData(mCurrentStationDataName);
     }
 
-    public long getCurrentStationDataId(){
-        return mCurrentStationDataId;
+    public String getCurrentStationDataName(){
+        return mCurrentStationDataName;
     }
 }

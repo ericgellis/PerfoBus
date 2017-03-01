@@ -209,6 +209,7 @@ public class DatabaseManager {
                 ev.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
                 ev.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
                 ev.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+                ev.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_DATA_NAME)));
 
                 eventDTOList.add(ev);
                 cursor.moveToNext();
@@ -275,22 +276,22 @@ public class DatabaseManager {
      * EVENT
      **************************************/
 
-    public long createNewEvent(long tripId, long stationDataId, EventDTO eventDTO) {
+    public long createNewEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);
         values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
-        values.put(DatabaseOpenHelper.KEY_STATION_DATA_ID, stationDataId);
+        values.put(DatabaseOpenHelper.KEY_STATION_DATA_NAME, StationDataDTOName);
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
-        CarbonApplicationManager.getInstance().setCurrentStationDataId(eventId);
-        Log.i(TAG, "A station event has been created : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataId " + stationDataId + ", with endTime "+ eventDTO.getEndTime());
+        CarbonApplicationManager.getInstance().setCurrentStationDataName(StationDataDTOName);
+        Log.i(TAG, "A station event has been created : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime "+ eventDTO.getEndTime());
 
         return eventId;
     }
 
-    public void updateEvent(long tripId, long stationDataId, EventDTO eventDTO) {
+    public void updateEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
@@ -298,10 +299,10 @@ public class DatabaseManager {
 
         getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(eventDTO.getId())});
-        Log.i(TAG, "A event has been updated : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataId " + stationDataId + ", with endTime "+ eventDTO.getEndTime());
+        Log.i(TAG, "A event has been updated : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime "+ eventDTO.getEndTime());
     }
 
-    public void deleteEvent(long tripId, long stationDataId, EventDTO eventDTO) {
+    public void deleteEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, "null");
         values.put(DatabaseOpenHelper.KEY_LATITUDE,"null");
@@ -324,7 +325,7 @@ public class DatabaseManager {
 
         long stationDataId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, null, values);
         Log.i(TAG, "A new station has been created : id = " +  stationDataId + ", for TripId " + tripId);
-        CarbonApplicationManager.getInstance().setCurrentStationDataId(stationDataId);
+        CarbonApplicationManager.getInstance().setCurrentStationDataName(stationDataDTO.getStationName());
         return stationDataId;
     }
 
@@ -360,10 +361,10 @@ public class DatabaseManager {
                 new String[]{String.valueOf(stationDataDTO.getId())});
     }
 
-    StationDataDTO getStationData(long stationDataId) {
+    StationDataDTO getStationData(String stationDataName) {
 
         String selectQuery = "SELECT  * FROM " + DatabaseOpenHelper.TABLE_STATION_TRIP_DATA + " WHERE "
-                + DatabaseOpenHelper.KEY_ID + " = " + stationDataId;
+                + DatabaseOpenHelper.KEY_STATION_DATA_NAME + " = " + stationDataName;
 
         Cursor c = getOpenedDatabase().rawQuery(selectQuery, null);
 

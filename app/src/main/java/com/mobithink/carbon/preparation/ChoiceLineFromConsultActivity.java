@@ -74,6 +74,10 @@ public class ChoiceLineFromConsultActivity extends Activity {
         setContentView(R.layout.activity_choice_line_from_consult);
 
         tripResultListView = (ListView)findViewById(R.id.tripResultListView);
+        tripResultListViewAdapter = new TripResultListViewAdapter(this, mTripList);
+        tripResultListView.setAdapter(tripResultListViewAdapter);
+        mTripList = new ArrayList<>();
+
 
         cityAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         lineAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
@@ -171,8 +175,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showResultListView();
-                goToRestitution();
+                showResultListView();
             }
         });
 
@@ -196,9 +199,10 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
                 switch (response.code()) {
                     case 200:
+                        mTripList.clear();
+                        mTripList.addAll(response.body());
 
-                        tripResultListViewAdapter.clear();
-                        tripResultListViewAdapter.addAll(response.body());
+                        tripResultListViewAdapter.setData(mTripList);
                         tripResultListViewAdapter.notifyDataSetChanged();
                         tripResultListView.setVisibility(View.VISIBLE);
 
@@ -212,11 +216,6 @@ public class ChoiceLineFromConsultActivity extends Activity {
             public void onFailure(Call<List<TripDTO>> call, Throwable t) {
             }
         });
-    }
-
-    public void goToRestitution(){
-        Intent goToRestitutionOfResults = new Intent (this, ConsultationActivity.class);
-        this.startActivity(goToRestitutionOfResults);
     }
 
     private void getLineStations() {
