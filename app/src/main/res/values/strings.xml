@@ -102,10 +102,7 @@
     <string name="interstation">Interstations</string>
 
     <!--event_tab3-->
-    <string name="enteringData">Saisi le</string>
-    <string name="includingLoss">dont perte :</string>
-    <string name="averageSection">Tronçon moyen :</string>
-    <string name="detourRouteMaps">Détour/\ Itinéraire-maps</string>
+    <string name="total_trip">Parcours total</string>
 
     <!--capacity_tab4-->
     <string name="capacity">Charge</string>
@@ -115,6 +112,7 @@
     <string name="capacityless50">Part du trajet où la charge est inférieure à  50%</string>
 
     <!--summary-tab5-->
+    <string name="enteringData">Saisi le</string>
     <string name="commercial_speed">Vitesse commerciale</string>
     <string name="average_loss">Perte moyenne</string>
     <string name="traffic">Trafic</string>
