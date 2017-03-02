@@ -39,6 +39,7 @@ public class EventTab3 extends GenericTabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View rootView = inflater.inflate(R.layout.fragment_event_tab3, container, false);
         mWeatherImageView = (ImageView) container.findViewById(R.id.weatherImageView);
 
         mWeatherTemperatureTextView = (TextView) container.findViewById(R.id.weatherTemperatureTextView);
@@ -62,8 +63,8 @@ public class EventTab3 extends GenericTabFragment {
             }
         });*/
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_tab3, container, false);
+
+        return rootView;
     }
 
     @Override

@@ -16,7 +16,9 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -42,32 +44,33 @@ public class SummaryTab5 extends GenericTabFragment {
     Button mPDFButton;
 
     public SummaryTab5() {
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mWeatherImageView = (ImageView) container.findViewById(R.id.weatherImageView);
+        View rootView = inflater.inflate(R.layout.fragment_summary_tab5, container, false);
 
-        mWeatherTemperatureTextView = (TextView) container.findViewById(R.id.weatherTemperatureTextView);
-        mAtmoNumberTextView = (TextView) container.findViewById(R.id.atmoNumberTextView);
-        mCityNameTextView = (TextView) container.findViewById(R.id.cityNameTextView);
-        mLineNameTextView = (TextView) container.findViewById(R.id.lineNameTextView);
-        mDirectionNameTextView = (TextView) container.findViewById(R.id.directionNameTextView);
-        mEnteredTimeTextView = (TextView) container.findViewById(R.id.enteredTimeTextView);
-        mEnteredDateTextView = (TextView) container.findViewById(R.id.enteredDateTextView);
+        mWeatherImageView = (ImageView) rootView.findViewById(R.id.weatherImageView);
 
-        mPDFButton = (Button) container.findViewById(R.id.pdfButton);
-        /*mPDFButton.setOnClickListener(new View.OnClickListener() {
+        mWeatherTemperatureTextView = (TextView) rootView.findViewById(R.id.weatherTemperatureTextView);
+        mAtmoNumberTextView = (TextView) rootView.findViewById(R.id.atmoNumberTextView);
+        mCityNameTextView = (TextView) rootView.findViewById(R.id.cityNameTextView);
+        mLineNameTextView = (TextView) rootView.findViewById(R.id.lineNameTextView);
+        mDirectionNameTextView = (TextView) rootView.findViewById(R.id.directionNameTextView);
+        mEnteredTimeTextView = (TextView) rootView.findViewById(R.id.enteredTimeTextView);
+        mEnteredDateTextView = (TextView) rootView.findViewById(R.id.enteredDateTextView);
+
+        mPDFButton = (Button) rootView.findViewById(R.id.pdfButton);
+        mPDFButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendPDFByEmail();
             }
-        });*/
+        });
 
-        return inflater.inflate(R.layout.fragment_summary_tab5, container, false);
+        return rootView;
     }
 
     @Override
@@ -75,15 +78,17 @@ public class SummaryTab5 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-        /*mWeatherTemperatureTextView.setText(tripDTO.getTemperature());
-        mAtmoNumberTextView.setText(tripDTO.getAtmo());
-        mCityNameTextView.setText(busLineDTO.getCityDto().getName());
-        mLineNameTextView.setText(busLineDTO.getName());
-        mDirectionNameTextView.setText(mDirection.getStationName());
+        Picasso.with(getContext()).load(getTripDTO().getWeather()).into(mWeatherImageView);
+
+        mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
+        mAtmoNumberTextView.setText(String.valueOf(getTripDTO().getAtmo()));
+        //mCityNameTextView.setText(busLineDTO.getCityDto().getName());
+        //mLineNameTextView.setText(busLineDTO.getName());
+        //mDirectionNameTextView.setText(mDirection.getStationName());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        mEnteredTimeTextView.setText(timeFormat.format(tripDTO.getStartTime()));
+        mEnteredTimeTextView.setText(timeFormat.format(getTripDTO().getStartTime()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
-        mEnteredDateTextView.setText(dateFormat.format(tripDTO.getStartTime()));*/
+        mEnteredDateTextView.setText(dateFormat.format(getTripDTO().getStartTime()));
     }
 
     public void sendPDFByEmail(){

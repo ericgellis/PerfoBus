@@ -13,6 +13,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
+import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
 import org.achartengine.chart.CombinedXYChart;
@@ -23,10 +24,12 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import java.util.ArrayList;
+
 
 public class CapacityTab4 extends GenericTabFragment {
 
-    /*LinearLayout capacityChartLinearLayout;
+    LinearLayout capacityChartLinearLayout;
 
     TextView maxPeopleTextView;
     TextView averagePeopleTextView;
@@ -41,7 +44,8 @@ public class CapacityTab4 extends GenericTabFragment {
     StationDataDTO stationDataDTO;
 
     GraphicalView capacityChartGraphicalView;
-    CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 4)};
+    //CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 4)};
+    CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2)};
     // Creating a dataset to hold each series
     XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
     // Creating a XYMultipleSeriesRenderer to customize the whole chart
@@ -92,55 +96,86 @@ public class CapacityTab4 extends GenericTabFragment {
         super.onResume();
            getTripDTO();
 
-         /*if (mCombinedChart == null) {
+         if (capacityChartGraphicalView == null) {
             initCombinedChart();
-            mCombinedChart = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
-            capacityChartLinearLayout.addView(mCombinedChart);
+             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(getContext(), dataset, multiRenderer, types);
+            capacityChartLinearLayout.addView(capacityChartGraphicalView);
         } else {
-            mCombinedChart.repaint();
+             capacityChartGraphicalView.repaint();
         }
-    }*/
+    }
+
+
 
     public void  movementByStationMethod(){
-        /*if (mCombinedChart == null) {
+        /*if (capacityChartGraphicalView == null) {
             initBarCombinedChart();
-            mCombinedChart = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
+            capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
             capacityChartLinearLayout.addView(mCombinedChart);
         } else {
-            mCombinedChart.repaint();
+            capacityChartGraphicalView.repaint();
         }
         capacityLess50TextView.setVisibility(View.VISIBLE);
         capacityLess50.setVisibility(View.VISIBLE);*/
     }
 
     public void detailByStationMethod (){
-        /*if (mCombinedChart == null) {
+        /*if (capacityChartGraphicalView == null) {
             initCombinedChart();
-            mCombinedChart = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
+            capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
             capacityChartLinearLayout.addView(mCombinedChart);
         } else {
-            mCombinedChart.repaint();
+            capacityChartGraphicalView.repaint();
         }
         capacityLess50TextView.setVisibility(View.GONE);
         capacityLess50.setVisibility(View.GONE);*/
     }
 
-    /*public void initCombinedChart(){
+    public void initCombinedChart(){
 
-        String[] mStationName;
-        int [] stationNumber;
+
+        String[] mStationName ;
+        Integer [] stationNumber;
         int maxPeopleNumber;
-        int [] peopleNumberInBus;
-        int [] peopleNumberComeInBus;
-        int [] peopleNumberGoOutBus;
+        Integer [] peopleNumberInBus;
+        Integer [] peopleNumberComeInBus;
+        Integer [] peopleNumberGoOutBus;
 
-        mStationName = ;
-        maxPeopleNumber = tripDTO.getVehicleCapacity();
+        ArrayList<String> names = new ArrayList<>();
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            names.add(stationDataDTO.getStationName());
+        }
+        mStationName = new String[names.size()];
+        mStationName = names.toArray(mStationName);
+
+        ArrayList<Integer> stationNb = new ArrayList<>();
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            stationNb.add(stationDataDTO.getStationStep());
+        }
+        stationNumber = new Integer[stationNb.size()];
+        stationNumber = stationNb.toArray(stationNumber);
+
+        maxPeopleNumber = getTripDTO().getVehicleCapacity();
+
+        ArrayList<Integer> peopleNbComeInBus = new ArrayList<>();
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            peopleNbComeInBus.add(stationDataDTO.getNumberOfComeIn());
+        }
+        peopleNumberComeInBus = new Integer[peopleNbComeInBus.size()];
+        peopleNumberComeInBus = peopleNbComeInBus.toArray(peopleNumberComeInBus);
+
+        ArrayList<Integer> peopleNbGoOutBus = new ArrayList<>();
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            peopleNbGoOutBus.add(stationDataDTO.getNumberOfGoOut());
+        }
+        peopleNumberGoOutBus= new Integer[peopleNbGoOutBus.size()];
+        peopleNumberGoOutBus = peopleNbGoOutBus.toArray(peopleNumberComeInBus);
+
 
         // Creating an  XYSeries for maximal capacity of bus
         XYSeries maxCapacitySeries = new XYSeries("Capacité maximale");
         // Creating an  XYSeries for number of people in bus
-        XYSeries peopleNumberInBusSeries = new XYSeries("Nombre de personnes dans le bus");
+        //XYSeries peopleNumberInBusSeries = new XYSeries("Nombre de personnes dans le bus");
         // Creating an  XYSeries for number of people come in bus
         XYSeries peopleNumberComeInSeries = new XYSeries("Nombre de personnes montant dans le bus");
         // Creating an  XYSeries for number of people go out bus
@@ -149,14 +184,14 @@ public class CapacityTab4 extends GenericTabFragment {
         // Adding data to XYSeries for maximal capacity of bus, XYSeries for number of people in bus, XYSeries for number of people come in bus and XYSeries for number of people go out bus
         for (int i = 0; i<stationNumber.length; i++){
             maxCapacitySeries.add(stationNumber[i], maxPeopleNumber);
-            peopleNumberInBusSeries.add(stationNumber[i],peopleNumberInBus[i]);
+            //peopleNumberInBusSeries.add(stationNumber[i],peopleNumberInBus[i]);
             peopleNumberComeInSeries.add(stationNumber[i], peopleNumberComeInBus[i]);
             peopleNumberGoOutSeries.add(stationNumber[i], peopleNumberGoOutBus[i]);
         }
 
         // Adding Series to the dataset
         dataset.addSeries(maxCapacitySeries);
-        dataset.addSeries(peopleNumberInBusSeries);
+        //dataset.addSeries(peopleNumberInBusSeries);
         dataset.addSeries(peopleNumberComeInSeries);
         dataset.addSeries(peopleNumberGoOutSeries);
 
@@ -167,12 +202,12 @@ public class CapacityTab4 extends GenericTabFragment {
         maxCapacityRenderer.setDisplayChartValues(true);
 
         // Creating XYSeriesRenderer to customize peopleNumberInBusSeries
-        XYSeriesRenderer peopleNumberInBusRenderer = new XYSeriesRenderer();
+        /*XYSeriesRenderer peopleNumberInBusRenderer = new XYSeriesRenderer();
         peopleNumberInBusRenderer.setColor(R.color.orange_chart);
         peopleNumberInBusRenderer.setPointStyle(PointStyle.CIRCLE);
         peopleNumberInBusRenderer.setFillPoints(true);
         peopleNumberInBusRenderer.setLineWidth(2);
-        peopleNumberInBusRenderer.setDisplayChartValues(true);
+        peopleNumberInBusRenderer.setDisplayChartValues(true);*/
 
         // Creating XYSeriesRenderer to customize peopleNumberComeInSeries
         XYSeriesRenderer peopleNumberComeInRenderer = new XYSeriesRenderer();
@@ -198,10 +233,12 @@ public class CapacityTab4 extends GenericTabFragment {
         }
 
         multiRenderer.addSeriesRenderer(maxCapacityRenderer);
-        multiRenderer.addSeriesRenderer(peopleNumberInBusRenderer);
+        //multiRenderer.addSeriesRenderer(peopleNumberInBusRenderer);
+        multiRenderer.addSeriesRenderer(peopleNumberComeInRenderer);
+        multiRenderer.addSeriesRenderer(peopleNumberGoOutRenderer);
         multiRenderer.setClickEnabled(true);
         multiRenderer.setSelectableBuffer(10);
-    }*/
+    }
 
     public void initBarCombinedChart(){
 

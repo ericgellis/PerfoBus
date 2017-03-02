@@ -13,9 +13,8 @@ import com.mobithink.carbon.database.model.TripDTO;
 
 public abstract class GenericTabFragment extends Fragment {
 
-        protected TripDTO getTripDTO(){
+    protected TripDTO getTripDTO(){
         return ((ConsultationActivity)getActivity()).getmTripDTO();
     }
-
 
 }

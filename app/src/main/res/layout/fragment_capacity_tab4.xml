@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/capacity_chart"
-        android:layout_width="490dp"
+        android:layout_width="700dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="@dimen/tablet_regular_margin">
@@ -18,10 +18,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="110dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/capacity"
-        android:textColor="@color/grey_capacity"/>
+        android:textColor="@color/grey_capacity"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/maxPeopleTextView"
@@ -29,10 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/capacityTextView"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="125dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/max"
-        android:textColor="@color/green_chart"/>
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/maxPeople"
@@ -40,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/maxPeopleTextView"
         android:layout_toEndOf="@+id/maxPeopleTextView"
-        android:textColor="@color/green_chart"/>
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/averagePeopleTextView"
@@ -48,10 +51,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/maxPeopleTextView"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="125dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/average"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/averagePeople"
@@ -59,7 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/averagePeopleTextView"
         android:layout_toEndOf="@+id/averagePeopleTextView"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/minPeopleTextView"
@@ -67,10 +72,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/averagePeopleTextView"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="125dp"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/min"
-        android:textColor="@color/red_chart"/>
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/minPeople"
@@ -78,11 +84,12 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/minPeopleTextView"
         android:layout_toEndOf="@+id/minPeopleTextView"
-        android:textColor="@color/red_chart"/>
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/capacityLess50TextView"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/minPeopleTextView"
@@ -92,21 +99,22 @@
         android:text="@string/capacityless50"
         android:textAlignment="center"
         android:textColor="@color/grey_capacity"
-        />
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/capacityLess50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="140dp"
         android:layout_below="@+id/capacityLess50TextView"
-        />
+        android:textSize="@dimen/tablet_regular_size_text"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/movementByStationButton"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/tablet_regular_size_rounded_button"
+        android:layout_height="@dimen/tablet_regular_size_rounded_button"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/tablet_regular_margin"
@@ -115,8 +123,8 @@
 
     <Button
         android:id="@+id/detailByStationButton"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/tablet_regular_size_rounded_button"
+        android:layout_height="@dimen/tablet_regular_size_rounded_button"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/tablet_regular_margin"

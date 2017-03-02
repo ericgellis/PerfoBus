@@ -34,10 +34,6 @@ public class TripResultListViewAdapter extends ArrayAdapter<TripDTO> {
         mTripList = tripList;
     }
 
-    public void updateData(ArrayList<TripDTO> data){
-        mTripList = data;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -89,7 +85,6 @@ public class TripResultListViewAdapter extends ArrayAdapter<TripDTO> {
             return 0;
         }
     }
-
 
     @Override
     public long getItemId(int position) {

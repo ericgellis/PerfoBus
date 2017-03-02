@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mobithink.carbon.consultation.fragments.CapacityTab4;
 import com.mobithink.carbon.consultation.fragments.EventTab3;
-import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.consultation.fragments.ProvisionTab1;
 import com.mobithink.carbon.consultation.fragments.SpeedTab2;
 import com.mobithink.carbon.consultation.fragments.SummaryTab5;

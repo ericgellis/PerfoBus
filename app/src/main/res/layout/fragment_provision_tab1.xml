@@ -18,7 +18,8 @@
         android:layout_marginTop="@dimen/tablet_regular_margin"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:text="@string/interstation"
-        android:textColor="@color/grey_provision"/>
+        android:textColor="@color/grey_provision"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/minDistanceTextView"
@@ -28,7 +29,8 @@
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="@dimen/tablet_regular_margin"
         android:text="@string/min"
-        android:textColor="@color/green_chart"/>
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/minDistance"
@@ -37,7 +39,8 @@
         android:layout_alignBaseline="@+id/minDistanceTextView"
         android:layout_toEndOf="@+id/minDistanceTextView"
         android:layout_marginStart="@dimen/regular_margin"
-        android:textColor="@color/green_chart"/>
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/averageDistanceTextView"
@@ -47,7 +50,8 @@
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="@dimen/tablet_regular_margin"
         android:text="@string/average"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/averageDistance"
@@ -56,7 +60,8 @@
         android:layout_alignBaseline="@+id/averageDistanceTextView"
         android:layout_toEndOf="@+id/averageDistanceTextView"
         android:layout_marginStart="@dimen/regular_margin"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/maxDistanceTextView"
@@ -66,7 +71,8 @@
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="@dimen/tablet_regular_margin"
         android:text="@string/max"
-        android:textColor="@color/red_chart"/>
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
     <TextView
         android:id="@+id/maxDistance"
@@ -75,6 +81,7 @@
         android:layout_alignBaseline="@+id/maxDistanceTextView"
         android:layout_toEndOf="@+id/maxDistanceTextView"
         android:layout_marginStart="@dimen/regular_margin"
-        android:textColor="@color/red_chart"/>
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
 </RelativeLayout>
