@@ -3,7 +3,6 @@ package com.mobithink.carbon.consultation.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
-import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 import com.squareup.picasso.Picasso;
 
@@ -91,7 +89,7 @@ public class SummaryTab5 extends GenericTabFragment {
         mEnteredDateTextView.setText(dateFormat.format(getTripDTO().getStartTime()));
     }
 
-    public void sendPDFByEmail(){
+    public void sendPDFByEmail() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setCancelable(true);
         final EditText edittext = new EditText(getContext());

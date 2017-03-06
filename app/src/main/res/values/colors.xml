@@ -33,7 +33,7 @@
     <color name="grey_provision">#555555</color>
 
     <!-- fragment_capacity_tab4-->
-    <color name="purple_chart"> #715696</color>
+    <color name="purple_chart">#715696</color>
     <color name="orange_chart">#FF7F27</color>
     <color name="green_chart">#A7E0A5</color>
     <color name="red_chart">#FA7470</color>

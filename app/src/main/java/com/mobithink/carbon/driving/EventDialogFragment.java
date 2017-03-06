@@ -3,10 +3,7 @@ package com.mobithink.carbon.driving;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Point;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,14 +20,10 @@ import com.mobithink.carbon.event.EventActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.services.LocationService;
-import com.mobithink.carbon.services.weatherdata.Location;
-import com.mobithink.carbon.station.StationActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by mplaton on 09/02/2017.

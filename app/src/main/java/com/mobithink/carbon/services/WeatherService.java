@@ -48,7 +48,7 @@ public class WeatherService {
                     StringBuilder result = new StringBuilder();
                     String line;
 
-                    while((line = reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
                     return result.toString();
@@ -61,7 +61,7 @@ public class WeatherService {
 
             @Override
             protected void onPostExecute(String s) {
-                if( s==null && error!=null ) {
+                if (s == null && error != null) {
                     callback.ServiceFailure(error);
                     return;
                 }
@@ -70,7 +70,7 @@ public class WeatherService {
                     JSONObject data = new JSONObject(s);
                     JSONObject queryResult = data.optJSONObject("query");
                     int count = queryResult.getInt("count");
-                    if(count == 0) {
+                    if (count == 0) {
                         callback.ServiceFailure(new LocationWeatherException("Pas de météo"));
                         return;
                     }

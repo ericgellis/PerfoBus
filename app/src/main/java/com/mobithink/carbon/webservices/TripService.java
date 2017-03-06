@@ -2,7 +2,6 @@ package com.mobithink.carbon.webservices;
 
 import com.mobithink.carbon.database.model.TripDTO;
 
-import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;

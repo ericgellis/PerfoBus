@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:id="@+id/item_view_result_listView_linear_layout"
+    android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:id="@+id/item_view_result_listView_linear_layout">
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/recorded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/double_regular_margin"
-        android:text="@string/recorded"/>
+        android:text="@string/recorded" />
 
     <TextView
         android:id="@+id/recordedTripOnDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/double_regular_margin"/>
+        android:layout_marginStart="@dimen/double_regular_margin" />
 
 
 </LinearLayout>

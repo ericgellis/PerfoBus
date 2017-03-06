@@ -56,40 +56,33 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
     private static final String TAG = "DrivingActivity";
 
-    private WeatherService weatherService;
-
+    private static final int ANALYSE_STATION_ACTION = 7;
     ImageView mWeatherImageView;
-
     TextView mWeatherTemperatureTextView;
     TextView mActualTime;
     TextView mActualDate;
     TextView mAtmoNumberTextView;
     TextView mNextStationNameTextView;
-
     Toolbar mDrivingToolBar;
     TextView mDirectionNameTextView;
     TextView mCityNameTextView;
     TextView mLineNameTextView;
-
     Button mCancelButton;
     Button mEventButton;
-
     Chronometer mCourseChronometer;
     Chronometer mSectionChronometer;
-
     RecyclerView mStationRecyclerView;
     StationAdapter mStationAdapter;
-
     RelativeLayout mNextStationRelativeLayout;
-
     List<StationDTO> mStationList;
     StationDTO mDirection;
     CityDTO mCity;
     FragmentManager fm = getFragmentManager();
+    int resourceId;
+    int step = 0;
+    private WeatherService weatherService;
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
-
-    int resourceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,12 +169,12 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         mCityNameTextView.setText(mCity.getName());
         mLineNameTextView.setText(mLine.getName());
         mDirectionNameTextView.setText(mDirection.getStationName());
-        mNextStationNameTextView.setText(mStationList.get(0).getStationName());
+        mNextStationNameTextView.setText(mStationList.get(step).getStationName());
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
         String dateString = dateFormat.format(c.getTime());
-        mActualDate.setText (dateString);
+        mActualDate.setText(dateString);
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String timeString = timeFormat.format(c.getTime());
@@ -196,7 +189,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     public void goToStationPage(){
 
         StationDataDTO stationDataDTO = new StationDataDTO();
-        stationDataDTO.setStationName( mNextStationNameTextView.getText().toString());
+        stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
         long stationStartTime = System.currentTimeMillis();
         stationDataDTO.setStartTime(stationStartTime);
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
@@ -208,7 +201,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         bundle.putSerializable("stationStartTime", stationStartTime);
         Intent toStationPage = new Intent (this, StationActivity.class);
         toStationPage.putExtras(bundle);
-        this.startActivity(toStationPage);
+        this.startActivityForResult(toStationPage, ANALYSE_STATION_ACTION);
 
     }
 
@@ -240,9 +233,9 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         TripDTO tripDTO = new TripDTO();
         tripDTO.setEndTime(System.currentTimeMillis());
         tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
-        if (mWeatherTemperatureTextView != null){
-            tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());}
-        else {
+        if (mWeatherTemperatureTextView != null) {
+            tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());
+        } else {
             tripDTO.setTemperature("200");
         }
         tripDTO.setEndTime(System.currentTimeMillis());
@@ -309,7 +302,20 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
     }
 
-    public void deleteTrip(){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == ANALYSE_STATION_ACTION && resultCode == Activity.RESULT_OK) {
+            step++;
+            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+            mStationAdapter.makeStep();
+            mStationAdapter.notifyDataSetChanged();
+            mSectionChronometer.stop();
+            mSectionChronometer.start();
+        }
+    }
+
+    public void deleteTrip() {
         DatabaseManager.getInstance().deleteTrip(CarbonApplicationManager.getInstance().getCurrentTripId());
 
         Intent toGoSplashScreenactivity = new Intent(this, SplashScreenActivity.class);

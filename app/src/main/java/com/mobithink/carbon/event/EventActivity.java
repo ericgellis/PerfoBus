@@ -33,7 +33,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
@@ -64,12 +63,10 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     Button mConfirmPositionEventButton;
     EventDTO eventDTO;
     long eventId;
-
-    private GoogleMap mGoogleMap;
-    private GoogleApiClient mGoogleApiClient;
     double longitude;
     double latitude;
-
+    private GoogleMap mGoogleMap;
+    private GoogleApiClient mGoogleApiClient;
     private MediaRecorder recorder = null;
     private int currentFormat = 0;
     private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };

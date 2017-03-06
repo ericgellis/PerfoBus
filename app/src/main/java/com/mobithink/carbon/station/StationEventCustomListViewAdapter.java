@@ -27,11 +27,9 @@ import static android.content.ContentValues.TAG;
 
 public class StationEventCustomListViewAdapter extends BaseAdapter {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private final LayoutInflater mInflater;
     List<EventDTO> eventDTOList = new ArrayList<>();
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
     EventDTO eventDTO;
 
 
@@ -41,7 +39,7 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(eventDTOList == null){
+        if (eventDTOList == null) {
             return 0;
         }else{
             return eventDTOList.size();
@@ -109,28 +107,27 @@ public class StationEventCustomListViewAdapter extends BaseAdapter {
         eventDTOList.add(event);
     }
 
-    private class EventViewHolder {
-        public TextView stationEventName;
-        public Chronometer stationEventChronometer;
-        public Button microButton;
-        public Button photoButton;
-        public Button stopButton;
-    }
-
-    public void takePhoto(){
+    public void takePhoto() {
         /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }*/
     }
 
-
-    public void stopAndRegisterEvent(EventDTO event){
+    public void stopAndRegisterEvent(EventDTO event) {
 
         event.setEndTime(System.currentTimeMillis());
         DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), event);
 
         Log.i(TAG, "stopAndRegisterEvent: Event has been registered");
 
+    }
+
+    private class EventViewHolder {
+        public TextView stationEventName;
+        public Chronometer stationEventChronometer;
+        public Button microButton;
+        public Button photoButton;
+        public Button stopButton;
     }
 }

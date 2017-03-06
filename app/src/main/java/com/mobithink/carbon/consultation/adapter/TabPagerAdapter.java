@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-
 import com.mobithink.carbon.consultation.fragments.CapacityTab4;
 import com.mobithink.carbon.consultation.fragments.EventTab3;
 import com.mobithink.carbon.consultation.fragments.ProvisionTab1;

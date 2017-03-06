@@ -1,7 +1,6 @@
 package com.mobithink.carbon.consultation.fragments;
 
 
-
 import android.support.v4.app.Fragment;
 
 import com.mobithink.carbon.consultation.ConsultationActivity;
@@ -13,8 +12,8 @@ import com.mobithink.carbon.database.model.TripDTO;
 
 public abstract class GenericTabFragment extends Fragment {
 
-    protected TripDTO getTripDTO(){
-        return ((ConsultationActivity)getActivity()).getmTripDTO();
+    protected TripDTO getTripDTO() {
+        return ((ConsultationActivity) getActivity()).getmTripDTO();
     }
 
 }

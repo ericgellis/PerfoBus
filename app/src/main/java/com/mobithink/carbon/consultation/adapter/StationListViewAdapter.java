@@ -1,8 +1,6 @@
 package com.mobithink.carbon.consultation.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.model.StationDataDTO;
 
 import java.util.List;
 
@@ -28,12 +25,12 @@ public class StationListViewAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.itemview_station_listview,parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.itemview_station_listview, parent, false);
         }
 
         StationViewHolder viewHolder = (StationViewHolder) convertView.getTag();
-        if(viewHolder == null){
+        if (viewHolder == null) {
             viewHolder = new StationViewHolder();
             viewHolder.stationName = (TextView) convertView.findViewById(R.id.stationNameTextView);
 
@@ -47,7 +44,7 @@ public class StationListViewAdapter extends ArrayAdapter<String> {
         return convertView;
     }
 
-    private class StationViewHolder{
+    private class StationViewHolder {
         public TextView stationName;
         public LinearLayout itemviewStationListviewLinearLayout;
     }

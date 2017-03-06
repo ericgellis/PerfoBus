@@ -1,8 +1,6 @@
 package com.mobithink.carbon.station;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,6 @@ import android.widget.TextView;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.event.EventActivity;
-import com.mobithink.carbon.managers.CarbonApplicationManager;
-import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.util.List;
 

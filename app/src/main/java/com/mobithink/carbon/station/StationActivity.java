@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
@@ -40,8 +39,21 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 02/02/2017.
  */
 
-public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback{
+public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback {
 
+    FragmentManager fm = getFragmentManager();
+    StationDataDTO stationDataDTO;
+    long stationId;
+    String stationName;
+    int stationStep;
+    long stationStartTime;
+    int nStartingPersonNumber = 0;
+    int nEndingPersonNumber = 50;
+    int numberOfPeopleIn = 0;
+    int numberOfPeopleOut = 0;
+    Location location = null;
+    double longitude;
+    double latitude;
     private Button mDecreaseNumberOfAddedPeopleButton;
     private Button mDecreaseNumberOfRemovedPeopleButton;
     private Button mAddPeopleButton;
@@ -49,37 +61,16 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     private Button mChooseEventButton;
     private Button mUnrealizedStopButton;
     private Button mStopTimeButton;
-
     private TextView mBoardingPeopleTextView;
     private TextView mExitPeopleTextView;
-
     private ListView mStationEventCustomListView;
     private StationEventCustomListViewAdapter mStationEventCustomListViewAdapter;
     private String [] eventTypeList;
-
     private Toolbar mStationToolBar;
     private Button mChangeStationNameButton;
     private Button mDeleteTimeCodeButton;
     private TextView mStationNameTextView;
     private Chronometer mTimeCodeChronometer;
-
-    FragmentManager fm = getFragmentManager();
-
-    StationDataDTO stationDataDTO;
-    long stationId;
-    String stationName;
-    int stationStep;
-    long stationStartTime;
-
-    int nStartingPersonNumber = 0;
-    int nEndingPersonNumber = 50;
-
-    int numberOfPeopleIn = 0;
-    int numberOfPeopleOut = 0;
-
-    Location location = null;
-    double longitude;
-    double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +116,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
             }
         };
 
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long)2000, (float)10, locationListener);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +168,9 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         mDeleteTimeCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToDrivingPage();
+                stationDataDTO.setStartTime(null);
+                DatabaseManager.getInstance().deleteStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+                backToDrivingPage(RESULT_CANCELED);
             }
         });
 
@@ -220,7 +213,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     public void changeStationName(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
-        alertDialog.setTitle("Ce n'est pas "+ mStationNameTextView.getText().toString()+"?");
+        alertDialog.setTitle("Ce n'est pas " + mStationNameTextView.getText().toString() + "?");
         alertDialog.setMessage("Entrer le nouveau nom de la station");
         alertDialog.setView(edittext);
 
@@ -240,26 +233,23 @@ public class StationActivity extends Activity implements IEventSelectedListener,
 
     }
 
-    public void goToDrivingPage(){
-
-        stationDataDTO.setStartTime(null);
-        DatabaseManager.getInstance().deleteStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO );
+    public void backToDrivingPage(int resultCode) {
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
-        this.startActivity(toDrivingPage);
+        setResult(resultCode, toDrivingPage);
+        finish();
     }
 
-    public void stationSkip(){
+    public void stationSkip() {
 
         stationDataDTO.setEndTime(stationStartTime);
         stationDataDTO.setGpsLat((long) latitude);
         stationDataDTO.setGpsLong((long) longitude);
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
-        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
-        this.startActivity(toDrivingPage);
+        backToDrivingPage(Activity.RESULT_OK);
     }
 
-    public void registerStationData(){
+    public void registerStationData() {
 
         stationDataDTO.setId(stationId);
         stationDataDTO.setStationName(mStationNameTextView.getText().toString());
@@ -271,11 +261,8 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         stationDataDTO.setStationStep(stationStep);
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
-
-        Intent toDrivingPage = new Intent (this, DrivingActivity.class);
-        this.startActivity(toDrivingPage);
-
         Log.i(TAG, "registerStationData: Station has been updated");
+        backToDrivingPage(Activity.RESULT_OK);
     }
 
     //Select number of boarding people
@@ -315,8 +302,8 @@ public class StationActivity extends Activity implements IEventSelectedListener,
 
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("stationLongitude",longitude);
-        bundle.putSerializable("stationLatitude",latitude);
+        bundle.putSerializable("stationLongitude", longitude);
+        bundle.putSerializable("stationLatitude", latitude);
         bundle.putSerializable("stationName", mStationNameTextView.getText().toString());
 
         StationEventDialogFragment dialogFragment = new StationEventDialogFragment();

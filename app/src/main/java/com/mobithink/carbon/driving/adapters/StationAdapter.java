@@ -24,11 +24,14 @@ public class StationAdapter extends  RecyclerView.Adapter<StationAdapter.ViewHol
         mData = listStation;
     }
 
-    public void setStep(int step){
-        this.step = step;
+    public void makeStep() {
+
+        this.step++;
     }
 
-    public int getStep(){return step;}
+    public int getStep() {
+        return step;
+    }
 
     @Override
     public StationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
