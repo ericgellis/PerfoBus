@@ -43,7 +43,6 @@ public class EventDialogFragment extends DialogFragment {
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
 
-    EventDTO eventDTO;
     LocationService locationService;
 
     @Override

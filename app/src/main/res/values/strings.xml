@@ -103,6 +103,8 @@
 
     <!--event_tab3-->
     <string name="total_trip">Parcours total</string>
+    <string name="in_driving">En roulage </string>
+    <string name="in_station">En station </string>
 
     <!--capacity_tab4-->
     <string name="capacity">Charge</string>

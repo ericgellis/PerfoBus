@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/itemview_station_listview_linear_layout">
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/stationNameTextView"
+        android:id="@+id/stationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tablet_double_regular_margin"
-        android:textSize="24sp"
-        android:textColor="@color/black" />
+        android:textSize="@dimen/tablet_size_report"/>
+
 
 </LinearLayout>

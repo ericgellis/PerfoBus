@@ -137,7 +137,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
                 cancelEvent();
             }
         });
-        mVoiceMemoButton.setOnTouchListener(new View.OnTouchListener() {
+        /*mVoiceMemoButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -153,7 +153,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
                 }
                 return false;
             }
-        });
+        });*/
         mEventPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
