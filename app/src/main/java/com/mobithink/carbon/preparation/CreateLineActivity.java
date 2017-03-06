@@ -5,8 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
@@ -20,16 +20,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.CheckBox;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
@@ -48,17 +49,21 @@ import retrofit2.Response;
 
 public class CreateLineActivity extends Activity {
 
-    private static final String TAG = "CreateLineActivity";
-    AutoCompleteTextView mCityAutocompleteView;
-    ArrayAdapter<CityDTO> cityAdapter;
-    CityDTO mSelectedCityDTO;
-    CityDTO mChosenCity;
-    private View mRootView;
     private TextInputLayout mWriteLineTextInputLayout;
     private TextInputLayout mWriteCityNameTextInputLayout;
+
+    AutoCompleteTextView mCityAutocompleteView;
+    ArrayAdapter<CityDTO> cityAdapter;
+
     private LinearLayout mStationEditTextContainer;
+
     private TextInputEditText mWriteLineTextInputEditText;
+
     private ArrayList<EditText> mListStationEditText = new ArrayList<>();
+    CityDTO mSelectedCityDTO;
+
+    CityDTO mChosenCity;
+
     private Button mCreateLineButton;
 
     private Toolbar mNewLineToolBar;
@@ -70,6 +75,7 @@ public class CreateLineActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_create_line);
 
         mStationEditTextContainer = (LinearLayout) findViewById(R.id.stationEditTextContainer);
@@ -83,7 +89,6 @@ public class CreateLineActivity extends Activity {
             }
         });
 
-        mRootView = findViewById(R.id.createLine_rootview);
 
         mWriteLineTextInputLayout = (TextInputLayout) findViewById(R.id.Line_Name_TextInputLayout);
         mWriteCityNameTextInputLayout = (TextInputLayout) findViewById(R.id.City_Name_TextInputLayout);
@@ -127,9 +132,9 @@ public class CreateLineActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    //TODO
+
                 } else {
-                    //TODO
+
                 }
             }
         });
@@ -173,13 +178,6 @@ public class CreateLineActivity extends Activity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-        super.onBackPressed();
-    }
-
     public void createLine(){
 
         final BusLineDTO busLineDTO = new BusLineDTO();
@@ -207,27 +205,33 @@ public class CreateLineActivity extends Activity {
     public void registerLine(BusLineDTO busLineDTO){
         LineService lineService = RetrofitManager.build().create(LineService.class);
 
-        Call<Void> call = lineService.register(busLineDTO);
+        Call<BusLineDTO> call = lineService.register(busLineDTO);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<BusLineDTO>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<BusLineDTO> call, Response<BusLineDTO> response) {
                 switch (response.code()) {
-                    case 201:
-                        Log.d(TAG, "A new line have been created");
-                        Intent returnIntent = new Intent();
-                        setResult(Activity.RESULT_OK, returnIntent);
-                        finish();
+                    case 200:
+                        Log.d("Success", "youhoo");
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("city",mSelectedCityDTO.getName());
+                        BusLineDTO mWrittenLine = new BusLineDTO();
+                        bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
+                        Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
+                        intent.putExtras(bundle);
+                        getApplication().startActivity(intent);
+
                         break;
 
                     default:
-                        Snackbar.make(mRootView, "Une erreur s'est produite lors de la création de la ligne, Erreur" + response.code(), Snackbar.LENGTH_LONG).show();
+
                         break;
                 }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Snackbar.make(mRootView, "Une erreur s'est produite lors de la création de la ligne", Snackbar.LENGTH_LONG).show();
+            public void onFailure(Call<BusLineDTO> call, Throwable t) {
+
             }
         });
     }
@@ -235,7 +239,11 @@ public class CreateLineActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
         getCities();
+
+
+
     }
 
     private void getCities() {
@@ -248,18 +256,19 @@ public class CreateLineActivity extends Activity {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
+
                         cityAdapter.addAll(response.body());
                         cityAdapter.notifyDataSetChanged();
+
                         break;
                     default:
-                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
+                //TODO
             }
         });
     }
@@ -292,12 +301,6 @@ public class CreateLineActivity extends Activity {
                     step ++;
                 }
             }
-
-            if (mStationDTOList.size() < 2) {
-                Snackbar.make(mRootView, "Vous devez ajouter au moins 2 stations pour pouvoir valider cette ligne", Snackbar.LENGTH_LONG).show();
-                return;
-            }
-
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateLineActivity.this);
             alertDialogBuilder.setCancelable(true);

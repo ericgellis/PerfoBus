@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
@@ -78,6 +80,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_choice_line_from_analyze);
 
         mRootView = findViewById(R.id.choicelineactivity_rootview);
@@ -161,7 +164,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(mSelectedLineDTO != null) {
-
                     new AlertDialog.Builder(ChoiceLineFromAnalyzeActivity.this)
                             .setCancelable(true)
                             .setAdapter(directionAdapter, new DialogInterface.OnClickListener() {
@@ -187,10 +189,10 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         if(bundle != null){
-            mCity = (CityDTO) bundle.getSerializable("city");
-            mBusLine = (BusLineDTO) bundle.getSerializable("line");
-            mCityAutocompleteView.setText(mCity.getName());
-            mLineEditText.setText(mBusLine.getName());
+            String mCity = (String) bundle.getSerializable("city");
+            String mBusLine = (String) bundle.getSerializable("line");
+            mCityAutocompleteView.setText(mCity);
+            mLineEditText.setText(mBusLine);
         }
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +222,6 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         } else {
             askPermissions(permissionNeeded.toArray(new String[permissionNeeded.size()]));
         }
-
     }
 
     private void askPermissions(String[] permissionNeeded) {
@@ -397,7 +398,12 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
         if (!hasError) {
 
-            DatabaseManager.getInstance().startNewTrip(mSelectedLineDTO.getId());
+            TripDTO tripDTO = new TripDTO();
+            tripDTO.setStartTime(System.currentTimeMillis());
+            tripDTO.setVehicleCapacity(Integer.parseInt(mCapacityEditText.getText().toString()));
+            tripDTO.setBusLineId(mSelectedLineDTO.getId());
+
+            DatabaseManager.getInstance().startNewTrip(mSelectedLineDTO.getId(), tripDTO);
 
             Intent startDriving = new Intent(this, DrivingActivity.class);
 

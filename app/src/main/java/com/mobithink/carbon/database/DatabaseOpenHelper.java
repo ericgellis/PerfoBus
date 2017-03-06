@@ -52,7 +52,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_GO_OUT = "goOut";
     // EVENT Table - column names
     public static final String KEY_EVENT_NAME = "eventName";
-    public static final String KEY_STATION_DATA_ID = "stationData_id";
+    public static final String KEY_STATION_DATA_NAME = "stationData_name";
 
     // Create table CITY
     private static final String CREATE_TABLE_CITY =
@@ -86,7 +86,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
                     + KEY_ATMO + " INTEGER,"
-                    + KEY_TEMPERATURE + " INTEGER,"
+                    + KEY_TEMPERATURE + " TEXT,"
                     + KEY_WEATHER + " TEXT,"
                     + KEY_CAPACITY + " INTEGER,"
                     + KEY_LINE_ID + " INTEGER" + ")";
@@ -103,11 +103,12 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_STATION_TRIP_DATA =
             "CREATE TABLE " + TABLE_STATION_TRIP_DATA
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                    + KEY_STATION_NAME + " TEXT,"
                     + KEY_COME_IN + " INTEGER,"
-                    + KEY_GO_OUT + " DATETIME,"
+                    + KEY_GO_OUT + " INTEGER,"
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
-                    + KEY_STEP + "INTEGER"
+                    + KEY_STEP + " INTEGER,"
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER" + ")";
@@ -121,7 +122,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_LATITUDE + " INTEGER,"
                     + KEY_LONGITUDE + " INTEGER,"
                     + KEY_TRIP_ID + " INTEGER,"
-                    + KEY_STATION_DATA_ID + " INTEGER" + ")";
+                    + KEY_STATION_DATA_NAME + " TEXT" + ")";
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name

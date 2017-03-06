@@ -5,31 +5,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.StationDataDTO;
+
+import java.util.ArrayList;
 
 
-public class EventTab3 extends Fragment {
+public class EventTab3 extends GenericTabFragment {
 
-    ImageView mWeatherImageView;
-
-    TextView mWeatherTemperatureTextView;
-    TextView mAtmoNumberTextView;
-    TextView mCityNameTextView;
-    TextView mLineNameTextView;
-    TextView mDirectionNameTextView;
-    TextView mEnteredTimeTextView;
-    TextView mEnteredDateTextView;
-    TextView mCourseDetailsTextView;
-    TextView mLossDetailsTextView;
-    TextView mSectionDetailsTextView;
-    TextView mLossSectionDetailsTextView;
-    TextView mDetourDistanceTextView;
-
-    Button mPDFButton;
+    ListView stationListView;
+    ArrayList<String> stationNameList;
 
     public EventTab3() {
 
@@ -39,60 +30,25 @@ public class EventTab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mWeatherImageView = (ImageView) container.findViewById(R.id.weatherImageView);
+        View rootView = inflater.inflate(R.layout.fragment_event_tab3, container, false);
 
-        mWeatherTemperatureTextView = (TextView) container.findViewById(R.id.weatherTemperatureTextView);
-        mAtmoNumberTextView = (TextView) container.findViewById(R.id.atmoNumberTextView);
-        mCityNameTextView = (TextView) container.findViewById(R.id.cityNameTextView);
-        mLineNameTextView = (TextView) container.findViewById(R.id.lineNameTextView);
-        mDirectionNameTextView = (TextView) container.findViewById(R.id.directionNameTextView);
-        mEnteredTimeTextView = (TextView) container.findViewById(R.id.enteredTimeTextView);
-        mEnteredDateTextView = (TextView) container.findViewById(R.id.enteredDateTextView);
-        mCourseDetailsTextView = (TextView) container.findViewById(R.id.courseDetailsTextView);
-        mLossDetailsTextView = (TextView) container.findViewById(R.id.lossDetailsTextView);
-        mSectionDetailsTextView = (TextView) container.findViewById(R.id.sectionDetailsTextView);
-        mLossSectionDetailsTextView = (TextView) container.findViewById(R.id.lossSectionDetailsTextView);
-        mDetourDistanceTextView = (TextView) container.findViewById(R.id.detourDistanceTextView);
+        stationListView = (ListView) rootView.findViewById(R.id.station_list_view);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.itemview_station_listview, R.id.stationNameTextView, stationNameList);
+        stationListView.setAdapter(adapter);
 
-        mPDFButton = (Button) container.findViewById(R.id.pdfButton);
-        /*mPDFButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendPDFByEmail();
-            }
-        });*/
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_tab3, container, false);
+        return rootView;
     }
 
-    public void sendPDFByEmail(){
-
-        /*AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setCancelable(true);
-        alert.setTitle("Générer un rapport PDF ?");
-
-        // Create EditText for entry
-        final EditText input = new EditText(getActivity());
-        alert.setView(input);
-
-        alert.setPositiveButton("Envoyer", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                Toast.makeText(getActivity(), "PDF envoyé", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
-             alert.cancel();
-            }
-        });
-
-        alert.show();*/
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTripDTO();
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            stationNameList.add(stationDataDTO.getStationName());
+        }
     }
+
+
 
 
 }

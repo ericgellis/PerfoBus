@@ -2,6 +2,7 @@ package com.mobithink.carbon.event;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.MediaRecorder;
@@ -32,10 +33,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.DrivingActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.io.File;
 import java.io.IOException;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -57,9 +63,13 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     Button mEventPhotoButton;
     Button mConfirmPositionEventButton;
     EventDTO eventDTO;
-    int iDPosition;
+    long eventId;
+
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
+    double longitude;
+    double latitude;
+
     private MediaRecorder recorder = null;
     private int currentFormat = 0;
     private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
@@ -80,6 +90,7 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_event);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this)
@@ -108,6 +119,11 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
                 enableLocationForGoogleMap();
             }
         });
+
+        eventDTO = new EventDTO();
+        Bundle extras = getIntent().getExtras();
+        eventId = (long) extras.getSerializable("eventId");
+        eventDTO.setId(eventId);
 
 
         mCancelledTimecodeButton = (Button) findViewById(R.id.cancelled_timecode_button);
@@ -225,6 +241,8 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
     @Override
     public void onLocationChanged(Location location) {
         moveCamera(location);
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
 
     }
 
@@ -244,7 +262,10 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     public void cancelEvent(){
 
-        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentEventId());
+        eventDTO.setStartTime(null);
+        eventDTO.setGpsLat(null);
+        eventDTO.setGpsLong(null);
+        DatabaseManager.getInstance().deleteEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO);
         Toast toast = Toast.makeText(this, "Incident supprimé", Toast.LENGTH_SHORT);
         toast.show();
 
@@ -303,7 +324,14 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     public void confirmEvent(){
 
-        //DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentEventId(), eventDTO);
+        eventDTO.setId(eventId);
+        eventDTO.setEndTime(System.currentTimeMillis());
+        eventDTO.setGpsLat((long) latitude);
+        eventDTO.setGpsLong((long) longitude);
+
+        DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO);
+
+        Log.i(TAG, "onChildClick: event registered");
 
         Intent toDrivingPage = new Intent (this, DrivingActivity.class);
         this.startActivity(toDrivingPage);

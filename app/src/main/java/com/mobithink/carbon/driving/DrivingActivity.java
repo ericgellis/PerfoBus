@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,22 +17,32 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.SplashScreenActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.services.LocationService;
+import com.mobithink.carbon.services.WeatherService;
+import com.mobithink.carbon.services.WeatherServiceCallback;
+import com.mobithink.carbon.services.weatherdata.Channel;
+import com.mobithink.carbon.services.weatherdata.Item;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
 import com.mobithink.carbon.webservices.TripService;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,9 +52,11 @@ import retrofit2.Response;
  * Created by mplaton on 01/02/2017.
  */
 
-public class DrivingActivity extends Activity {
+public class DrivingActivity extends Activity implements WeatherServiceCallback {
 
     private static final String TAG = "DrivingActivity";
+
+    private WeatherService weatherService;
 
     ImageView mWeatherImageView;
 
@@ -76,9 +89,12 @@ public class DrivingActivity extends Activity {
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
 
+    int resourceId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.driving);
 
         final View bottomSheet = findViewById(R.id.bottom_sheet);
@@ -145,6 +161,9 @@ public class DrivingActivity extends Activity {
             mLine = (BusLineDTO) extras.getSerializable("line");
         }
 
+        weatherService = new WeatherService(this);
+        weatherService.refreshWeather(mCity.getName() + ", France");
+
         Intent serviceIntent = new Intent(this, LocationService.class);
         startService(serviceIntent);
 
@@ -159,10 +178,15 @@ public class DrivingActivity extends Activity {
         mDirectionNameTextView.setText(mDirection.getStationName());
         mNextStationNameTextView.setText(mStationList.get(0).getStationName());
 
-        mWeatherImageView.setImageResource(R.drawable.meteo);
-        mWeatherTemperatureTextView.setText("12°C");
-        mActualTime.setText("13:34");
-        mActualDate.setText ("Lun. 9 Janv.");
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
+        String dateString = dateFormat.format(c.getTime());
+        mActualDate.setText (dateString);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String timeString = timeFormat.format(c.getTime());
+        mActualTime.setText(timeString);
+
         mAtmoNumberTextView.setText("5");
 
         mCourseChronometer.start();
@@ -170,7 +194,20 @@ public class DrivingActivity extends Activity {
     }
 
     public void goToStationPage(){
+
+        StationDataDTO stationDataDTO = new StationDataDTO();
+        stationDataDTO.setStationName( mNextStationNameTextView.getText().toString());
+        long stationStartTime = System.currentTimeMillis();
+        stationDataDTO.setStartTime(stationStartTime);
+        long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stationId", stationId);
+        bundle.putSerializable("stationName", stationDataDTO.getStationName());
+        bundle.putSerializable("stationStep", mStationAdapter.getStep());
+        bundle.putSerializable("stationStartTime", stationStartTime);
         Intent toStationPage = new Intent (this, StationActivity.class);
+        toStationPage.putExtras(bundle);
         this.startActivity(toStationPage);
 
     }
@@ -190,7 +227,8 @@ public class DrivingActivity extends Activity {
         alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                deleteTrip();
+                //dialog.cancel();
             }
         });
 
@@ -199,7 +237,18 @@ public class DrivingActivity extends Activity {
     }
 
     public void stopTrip() {
-        long tripId = DatabaseManager.getInstance().finishCurrentTrip();
+        TripDTO tripDTO = new TripDTO();
+        tripDTO.setEndTime(System.currentTimeMillis());
+        tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
+        if (mWeatherTemperatureTextView != null){
+            tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());}
+        else {
+            tripDTO.setTemperature("200");
+        }
+        tripDTO.setEndTime(System.currentTimeMillis());
+        tripDTO.setWeather(Integer.toString(resourceId));
+        long tripId = DatabaseManager.getInstance().updateTrip(CarbonApplicationManager.getInstance().getCurrentTripId(), tripDTO);
+
         stopService(new Intent(this, LocationService.class));
         sendTripDto(tripId);
     }
@@ -243,5 +292,27 @@ public class DrivingActivity extends Activity {
 
         EventDialogFragment dialogFragment = new EventDialogFragment();
         dialogFragment.show(fm, "Choisir un évènement");
+    }
+
+    @Override
+    public void ServiceSuccess(Channel channel) {
+
+        Item item = channel.getItem();
+        resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+        mWeatherImageView.setImageResource(resourceId);
+        mWeatherTemperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+    }
+
+    @Override
+    public void ServiceFailure(Exception exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+
+    }
+
+    public void deleteTrip(){
+        DatabaseManager.getInstance().deleteTrip(CarbonApplicationManager.getInstance().getCurrentTripId());
+
+        Intent toGoSplashScreenactivity = new Intent(this, SplashScreenActivity.class);
+        startActivity(toGoSplashScreenactivity);
     }
 }

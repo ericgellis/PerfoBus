@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.TabPagerAdapter;
+import com.mobithink.carbon.database.model.TripDTO;
 
 
 /**
@@ -18,6 +19,9 @@ import com.mobithink.carbon.consultation.adapter.TabPagerAdapter;
  */
 
 public class ConsultationActivity extends AppCompatActivity {
+
+    public TripDTO mTripDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,15 @@ public class ConsultationActivity extends AppCompatActivity {
 
         });
 
+        Bundle extras = getIntent().getExtras();
+        mTripDTO = (TripDTO) extras.getSerializable("tripDTO");
     }
 
+    public TripDTO getmTripDTO() {
+        return mTripDTO;
+    }
+
+    public void setmTripDTO(TripDTO mTripDTO) {
+        this.mTripDTO = mTripDTO;
+    }
 }

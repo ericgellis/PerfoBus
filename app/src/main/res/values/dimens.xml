@@ -6,6 +6,7 @@
     <!--Margin-->
     <dimen name="regular_margin">5dp</dimen>
     <dimen name="double_regular_margin">10dp</dimen>
+    <dimen name="tablet_regular_margin">24dp</dimen>
 
     <!-- For labels and edit texts.-->
     <dimen name="input_text_size">16sp</dimen>
@@ -14,4 +15,9 @@
     <!--Size_rounded_button-->
     <dimen name="regular_size_rounded_button">56dp</dimen>
 
+
+    <!-- Size Tablet-->
+    <dimen name="tablet_regular_size_rounded_button">100dp</dimen>
+    <dimen name="tablet_double_regular_margin">20dp</dimen>
+    <dimen name="tablet_regular_size_text">30sp</dimen>
 </resources>

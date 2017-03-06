@@ -1,7 +1,6 @@
 package com.mobithink.carbon.managers;
 
-import android.location.Location;
-
+import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 /**
@@ -12,9 +11,9 @@ public class CarbonApplicationManager {
 
     private static CarbonApplicationManager mInstance;
 
-    private Location mLastKnowLocation;
-
     private long mCurrentTripId = -1;
+
+    private String mCurrentStationDataName = null;
 
     public static CarbonApplicationManager getInstance() {
 
@@ -36,6 +35,10 @@ public class CarbonApplicationManager {
         ServiceManager.getInstance();
     }
 
+    public void setCurrentTripId(long tripId) {
+        mCurrentTripId = tripId;
+    }
+
     public TripDTO getCurrentTrip(){
         return DatabaseManager.getInstance().getTrip(mCurrentTripId);
     }
@@ -44,16 +47,15 @@ public class CarbonApplicationManager {
         return mCurrentTripId;
     }
 
-    public void setCurrentTripId(long tripId) {
-        mCurrentTripId = tripId;
+
+    public void setCurrentStationDataName(String stationDataDTOName) {
+        mCurrentStationDataName = stationDataDTOName;}
+
+    public StationDataDTO getCurrentStationData(){
+        return DatabaseManager.getInstance().getStationData(mCurrentStationDataName);
     }
 
-    public Location getLastKnowLocation() {
-        return mLastKnowLocation;
+    public String getCurrentStationDataName(){
+        return mCurrentStationDataName;
     }
-
-    public void setLastKnowLocation(Location location) {
-        mLastKnowLocation = location;
-    }
-
 }

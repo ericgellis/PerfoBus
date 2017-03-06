@@ -3,7 +3,10 @@ package com.mobithink.carbon.driving;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Point;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,10 +20,17 @@ import android.widget.Toast;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.event.EventActivity;
+import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.services.LocationService;
+import com.mobithink.carbon.services.weatherdata.Location;
+import com.mobithink.carbon.station.StationActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mplaton on 09/02/2017.
@@ -34,11 +44,14 @@ public class EventDialogFragment extends DialogFragment {
     HashMap<String, List<String>> expandableListDetail;
 
     EventDTO eventDTO;
+    LocationService locationService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.event_dialog_box, container, false);
+
+        locationService = new LocationService();
 
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.event_expendable_list_view);
         expandableListDetail = ExpendableEventListData.getData();
@@ -69,23 +82,20 @@ public class EventDialogFragment extends DialogFragment {
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
 
-                /*String eventName = parent.expandableListDetail.get(expandableListTitle.get(groupPosition)).get(
-                        childPosition).toString;*/
-
                 String eventName = (String) expandableListAdapter.getChild(groupPosition, childPosition);
 
+                EventDTO eventDTO = new EventDTO();
+                eventDTO.setEventName(eventName);
+                eventDTO.setStartTime(System.currentTimeMillis());
+                eventDTO.setStationName(null);
+                long eventId = DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO);
 
-                /*  TODO
-                Long eventStartingTime = ;
-                Long eventLat = //CarbonApplicationManager.getInstance().getCurrentLocation().getlat;
-                Long eventLong = ;*/
-
-                /*eventDTO = new EventDTO(eventName, eventStartingTime, eventLat, eventLong);
-
-                DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), eventDTO);*/
-
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("eventId", eventId);
                 Intent goToEventActivity = new Intent (getActivity(), EventActivity.class);
+                goToEventActivity.putExtras(bundle);
                 startActivity(goToEventActivity);
+                dismiss();
                 return false;
             }
         });

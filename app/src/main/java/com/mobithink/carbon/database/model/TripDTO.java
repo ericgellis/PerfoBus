@@ -19,11 +19,11 @@ public class TripDTO implements Serializable {
 
     public int atmo;
 
-    public int temperature;
+    public String temperature;
 
     public String weather;
 
-    public int vehiculeCapacity;
+    public int vehicleCapacity;
 
     public Long busLineid;
 
@@ -76,11 +76,11 @@ public class TripDTO implements Serializable {
         this.atmo = atmo;
     }
 
-    public int getTemperature() {
+    public String getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
 
@@ -92,14 +92,6 @@ public class TripDTO implements Serializable {
         this.weather = weather;
     }
 
-    public int getVehiculeCapacity() {
-        return vehiculeCapacity;
-    }
-
-    public void setVehiculeCapacity(int vehiculeCapacity) {
-        this.vehiculeCapacity = vehiculeCapacity;
-    }
-
     public Long getBusLineId() {
         return busLineid;
     }
@@ -108,5 +100,35 @@ public class TripDTO implements Serializable {
         this.busLineid = busLineDTO;
     }
 
+    public int getVehicleCapacity() {
+        return vehicleCapacity;
+    }
 
+    public void setVehicleCapacity(int vehicleCapacity) {
+        this.vehicleCapacity = vehicleCapacity;
+    }
+
+    public List<StationDataDTO> getStationDataDTOList() {
+        return stationDataDTOList;
+    }
+
+    public void setStationDataDTOList(List<StationDataDTO> stationDataDTOList) {
+        this.stationDataDTOList = stationDataDTOList;
+    }
+
+    public List<RollingPointDTO> getRollingPointDTOList() {
+        return rollingPointDTOList;
+    }
+
+    public void setRollingPointDTOList(List<RollingPointDTO> rollingPointDTOList) {
+        this.rollingPointDTOList = rollingPointDTOList;
+    }
+
+    public List<EventDTO> getEventDTOList() {
+        return eventDTOList;
+    }
+
+    public void setEventDTOList(List<EventDTO> eventDTOList) {
+        this.eventDTOList = eventDTOList;
+    }
 }

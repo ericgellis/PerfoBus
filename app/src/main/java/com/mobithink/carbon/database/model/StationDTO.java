@@ -12,6 +12,9 @@ public class StationDTO implements Serializable{
     private String stationName;
     private int step;
 
+    public StationDTO() {
+    }
+
     public StationDTO(String stationName, int step){
       this.stationName = stationName;
         this.step = step;

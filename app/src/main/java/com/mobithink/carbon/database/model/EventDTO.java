@@ -18,6 +18,10 @@ public class EventDTO implements Serializable {
     private String stationName;
     private List<Long> pictureIdList;
 
+    public EventDTO() {
+
+    }
+
     public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, String stationName) {
         this.id = id;
         this.eventName = eventName;
