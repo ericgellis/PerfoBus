@@ -8,18 +8,17 @@
         android:id="@+id/totalTrip"
         android:layout_width="250dp"
         android:layout_height="60dp"
+        android:background="@color/lightBlue"
         android:text="@string/total_trip"
-        android:textSize="@dimen/tablet_regular_size_text"
-        android:textColor="@color/white"
         android:textAlignment="center"
-        android:background="@color/lightBlue"/>
+        android:textColor="@color/white"
+        android:textSize="@dimen/tablet_regular_size_text" />
 
     <ListView
         android:id="@+id/station_list_view"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/totalTrip">
-    </ListView>
+        android:layout_below="@+id/totalTrip"></ListView>
 
     <RelativeLayout
         android:id="@+id/mainRelativeLayout"

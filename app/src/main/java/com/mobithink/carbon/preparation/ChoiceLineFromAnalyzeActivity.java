@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -45,7 +46,10 @@ import retrofit2.Response;
 
 public class ChoiceLineFromAnalyzeActivity extends Activity {
 
-    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 101;
+    public static final int CREATE_LINE = 1;
+    private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 101;
+
+    View mRootView;
     Button mCreateNewLineButton;
     Button mStartButton;
 
@@ -79,6 +83,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_choice_line_from_analyze);
 
+        mRootView = findViewById(R.id.choicelineactivity_rootview);
 
         mAnalyzeLineToolBar = (Toolbar) findViewById(R.id.analyzeLineToolBar);
         mAnalyzeLineToolBar.setTitle("Choix d'une ligne");
@@ -193,25 +198,38 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prepareDriving();
+                checkPermission();
             }
         });
 
     }
 
-    private void prepareDriving() {
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+    private void checkPermission() {
 
+        List<String> permissionNeeded = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            permissionNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (permissionNeeded.size() == 0) {
             startDriving();
-
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_FINE_LOCATION);
+            askPermissions(permissionNeeded.toArray(new String[permissionNeeded.size()]));
         }
     }
+
+    private void askPermissions(String[] permissionNeeded) {
+        ActivityCompat.requestPermissions(this,
+                permissionNeeded,
+                ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
+    }
+
 
     private void getLineStations() {
         LineService groupService = RetrofitManager.build().create(LineService.class);
@@ -234,13 +252,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
                         }
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<StationDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -262,13 +281,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<BusLineDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -282,13 +302,23 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
+                                           @NonNull final String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    prepareDriving();
+            case ASK_MULTIPLE_PERMISSION_REQUEST_CODE: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    startDriving();
+
+                } else {
+                    Snackbar.make(mRootView, "Vous devez accepter cette authorisation pour continuer", Snackbar.LENGTH_LONG)
+                            .setAction("Recommencer", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    checkPermission();
+                                }
+                            }).show();
                 }
                 break;
             }
@@ -311,13 +341,14 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
                         break;
                     default:
+                        Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur, Erreur : " + response.code(), Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-                //TODO
+                Snackbar.make(mRootView, "Erreur lors de la communication avec le serveur", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -332,7 +363,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             createNewlineBundle.putSerializable("chosenCity", mSelectedCityDTO);
             Intent createNewLineIntent = new Intent(this, CreateLineActivity.class);
             createNewLineIntent.putExtras(createNewlineBundle);
-            this.startActivity(createNewLineIntent);
+            this.startActivityForResult(createNewLineIntent, CREATE_LINE);
 
         }
 
@@ -383,6 +414,20 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             bundle.putSerializable("line",mSelectedLineDTO);
             startDriving.putExtras(bundle);
             this.startActivity(startDriving);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CREATE_LINE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Snackbar.make(mRootView, "Ligne crée avec succès", Snackbar.LENGTH_LONG).show();
+                getCityLines();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Snackbar.make(mRootView, "La création d'une nouvelle ligne à été annulée", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }

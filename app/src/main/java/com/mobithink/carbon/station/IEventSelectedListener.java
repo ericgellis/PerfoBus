@@ -9,5 +9,5 @@ import com.mobithink.carbon.database.model.EventDTO;
 
 public interface IEventSelectedListener {
 
-    public void onEventSelected(EventDTO event);
+    void onEventSelected(EventDTO event);
 }

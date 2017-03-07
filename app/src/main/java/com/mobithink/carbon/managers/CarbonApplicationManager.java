@@ -35,10 +35,6 @@ public class CarbonApplicationManager {
         ServiceManager.getInstance();
     }
 
-    public void setCurrentTripId(long tripId) {
-        mCurrentTripId = tripId;
-    }
-
     public TripDTO getCurrentTrip(){
         return DatabaseManager.getInstance().getTrip(mCurrentTripId);
     }
@@ -47,15 +43,19 @@ public class CarbonApplicationManager {
         return mCurrentTripId;
     }
 
+    public void setCurrentTripId(long tripId) {
+        mCurrentTripId = tripId;
+    }
 
-    public void setCurrentStationDataName(String stationDataDTOName) {
-        mCurrentStationDataName = stationDataDTOName;}
-
-    public StationDataDTO getCurrentStationData(){
+    public StationDataDTO getCurrentStationData() {
         return DatabaseManager.getInstance().getStationData(mCurrentStationDataName);
     }
 
-    public String getCurrentStationDataName(){
+    public String getCurrentStationDataName() {
         return mCurrentStationDataName;
+    }
+
+    public void setCurrentStationDataName(String stationDataDTOName) {
+        mCurrentStationDataName = stationDataDTOName;
     }
 }

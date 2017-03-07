@@ -1,7 +1,7 @@
 package com.mobithink.carbon.webservices;
 
-import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 
 import java.util.List;
@@ -28,5 +28,5 @@ public interface LineService {
     Call<List<StationDTO>> getLineStations(@Path("busLineId") Long lineID);
 
     @POST("/mobithink/busline/create")
-    Call<BusLineDTO> register(@Body BusLineDTO busLineDTO);
+    Call<Void> register(@Body BusLineDTO busLineDTO);
 }

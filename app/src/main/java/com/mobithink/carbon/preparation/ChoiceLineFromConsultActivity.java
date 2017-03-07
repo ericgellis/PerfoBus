@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.consultation.ConsultationActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -30,7 +28,6 @@ import com.mobithink.carbon.webservices.LineService;
 import com.mobithink.carbon.webservices.TripService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,17 +54,13 @@ public class ChoiceLineFromConsultActivity extends Activity {
     ArrayAdapter<StationDTO> directionAdapter;
     CityDTO mSelectedCityDTO;
     BusLineDTO mSelectedLineDTO;
-
-    private StationDTO mSelectedDirection;
-    private ArrayList<StationDTO> listStation;
-
     Toolbar mConsultLineToolBar;
-
     ListView tripResultListView;
     TripResultListViewAdapter tripResultListViewAdapter;
     ArrayList<TripDTO> mTripList;
-
     Button mConsultButton;
+    private StationDTO mSelectedDirection;
+    private ArrayList<StationDTO> listStation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +68,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_choice_line_from_consult);
 
-        tripResultListView = (ListView)findViewById(R.id.tripResultListView);
+        tripResultListView = (ListView) findViewById(R.id.tripResultListView);
         tripResultListViewAdapter = new TripResultListViewAdapter(this, mTripList);
         tripResultListView.setAdapter(tripResultListViewAdapter);
         mTripList = new ArrayList<>();
@@ -124,7 +117,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mWriteLineTextInputEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSelectedCityDTO != null) {
+                if (mSelectedCityDTO != null) {
                     new AlertDialog.Builder(ChoiceLineFromConsultActivity.this)
                             .setCancelable(true)
                             .setAdapter(lineAdapter, new DialogInterface.OnClickListener() {
@@ -137,7 +130,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
                             })
                             .create()
                             .show();
-                }else{
+                } else {
                     mWriteCityNameTextInputLayout.setErrorEnabled(true);
                     mWriteCityNameTextInputLayout.setError("Vous devez sélectionner une ville");
                 }
@@ -147,7 +140,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mWriteDirectionTextInputEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSelectedLineDTO != null) {
+                if (mSelectedLineDTO != null) {
 
                     new AlertDialog.Builder(ChoiceLineFromConsultActivity.this)
                             .setCancelable(true)
@@ -157,14 +150,14 @@ public class ChoiceLineFromConsultActivity extends Activity {
                                     mSelectedDirection = directionAdapter.getItem(which);
                                     mWriteDirectionTextInputEditText.setText(mSelectedDirection.getStationName());
 
-                                    if(mSelectedDirection.equals(directionAdapter.getItem(0))){
+                                    if (mSelectedDirection.equals(directionAdapter.getItem(0))) {
                                         Collections.reverse(listStation);
                                     }
                                 }
                             })
                             .create()
                             .show();
-                }else{
+                } else {
                     mWriteLineTextInputLayout.setErrorEnabled(true);
                     mWriteLineTextInputLayout.setError("Vous devez sélectionner une ligne");
                 }
@@ -190,7 +183,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
     }
 
-    public void showResultListView(){
+    public void showResultListView() {
 
         TripService tripService = RetrofitManager.build().create(TripService.class);
         Call<List<TripDTO>> call = tripService.showTripList(mSelectedLineDTO.getId());
@@ -234,7 +227,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
                         listStation.addAll(response.body());
 
                         directionAdapter.clear();
-                        if(listStation.size()>= 2) {
+                        if (listStation.size() >= 2) {
                             directionAdapter.add(listStation.get(0));
                             directionAdapter.add(listStation.get(listStation.size() - 1));
                             directionAdapter.notifyDataSetChanged();

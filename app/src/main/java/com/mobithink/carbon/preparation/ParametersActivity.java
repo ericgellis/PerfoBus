@@ -3,13 +3,11 @@ package com.mobithink.carbon.preparation;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.managers.PreferenceManager;

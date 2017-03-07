@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 public class Location implements JSONPopulator {
     private String city, country, region;
+
     @Override
     public void populate(JSONObject data) {
         city = data.optString("city");

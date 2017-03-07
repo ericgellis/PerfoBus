@@ -20,17 +20,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.CheckBox;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
-import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.webservices.LineService;
 
@@ -49,21 +48,15 @@ import retrofit2.Response;
 
 public class CreateLineActivity extends Activity {
 
-    private TextInputLayout mWriteLineTextInputLayout;
-    private TextInputLayout mWriteCityNameTextInputLayout;
-
     AutoCompleteTextView mCityAutocompleteView;
     ArrayAdapter<CityDTO> cityAdapter;
-
-    private LinearLayout mStationEditTextContainer;
-
-    private TextInputEditText mWriteLineTextInputEditText;
-
-    private ArrayList<EditText> mListStationEditText = new ArrayList<>();
     CityDTO mSelectedCityDTO;
-
     CityDTO mChosenCity;
-
+    private TextInputLayout mWriteLineTextInputLayout;
+    private TextInputLayout mWriteCityNameTextInputLayout;
+    private LinearLayout mStationEditTextContainer;
+    private TextInputEditText mWriteLineTextInputEditText;
+    private ArrayList<EditText> mListStationEditText = new ArrayList<>();
     private Button mCreateLineButton;
 
     private Toolbar mNewLineToolBar;
@@ -205,19 +198,19 @@ public class CreateLineActivity extends Activity {
     public void registerLine(BusLineDTO busLineDTO){
         LineService lineService = RetrofitManager.build().create(LineService.class);
 
-        Call<BusLineDTO> call = lineService.register(busLineDTO);
+        Call<Void> call = lineService.register(busLineDTO);
 
-        call.enqueue(new Callback<BusLineDTO>() {
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<BusLineDTO> call, Response<BusLineDTO> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d("Success", "youhoo");
 
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("city",mSelectedCityDTO.getName());
+                        bundle.putSerializable("city", mSelectedCityDTO.getName());
                         BusLineDTO mWrittenLine = new BusLineDTO();
-                        bundle.putSerializable("line",mWriteLineTextInputLayout.getEditText().toString());
+                        bundle.putSerializable("line", mWriteLineTextInputLayout.getEditText().toString());
                         Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
                         intent.putExtras(bundle);
                         getApplication().startActivity(intent);
@@ -230,7 +223,7 @@ public class CreateLineActivity extends Activity {
                 }
             }
             @Override
-            public void onFailure(Call<BusLineDTO> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
 
             }
         });
@@ -241,7 +234,6 @@ public class CreateLineActivity extends Activity {
         super.onResume();
 
         getCities();
-
 
 
     }

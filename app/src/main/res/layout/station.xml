@@ -104,9 +104,9 @@
         android:layout_width="@dimen/regular_size_rounded_button"
         android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/unrealizedStopButton"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginEnd="@dimen/regular_margin"
+        android:layout_toStartOf="@+id/unrealizedStopButton"
         android:background="@mipmap/ic_event_information"/>
 
     <Button

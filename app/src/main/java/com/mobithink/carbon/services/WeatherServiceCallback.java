@@ -8,5 +8,6 @@ import com.mobithink.carbon.services.weatherdata.Channel;
 
 public interface WeatherServiceCallback {
     void ServiceSuccess(Channel channel);
+
     void ServiceFailure(Exception exception);
 }

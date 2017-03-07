@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.event.BFConstant;
@@ -37,11 +35,10 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     TextView minDistanceBetweenStations;
     TextView averageDistanceBetweenStations;
     TextView maxDistanceBetweenStations;
-
-    private GoogleMap mGoogleMap;
-    private GoogleApiClient mGoogleApiClient;
     double longitude;
     double latitude;
+    private GoogleMap mGoogleMap;
+    private GoogleApiClient mGoogleApiClient;
 
     public ProvisionTab1() {
     }
@@ -115,19 +112,21 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
             }
         }
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         requestLocationUpdate();
     }
 
-    private void requestLocationUpdate(){
+    private void requestLocationUpdate() {
 
         if (ContextCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             LocationRequest mLocationRequest = LocationRequest.create();
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

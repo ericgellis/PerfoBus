@@ -51,7 +51,7 @@ public class DatabaseManager {
 
     /*************** TripDTO **************/
 
-    public void startNewTrip(long lineID, TripDTO tripDTO){
+    public void startNewTrip(long lineID, TripDTO tripDTO) {
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_LINE_ID, lineID);
@@ -67,7 +67,7 @@ public class DatabaseManager {
     }
 
 
-    public long updateTrip (long tripId, TripDTO tripDTO) {
+    public long updateTrip(long tripId, TripDTO tripDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, getDateTime());
         values.put(DatabaseOpenHelper.KEY_ATMO, tripDTO.getAtmo());
@@ -286,7 +286,7 @@ public class DatabaseManager {
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(StationDataDTOName);
-        Log.i(TAG, "A station event has been created : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime "+ eventDTO.getEndTime());
+        Log.i(TAG, "A station event has been created : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
 
         return eventId;
     }
@@ -299,13 +299,13 @@ public class DatabaseManager {
 
         getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(eventDTO.getId())});
-        Log.i(TAG, "A event has been updated : id = " +  eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime "+ eventDTO.getEndTime());
+        Log.i(TAG, "A event has been updated : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
     }
 
     public void deleteEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, "null");
-        values.put(DatabaseOpenHelper.KEY_LATITUDE,"null");
+        values.put(DatabaseOpenHelper.KEY_LATITUDE, "null");
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, "null");
 
         getOpenedDatabase().delete(DatabaseOpenHelper.TABLE_EVENT, DatabaseOpenHelper.KEY_ID + " = ?",
@@ -324,13 +324,13 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, stationDataDTO.getStartTime());
 
         long stationDataId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, null, values);
-        Log.i(TAG, "A new station has been created : id = " +  stationDataId + ", for TripId " + tripId);
+        Log.i(TAG, "A new station has been created : id = " + stationDataId + ", for TripId " + tripId);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(stationDataDTO.getStationName());
         return stationDataId;
     }
 
     public void updateStationData(long tripId, StationDataDTO stationDataDTO) {
-         openedDatabase = mDataBase.getWritableDatabase();
+        openedDatabase = mDataBase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_COME_IN, stationDataDTO.getNumberOfComeIn());
@@ -344,10 +344,10 @@ public class DatabaseManager {
         openedDatabase.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(stationDataDTO.getId())});
 
-        Log.i(TAG, "A station has been updated : id = " +  stationDataDTO.getId() + ", for TripId " + tripId + ", with endTime "+ stationDataDTO.getEndTime());
+        Log.i(TAG, "A station has been updated : id = " + stationDataDTO.getId() + ", for TripId " + tripId + ", with endTime " + stationDataDTO.getEndTime());
     }
 
-    public void deleteStationData(long tripId, StationDataDTO stationDataDTO){
+    public void deleteStationData(long tripId, StationDataDTO stationDataDTO) {
 
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_TRIP_ID, tripId);

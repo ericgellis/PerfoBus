@@ -1,15 +1,13 @@
 package com.mobithink.carbon;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -17,16 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity;
 import com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity;
 import com.mobithink.carbon.preparation.ParametersActivity;
-import com.mobithink.carbon.webservices.LineService;
 import com.mobithink.carbon.webservices.TechnicalService;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +30,12 @@ import retrofit2.Response;
  * status bar and navigation/system bar) with user interaction.
  */
 public class SplashScreenActivity extends AppCompatActivity {
+
+    private static final int CHANGE_PARAMETER_ACTION = 3;
+    private static final int ANALYSE_LINE_ACTION = 2;
+    private static final int CONSULT_LINE_ACTION = 1;
+
+    View mRootView;
 
     Button mAnalyzeButton;
     Button mConsultButton;
@@ -57,6 +56,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         actionBar.hide();
 
         setContentView(R.layout.activity_splash_screen);
+
+        mRootView = findViewById(R.id.splashactivity_rootview);
 
         mAppVersionTextView = (TextView) findViewById(R.id.appversion_textview);
 
@@ -79,21 +80,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         mAnalyzeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePageToChooseLine();
+                launchAnalyse();
             }
         });
 
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePageToChooseLineFromConsult();
+                launchConsult();
             }
         });
 
         mParametersSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePageToParameters();
+                launchParametersActivity();
             }
         });
     }
@@ -120,6 +121,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         break;
                     default:
                         mServerStatusView.setBackground(getDrawable(R.drawable.server_offline_circle_status));
+                        checkServerStatus();
                         break;
                 }
             }
@@ -127,22 +129,31 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 mServerStatusView.setBackground(getDrawable(R.drawable.server_offline_circle_status));
+                checkServerStatus();
             }
         });
     }
 
-    public void changePageToChooseLine(){
+    public void launchAnalyse() {
         Intent chooseLineFromAnalyze = new Intent(this, ChoiceLineFromAnalyzeActivity.class);
-        this.startActivity(chooseLineFromAnalyze);
+        this.startActivityForResult(chooseLineFromAnalyze, ANALYSE_LINE_ACTION);
     }
 
-    public void changePageToChooseLineFromConsult(){
+    public void launchConsult() {
         Intent chooseLineFromConsult = new Intent(this, ChoiceLineFromConsultActivity.class);
-        this.startActivity(chooseLineFromConsult);
+        this.startActivityForResult(chooseLineFromConsult, CONSULT_LINE_ACTION);
     }
 
-    public void changePageToParameters(){
+    public void launchParametersActivity() {
         Intent chooseParameters = new Intent(this, ParametersActivity.class);
-        this.startActivity(chooseParameters);
+        this.startActivityForResult(chooseParameters, CHANGE_PARAMETER_ACTION);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CHANGE_PARAMETER_ACTION && resultCode == Activity.RESULT_OK) {
+            Snackbar.make(mRootView, "Les paramêtres ont été modifiés avec succès", Snackbar.LENGTH_LONG).show();
+        }
     }
 }

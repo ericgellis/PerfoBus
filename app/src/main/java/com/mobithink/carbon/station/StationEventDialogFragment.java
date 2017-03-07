@@ -1,7 +1,6 @@
 package com.mobithink.carbon.station;
 
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +19,6 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +28,9 @@ import java.util.List;
 
 public class StationEventDialogFragment extends DialogFragment {
 
-    private ListView mStationEventListView;
-
-    private IEventSelectedListener mListener;
-
     EventDTO eventDTO;
+    private ListView mStationEventListView;
+    private IEventSelectedListener mListener;
 
     @Nullable
     @Override

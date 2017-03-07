@@ -1,110 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/choicelineactivity_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/analyzeLineToolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@color/mobiThinkBlue"
         android:background="@color/veryLightGrey"
-        app:navigationIcon="@mipmap/ic_blue_mobithink_arrow"/>
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@mipmap/ic_blue_mobithink_arrow"
+        app:titleTextColor="@color/mobiThinkBlue" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/city_textinputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="@dimen/regular_margin"
         android:layout_below="@+id/analyzeLineToolBar"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginTop="20dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/MyErrorText">
         <AutoCompleteTextView
             android:id="@+id/Writing_City_Name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
             android:hint="@string/cityName"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:imeOptions="actionDone"/>
+            android:maxLines="1"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/input_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/line_textinputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
         android:layout_below="@+id/city_textinputlayout"
-        app:errorTextAppearance="@style/MyErrorText"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:clickable="true"
         app:errorEnabled="true"
-        android:clickable="true">
+        app:errorTextAppearance="@style/MyErrorText">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/Line_edtitext"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
+            android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:cursorVisible="false"
-            android:hint="@string/lineName" />
+            android:hint="@string/lineName"
+            android:maxLines="1"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/input_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/direction_textinputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
         android:layout_below="@+id/line_textinputlayout"
-        app:errorTextAppearance="@style/MyErrorText"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:clickable="true"
         app:errorEnabled="true"
-        android:clickable="true">
+        app:errorTextAppearance="@style/MyErrorText">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/Writing_Direction"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
+            android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:cursorVisible="false"
-            android:hint="@string/directionName" />
+            android:hint="@string/directionName"
+            android:maxLines="1"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/input_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/capacity_textinputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
         android:layout_below="@+id/direction_textinputlayout"
-        app:errorTextAppearance="@style/MyErrorText"
-        app:errorEnabled="true">
+        android:layout_marginStart="@dimen/regular_margin"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/MyErrorText">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/Writing_Vehicle_Capacity"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@color/primary_text"
-            android:maxLines="1"
             android:hint="@string/vehicleCapacity"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:maxLines="1"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/input_text_size" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/createNewLine"
         android:layout_width="@dimen/regular_size_rounded_button"
         android:layout_height="@dimen/regular_size_rounded_button"
-        android:layout_below="@+id/capacity_textinputlayout"
         android:layout_alignParentEnd="true"
+        android:layout_below="@+id/capacity_textinputlayout"
         android:layout_marginEnd="16dp"
         android:background="@mipmap/ic_green_plus"/>
     
@@ -113,7 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
+        android:background="@color/veryLightGrey"
         android:text="@string/start"
-        android:textColor="@color/mobiThinkBlue"
-        android:background="@color/veryLightGrey"/>
+        android:textColor="@color/mobiThinkBlue" />
 </RelativeLayout>

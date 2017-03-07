@@ -2,7 +2,6 @@ package com.mobithink.carbon.webservices;
 
 import com.mobithink.carbon.database.model.StationDTO;
 
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;

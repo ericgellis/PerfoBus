@@ -1,7 +1,6 @@
 package com.mobithink.carbon.consultation.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart;
 import org.achartengine.chart.CombinedXYChart;
 import org.achartengine.chart.LineChart;
-import org.achartengine.chart.PointStyle;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -45,7 +43,7 @@ public class CapacityTab4 extends GenericTabFragment {
 
     GraphicalView capacityChartGraphicalView;
     //CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 4)};
-    CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2)};
+    CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[]{new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(BarChart.TYPE, 2)};
     // Creating a dataset to hold each series
     XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
     // Creating a XYMultipleSeriesRenderer to customize the whole chart
@@ -94,20 +92,19 @@ public class CapacityTab4 extends GenericTabFragment {
     @Override
     public void onResume() {
         super.onResume();
-           getTripDTO();
+        getTripDTO();
 
-         if (capacityChartGraphicalView == null) {
+        if (capacityChartGraphicalView == null) {
             initCombinedChart();
-             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(getContext(), dataset, multiRenderer, types);
+            capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(getContext(), dataset, multiRenderer, types);
             capacityChartLinearLayout.addView(capacityChartGraphicalView);
         } else {
-             capacityChartGraphicalView.repaint();
+            capacityChartGraphicalView.repaint();
         }
     }
 
 
-
-    public void  movementByStationMethod(){
+    public void movementByStationMethod() {
         /*if (capacityChartGraphicalView == null) {
             initBarCombinedChart();
             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
@@ -119,7 +116,7 @@ public class CapacityTab4 extends GenericTabFragment {
         capacityLess50.setVisibility(View.VISIBLE);*/
     }
 
-    public void detailByStationMethod (){
+    public void detailByStationMethod() {
         /*if (capacityChartGraphicalView == null) {
             initCombinedChart();
             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
@@ -131,25 +128,25 @@ public class CapacityTab4 extends GenericTabFragment {
         capacityLess50.setVisibility(View.GONE);*/
     }
 
-    public void initCombinedChart(){
+    public void initCombinedChart() {
 
 
-        String[] mStationName ;
-        Integer [] stationNumber;
+        String[] mStationName;
+        Integer[] stationNumber;
         int maxPeopleNumber;
-        Integer [] peopleNumberInBus;
-        Integer [] peopleNumberComeInBus;
-        Integer [] peopleNumberGoOutBus;
+        Integer[] peopleNumberInBus;
+        Integer[] peopleNumberComeInBus;
+        Integer[] peopleNumberGoOutBus;
 
         ArrayList<String> names = new ArrayList<>();
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
             names.add(stationDataDTO.getStationName());
         }
         mStationName = new String[names.size()];
         mStationName = names.toArray(mStationName);
 
         ArrayList<Integer> stationNb = new ArrayList<>();
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
             stationNb.add(stationDataDTO.getStationStep());
         }
         stationNumber = new Integer[stationNb.size()];
@@ -158,17 +155,17 @@ public class CapacityTab4 extends GenericTabFragment {
         maxPeopleNumber = getTripDTO().getVehicleCapacity();
 
         ArrayList<Integer> peopleNbComeInBus = new ArrayList<>();
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
             peopleNbComeInBus.add(stationDataDTO.getNumberOfComeIn());
         }
         peopleNumberComeInBus = new Integer[peopleNbComeInBus.size()];
         peopleNumberComeInBus = peopleNbComeInBus.toArray(peopleNumberComeInBus);
 
         ArrayList<Integer> peopleNbGoOutBus = new ArrayList<>();
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
             peopleNbGoOutBus.add(stationDataDTO.getNumberOfGoOut());
         }
-        peopleNumberGoOutBus= new Integer[peopleNbGoOutBus.size()];
+        peopleNumberGoOutBus = new Integer[peopleNbGoOutBus.size()];
         peopleNumberGoOutBus = peopleNbGoOutBus.toArray(peopleNumberComeInBus);
 
 
@@ -182,7 +179,7 @@ public class CapacityTab4 extends GenericTabFragment {
         XYSeries peopleNumberGoOutSeries = new XYSeries("Nombre de personnes descendant du bus");
 
         // Adding data to XYSeries for maximal capacity of bus, XYSeries for number of people in bus, XYSeries for number of people come in bus and XYSeries for number of people go out bus
-        for (int i = 0; i<stationNumber.length; i++){
+        for (int i = 0; i < stationNumber.length; i++) {
             maxCapacitySeries.add(stationNumber[i], maxPeopleNumber);
             //peopleNumberInBusSeries.add(stationNumber[i],peopleNumberInBus[i]);
             peopleNumberComeInSeries.add(stationNumber[i], peopleNumberComeInBus[i]);
@@ -218,7 +215,7 @@ public class CapacityTab4 extends GenericTabFragment {
 
 
         //Creating XYSeriesRenderer to customize peopleNumberGoOutSeries
-        XYSeriesRenderer  peopleNumberGoOutRenderer = new XYSeriesRenderer();
+        XYSeriesRenderer peopleNumberGoOutRenderer = new XYSeriesRenderer();
         peopleNumberGoOutRenderer.setColor(R.color.red_chart);
         peopleNumberGoOutRenderer.setFillPoints(true);
         peopleNumberGoOutRenderer.setLineWidth(2);
@@ -228,7 +225,7 @@ public class CapacityTab4 extends GenericTabFragment {
         multiRenderer.setZoomButtonsVisible(true);
         multiRenderer.setYLabelsVerticalPadding(5);
         multiRenderer.setBarSpacing(4);
-        for(int i=0;i<stationNumber.length;i++){
+        for (int i = 0; i < stationNumber.length; i++) {
             multiRenderer.addXTextLabel(i, mStationName[i]);
         }
 
@@ -240,7 +237,7 @@ public class CapacityTab4 extends GenericTabFragment {
         multiRenderer.setSelectableBuffer(10);
     }
 
-    public void initBarCombinedChart(){
+    public void initBarCombinedChart() {
 
     }
 

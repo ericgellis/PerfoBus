@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MobiThink</string>
+    <string name="app_name">Mobithink</string>
 
     <!-- API Key -->
     <string name="google_maps_api">AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo</string>
