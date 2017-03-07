@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.SplashScreenActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -169,7 +168,13 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         mCityNameTextView.setText(mCity.getName());
         mLineNameTextView.setText(mLine.getName());
         mDirectionNameTextView.setText(mDirection.getStationName());
-        mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+
+        if (step < mStationList.size()) {
+            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+        } else {
+            mNextStationNameTextView.setText("Terminus");
+        }
+
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
@@ -213,15 +218,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         alertDialogBuilder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                stopTrip();
+                deleteTrip();
             }
         });
 
         alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteTrip();
-                //dialog.cancel();
+                dialog.cancel();
             }
         });
 
@@ -229,7 +233,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
         alertDialog.show();
     }
 
-    public void stopTrip() {
+    public void endTrip() {
         TripDTO tripDTO = new TripDTO();
         tripDTO.setEndTime(System.currentTimeMillis());
         tripDTO.setAtmo(Integer.parseInt(mAtmoNumberTextView.getText().toString()));
@@ -252,6 +256,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
     }
 
     private void sendTripDto(long tripId) {
+
         TripDTO tripDto = DatabaseManager.getInstance().getFullTripDTODataToSend(tripId);
 
         TripService tripService = RetrofitManager.build().create(TripService.class);
@@ -263,9 +268,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 201:
-                        Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        setResult(RESULT_OK);
                         finish();
                         break;
                     default:
@@ -307,18 +310,22 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback 
 
         if (requestCode == ANALYSE_STATION_ACTION && resultCode == Activity.RESULT_OK) {
             step++;
-            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
-            mStationAdapter.makeStep();
-            mStationAdapter.notifyDataSetChanged();
-            mSectionChronometer.stop();
-            mSectionChronometer.start();
+            if (step < mStationList.size()) {
+                mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+                mStationAdapter.makeStep();
+                mStationAdapter.notifyDataSetChanged();
+                mSectionChronometer.stop();
+                mSectionChronometer.start();
+            } else {
+                endTrip();
+            }
+
         }
     }
 
     public void deleteTrip() {
         DatabaseManager.getInstance().deleteTrip(CarbonApplicationManager.getInstance().getCurrentTripId());
-
-        Intent toGoSplashScreenactivity = new Intent(this, SplashScreenActivity.class);
-        startActivity(toGoSplashScreenactivity);
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

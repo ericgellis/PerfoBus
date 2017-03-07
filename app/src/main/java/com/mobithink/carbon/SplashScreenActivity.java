@@ -35,6 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private static final int ANALYSE_LINE_ACTION = 2;
     private static final int CONSULT_LINE_ACTION = 1;
 
+
     View mRootView;
 
     Button mAnalyzeButton;
@@ -152,8 +153,22 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CHANGE_PARAMETER_ACTION && resultCode == Activity.RESULT_OK) {
-            Snackbar.make(mRootView, "Les paramêtres ont été modifiés avec succès", Snackbar.LENGTH_LONG).show();
+        switch (requestCode) {
+            case CHANGE_PARAMETER_ACTION:
+                if (resultCode == Activity.RESULT_OK) {
+                    Snackbar.make(mRootView, "Les paramêtres ont été modifiés avec succès", Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            case ANALYSE_LINE_ACTION:
+                if (resultCode == Activity.RESULT_OK) {
+                    Snackbar.make(mRootView, "La saisie du trajet à été sauvegardée", Snackbar.LENGTH_LONG).show();
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    Snackbar.make(mRootView, "La saisie du trajet à été annulée", Snackbar.LENGTH_LONG).show();
+                }
+                break;
         }
+
+
     }
 }
