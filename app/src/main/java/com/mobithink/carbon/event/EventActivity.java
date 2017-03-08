@@ -232,7 +232,6 @@ public class EventActivity extends Activity implements OnMapReadyCallback, Googl
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override

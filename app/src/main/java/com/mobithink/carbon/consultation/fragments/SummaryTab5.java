@@ -27,7 +27,6 @@ public class SummaryTab5 extends GenericTabFragment {
     ImageView mWeatherImageView;
 
     TextView mWeatherTemperatureTextView;
-    TextView mAtmoNumberTextView;
     TextView mCityNameTextView;
     TextView mLineNameTextView;
     TextView mDirectionNameTextView;
@@ -53,7 +52,6 @@ public class SummaryTab5 extends GenericTabFragment {
         mWeatherImageView = (ImageView) rootView.findViewById(R.id.weatherImageView);
 
         mWeatherTemperatureTextView = (TextView) rootView.findViewById(R.id.weatherTemperatureTextView);
-        mAtmoNumberTextView = (TextView) rootView.findViewById(R.id.atmoNumberTextView);
         mCityNameTextView = (TextView) rootView.findViewById(R.id.cityNameTextView);
         mLineNameTextView = (TextView) rootView.findViewById(R.id.lineNameTextView);
         mDirectionNameTextView = (TextView) rootView.findViewById(R.id.directionNameTextView);
@@ -79,7 +77,6 @@ public class SummaryTab5 extends GenericTabFragment {
         Picasso.with(getContext()).load(getTripDTO().getWeather()).into(mWeatherImageView);
 
         mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
-        mAtmoNumberTextView.setText(String.valueOf(getTripDTO().getAtmo()));
         //mCityNameTextView.setText(busLineDTO.getCityDto().getName());
         //mLineNameTextView.setText(busLineDTO.getName());
         //mDirectionNameTextView.setText(mDirection.getStationName());

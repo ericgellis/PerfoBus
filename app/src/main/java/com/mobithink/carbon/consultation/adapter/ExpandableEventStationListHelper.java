@@ -18,27 +18,27 @@ import java.util.Locale;
 
 public class ExpandableEventStationListHelper  {
 
-
-
     public static HashMap<String, List<String>> getData(TripDTO tripDTO) {
 
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
         List<String> listDataHeader  = new ArrayList<String>();
         List<String> stationNameList = new ArrayList<String>();
-
+        long eventInStationTotalDuration = 0;
+        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
         for(EventDTO eventDTO : tripDTO.getEventDTOList()){
             for (int i = 0; i < tripDTO.getEventDTOList().size(); i++) {
                 if (eventDTO != null && eventDTO.getStationName() != null) {
-
                     listDataHeader.add(eventDTO.getEventName());
 
                     long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
                     String timeString = timeFormat.format(eventDuration);
                     stationNameList.add(eventDTO.getStationName() + " - " + timeString);
+                    eventInStationTotalDuration += eventDuration;
                     expandableListDetail.put(listDataHeader.get(i),stationNameList);
                 }
+                //String eventInStationTotalDurationString = timeFormat.format( eventInStationTotalDuration);
+                //listDataHeader.add( " - " + eventInStationTotalDurationString);
 
             }
         }

@@ -1,44 +1,33 @@
 package com.mobithink.carbon.consultation.fragments;
 
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.event.BFConstant;
+import com.mobithink.carbon.database.model.RollingPointDTO;
+import com.mobithink.carbon.database.model.StationDataDTO;
+import com.mobithink.carbon.utils.DrawBusTrip;
 
-import static com.mobithink.carbon.event.EventActivity.UPDATE_LOCATION_INTERVAL;
 
-
-public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
 
     MapView mtripMapView;
     TextView minDistanceBetweenStations;
     TextView averageDistanceBetweenStations;
     TextView maxDistanceBetweenStations;
-    double longitude;
     double latitude;
+    double longitude;
+
     private GoogleMap mGoogleMap;
-    private GoogleApiClient mGoogleApiClient;
+
 
     public ProvisionTab1() {
     }
@@ -48,34 +37,10 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_provision_tab1, container, false);
 
-        /*mGoogleApiClient = new GoogleApiClient.Builder(getContext()).addApi(LocationServices.API).addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-        mGoogleApiClient.connect();*/
-
         mtripMapView = (MapView) rootView.findViewById(R.id.tripMapView);
         mtripMapView.onCreate(savedInstanceState);
         mtripMapView.onResume();
-
-        /*try {
-            MapsInitializer.initialize(this.getContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }*/
-
-        mtripMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-
-                mGoogleMap = mMap;
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mGoogleMap.setBuildingsEnabled(true);
-                //enableLocationForGoogleMap();
-
-            }
-        });
+        mtripMapView.getMapAsync(this);
 
         minDistanceBetweenStations = (TextView) rootView.findViewById(R.id.minDistance);
         averageDistanceBetweenStations = (TextView) rootView.findViewById(R.id.averageDistance);
@@ -90,68 +55,35 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         getTripDTO();
     }
 
-    public void onLocationAuthorizationGranted() {
-
-        //enableLocationForGoogleMap();
-        //requestLocationUpdate();
-    }
-
-    private void enableLocationForGoogleMap() {
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mGoogleMap.setMyLocationEnabled(true);
-        } else {
-
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        BFConstant.PERMISSIONS_REQUEST_FINE_LOCATION);
-            }
-        }
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
+                .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+                .run();
 
-    }
+        MarkerOptions markers = new MarkerOptions();
+        markers.position(new LatLng(43.600000, 1.433333));
+        mGoogleMap.addMarker(markers);
+        markers.position(new LatLng(43.6667, 1.4833));
+        mGoogleMap.addMarker(markers);
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        requestLocationUpdate();
-    }
-
-    private void requestLocationUpdate() {
-
-        if (ContextCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            LocationRequest mLocationRequest = LocationRequest.create();
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            mLocationRequest.setInterval(UPDATE_LOCATION_INTERVAL);
-
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
+        /*for(RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
+            for(int i = 0; i<= getTripDTO().getRollingPointDTOList().size(); i++) {
+                DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong())
+                        .setToLatLong(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+                        .run();
+            }
         }
+
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            MarkerOptions markers = new MarkerOptions();
+            markers.position(new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()));
+            mGoogleMap.addMarker(markers);
+        }*/
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        Log.i("BFMapFragment", "GoogleApiClient connection has been suspended");
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        longitude = location.getLongitude();
-        latitude = location.getLatitude();
-
+    public void afterDraw(String result) {
     }
 }

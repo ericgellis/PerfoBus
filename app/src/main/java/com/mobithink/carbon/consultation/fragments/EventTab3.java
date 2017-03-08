@@ -126,14 +126,33 @@ public class EventTab3 extends GenericTabFragment {
             stationNameList.add(stationDataDTO.getStationName());
         }
 
+        String totalTimeString;
+        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
+
+        long eventTotalDuration = 0;
         for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+
             if (eventDTO != null && eventDTO.getStationName() == null) {
                 long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
                 String timeString = timeFormat.format(eventDuration);
-                eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;}
+                eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
+                eventTotalDuration+=eventDuration;
+
+            }
+            totalTimeString = timeFormat.format(eventTotalDuration);
+            eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+
         }
 
+        long eventInStationTotalDuration = 0;
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+            if (eventDTO != null && eventDTO.getStationName() != null) {
+                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                eventInStationTotalDuration+=eventDuration;
+            }
+            totalTimeString = timeFormat.format(eventInStationTotalDuration);
+            eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+        }
     }
     
     public void showGeneralInformations(){

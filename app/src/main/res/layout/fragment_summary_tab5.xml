@@ -23,31 +23,6 @@
         android:textSize="@dimen/tablet_regular_size_text" />
 
     <TextView
-        android:id="@+id/atmoNumberTextView"
-        android:layout_width="@dimen/tablet_regular_size_rounded_button"
-        android:layout_height="@dimen/tablet_regular_size_rounded_button"
-        android:layout_alignBottom="@+id/weatherImageView"
-        android:layout_marginStart="@dimen/tablet_regular_margin"
-        android:layout_toEndOf="@+id/weatherImageView"
-        android:background="@drawable/texview_circle_design"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="70sp" />
-
-    <TextView
-        android:id="@+id/atmoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/weatherTemperatureTextView"
-        android:layout_below="@+id/atmoNumberTextView"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="@dimen/double_regular_margin"
-        android:layout_toEndOf="@+id/weatherImageView"
-        android:text="@string/atmo"
-        android:textColor="@color/black"
-        android:textSize="@dimen/tablet_regular_size_text" />
-
-    <TextView
         android:id="@+id/cityNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
