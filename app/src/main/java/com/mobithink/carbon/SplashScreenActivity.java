@@ -161,10 +161,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 break;
             case ANALYSE_LINE_ACTION:
                 if (resultCode == Activity.RESULT_OK) {
-                    Snackbar.make(mRootView, "La saisie du trajet à été sauvegardée", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRootView, "La saisie du trajet a été sauvegardée", Snackbar.LENGTH_LONG).show();
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
-                    Snackbar.make(mRootView, "La saisie du trajet à été annulée", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRootView, "La saisie du trajet a été annulée", Snackbar.LENGTH_LONG).show();
                 }
                 break;
         }
