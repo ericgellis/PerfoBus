@@ -1,13 +1,90 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.consultation.fragments.SpeedTab2">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/speedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="110dp"
+        android:text="@string/speed"
+        android:textSize="@dimen/tablet_regular_size_text"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/maxSpeedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/speedTextView"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
+        android:text="@string/max"
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <TextView
+        android:id="@+id/maxSpeedValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/maxSpeedTextView"
+        android:layout_toEndOf="@+id/maxSpeedTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:text="@string/max"
+        android:textColor="@color/green_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <TextView
+        android:id="@+id/averageSpeedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/maxSpeedTextView"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
+        android:text="@string/average"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <TextView
+        android:id="@+id/averageSpeedValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/averageSpeedTextView"
+        android:layout_toEndOf="@+id/averageSpeedTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <TextView
+        android:id="@+id/minSpeedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/averageSpeedTextView"
+        android:layout_marginEnd="150dp"
+        android:text="@string/min"
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <TextView
+        android:id="@+id/minSpeedValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/minSpeedTextView"
+        android:layout_toEndOf="@+id/minSpeedTextView"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:textColor="@color/red_chart"
+        android:textSize="@dimen/tablet_regular_size_text"/>
+
+    <LinearLayout
+        android:id="@+id/speedChartLayout"
+        android:layout_width="750dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.mobithink.carbon.consultation.fragments;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
@@ -66,7 +68,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         markers.position(new LatLng(43.600000, 1.433333));
         mGoogleMap.addMarker(markers);
         markers.position(new LatLng(43.6667, 1.4833));
-        mGoogleMap.addMarker(markers);
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(43.6667, 1.4833)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));
 
         /*for(RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
             for(int i = 0; i<= getTripDTO().getRollingPointDTOList().size(); i++) {

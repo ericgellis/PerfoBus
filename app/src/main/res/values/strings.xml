@@ -101,6 +101,9 @@
     <!-- provision_tab1-->
     <string name="interstation">Interstations</string>
 
+    <!-- speed_tab2-->
+    <string name="speed">Vitesse</string>
+
     <!--event_tab3-->
     <string name="total_trip">Parcours total</string>
     <string name="in_driving">En roulage </string>

@@ -108,7 +108,7 @@ public class CapacityTab4 extends GenericTabFragment {
         /*if (capacityChartGraphicalView == null) {
             initBarCombinedChart();
             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
-            capacityChartLinearLayout.addView(mCombinedChart);
+            capacityChartLinearLayout.addView(capacityChartGraphicalView);
         } else {
             capacityChartGraphicalView.repaint();
         }
@@ -120,7 +120,7 @@ public class CapacityTab4 extends GenericTabFragment {
         /*if (capacityChartGraphicalView == null) {
             initCombinedChart();
             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(this, dataset, multiRenderer, types);
-            capacityChartLinearLayout.addView(mCombinedChart);
+            capacityChartLinearLayout.addView(capacityChartGraphicalView);
         } else {
             capacityChartGraphicalView.repaint();
         }
@@ -222,7 +222,9 @@ public class CapacityTab4 extends GenericTabFragment {
         peopleNumberGoOutRenderer.setDisplayChartValues(true);
 
         multiRenderer.setXLabels(0);
-        multiRenderer.setZoomButtonsVisible(true);
+        multiRenderer.setZoomButtonsVisible(false);
+        multiRenderer.setZoomEnabled(false, false);
+        multiRenderer.setPanEnabled(false, false);
         multiRenderer.setYLabelsVerticalPadding(5);
         multiRenderer.setBarSpacing(4);
         for (int i = 0; i < stationNumber.length; i++) {
@@ -240,6 +242,4 @@ public class CapacityTab4 extends GenericTabFragment {
     public void initBarCombinedChart() {
 
     }
-
-
 }
