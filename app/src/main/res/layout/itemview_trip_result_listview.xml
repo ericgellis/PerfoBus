@@ -10,13 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginTop="@dimen/double_regular_margin"
         android:text="@string/recorded" />
 
     <TextView
         android:id="@+id/recordedTripOnDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/double_regular_margin" />
+        android:layout_marginStart="@dimen/double_regular_margin"
+        android:layout_marginTop="@dimen/double_regular_margin"/>
 
 
 </LinearLayout>

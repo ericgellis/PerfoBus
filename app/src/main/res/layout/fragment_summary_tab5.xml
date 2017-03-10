@@ -6,21 +6,20 @@
 
     <ImageView
         android:id="@+id/weatherImageView"
-        android:layout_width="@dimen/tablet_regular_size_rounded_button"
-        android:layout_height="@dimen/tablet_regular_size_rounded_button"
+        android:layout_width="@dimen/regular_size_rounded_button"
+        android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_marginEnd="@dimen/double_regular_margin"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="@dimen/double_regular_margin" />
 
     <TextView
         android:id="@+id/weatherTemperatureTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/weatherImageView"
-        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginBottom="@dimen/regular_margin"
         android:layout_marginStart="40dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/cityNameTextView"
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="@dimen/double_regular_margin" />
 
     <TextView
         android:id="@+id/lineNameTextView"
@@ -36,16 +35,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/cityNameTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginTop="@dimen/regular_margin" />
+        android:layout_marginBottom="@dimen/regular_margin" />
 
     <TextView
         android:id="@+id/directionNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lineNameTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/regular_margin"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/enteringDataTextView"
@@ -53,10 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/cityNameTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="90dp"
+        android:layout_marginEnd="40dp"
         android:text="@string/enteringData"
-        android:textColor="@color/black"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/enteredTimeTextView"
@@ -65,11 +61,10 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/enteringDataTextView"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="70dp"
-        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_marginEnd="34dp"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="50sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/enteredDateTextView"
@@ -77,126 +72,115 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/enteredTimeTextView"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_marginEnd="15dp"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="40sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/interstationNumber"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
         android:layout_alignBaseline="@+id/interstation"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="1"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/interstation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginStart="675dp"
-        android:layout_marginTop="275dp"
-        android:text="@string/interstation"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:layout_marginTop="125dp"
+        android:text="@string/interstation" />
 
     <TextView
         android:id="@+id/commercialSpeedNumber"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
         android:layout_alignBaseline="@+id/commercialSpeed"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="2"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/commercialSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/interstation"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginStart="675dp"
-        android:text="@string/commercial_speed"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:text="@string/commercial_speed" />
 
     <TextView
         android:id="@+id/averageLossNumber"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
         android:layout_alignBaseline="@+id/averageLoss"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="3"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/averageLoss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/commercialSpeed"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginStart="675dp"
-        android:text="@string/average_loss"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:text="@string/average_loss" />
 
     <TextView
         android:id="@+id/capacityNumber"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
         android:layout_alignBaseline="@+id/capacity"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="4"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/capacity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/averageLoss"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginStart="675dp"
-        android:text="@string/capacity"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:text="@string/capacity" />
 
     <TextView
         android:id="@+id/trafficNumber"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
         android:layout_alignBaseline="@+id/traffic"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="5"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/traffic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/capacity"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginStart="675dp"
-        android:text="@string/traffic"
-        android:textSize="@dimen/tablet_regular_size_text" />
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:text="@string/traffic" />
 
     <Button
         android:id="@+id/pdfButton"
-        android:layout_width="@dimen/tablet_regular_size_rounded_button"
-        android:layout_height="@dimen/tablet_regular_size_rounded_button"
+        android:layout_width="@dimen/regular_size_rounded_button"
+        android:layout_height="@dimen/regular_size_rounded_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"

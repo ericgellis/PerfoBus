@@ -7,15 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.utils.DrawBusTrip;
+
+import java.util.ArrayList;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
 
@@ -77,15 +83,21 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
             for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
                 polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
-                /*LatLng latLng = new LatLng(, );
-                stationLatLng = new PolylineOptions();
-                stationLatLng.add(latLng);
+
+                ArrayList<LatLng> latLngList = new ArrayList();
+                LatLng latLng = new LatLng( stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong());
+                latLngList.add(latLng);
+                for(int j = 0; j<latLngList.size(); j++){
+                    polylineOptions.add(latLngList.get(j));
+                }
 
             }
 
         }*/
 
         mGoogleMap.addPolyline(polylineOptions.geodesic(true).color(R.color.mobiThinkBlue));
+        //prepareBuilder(latLngList);
+        //googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
 
         /*mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
                 .geodesic(true));*/
