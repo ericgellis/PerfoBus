@@ -1,129 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.consultation.fragments.EventTab3">
 
-    <TextView
-        android:id="@+id/totalTrip"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:background="@color/lightBlue"
-        android:text="@string/total_trip"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/tablet_regular_size_text" />
-
-    <ListView
-        android:id="@+id/station_list_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/totalTrip"></ListView>
-
-    <RelativeLayout
-        android:id="@+id/mainRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible">
         <TextView
-            android:id="@+id/inDriving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="380dp"
-            android:layout_marginBottom="@dimen/double_regular_margin"
-            android:text="@string/in_driving"
-            android:textSize="@dimen/tablet_size_report"/>
-
-        <TextView
-            android:id="@+id/eventTotalDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inDriving"
-            android:layout_toEndOf="@+id/inDriving"
-            android:layout_marginStart="@dimen/regular_margin"
-            android:textSize="@dimen/tablet_size_report"/>
-
-        <TextView
-            android:id="@+id/lossTimePourcent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inDriving"
-            android:layout_toEndOf="@+id/eventTotalDuration"
-            android:layout_marginStart="@dimen/regular_margin"
-            android:textSize="@dimen/tablet_size_report"/>
+            android:id="@+id/totalTrip"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@color/lightBlue"
+            android:text="@string/total_trip"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
 
         <ListView
-            android:id="@+id/eventInDrivingListView"
+            android:id="@+id/station_list_view"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totalTrip"></ListView>
+
+        <RelativeLayout
+            android:id="@+id/mainRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/inDriving"
-            android:layout_marginBottom="@dimen/double_regular_margin"
-            android:layout_marginStart="400dp"
-            android:textSize="@dimen/tablet_size_report"
-            android:divider="@null"></ListView>
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/inDriving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="200dp"
+                android:layout_marginBottom="@dimen/double_regular_margin"
+                android:text="@string/in_driving" />
 
-        <TextView
-            android:id="@+id/inStation"
+            <TextView
+                android:id="@+id/eventTotalDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/inDriving"
+                android:layout_toEndOf="@+id/inDriving"
+                android:layout_marginStart="@dimen/regular_margin" />
+
+            <TextView
+                android:id="@+id/lossTimePourcent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/inDriving"
+                android:layout_toEndOf="@+id/eventTotalDuration"
+                android:layout_marginStart="@dimen/regular_margin" />
+
+            <ListView
+                android:id="@+id/eventInDrivingListView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inDriving"
+                android:layout_marginBottom="@dimen/double_regular_margin"
+                android:layout_marginStart="220dp"
+                android:divider="@null"></ListView>
+
+            <TextView
+                android:id="@+id/inStation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="200dp"
+                android:layout_below="@+id/eventInDrivingListView"
+                android:layout_marginBottom="@dimen/double_regular_margin"
+                android:text="@string/in_station" />
+
+            <TextView
+                android:id="@+id/eventInStationTotalDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/inStation"
+                android:layout_toEndOf="@+id/inStation"
+                android:layout_marginStart="@dimen/regular_margin" />
+
+            <TextView
+                android:id="@+id/stationLossTimePourcent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/inStation"
+                android:layout_toEndOf="@+id/eventInStationTotalDuration"
+                android:layout_marginStart="@dimen/regular_margin" />
+
+            <ExpandableListView
+                android:id="@+id/eventStationListView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inStation"
+                android:layout_marginStart="220dp"
+                android:divider="@null"></ExpandableListView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/detailedRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="380dp"
-            android:layout_below="@+id/eventInDrivingListView"
-            android:layout_marginBottom="@dimen/double_regular_margin"
-            android:text="@string/in_station"
-            android:textSize="@dimen/tablet_size_report"/>
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/stationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="200dp"
+                android:layout_marginBottom="@dimen/double_regular_margin" />
 
-        <TextView
-            android:id="@+id/eventInStationTotalDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inStation"
-            android:layout_toEndOf="@+id/inStation"
-            android:layout_marginStart="@dimen/regular_margin"
-            android:textSize="@dimen/tablet_size_report"/>
+            <ListView
+                android:id="@+id/eventList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="220dp"
+                android:layout_below="@+id/stationName"
+                android:divider="@null"></ListView>
 
-        <TextView
-            android:id="@+id/stationLossTimePourcent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inStation"
-            android:layout_toEndOf="@+id/eventInStationTotalDuration"
-            android:layout_marginStart="@dimen/regular_margin"
-            android:textSize="@dimen/tablet_size_report"/>
+        </RelativeLayout>
 
-        <ExpandableListView
-            android:id="@+id/eventStationListView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/inStation"
-            android:layout_marginStart="400dp"
-            android:divider="@null"></ExpandableListView>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/detailedRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/stationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="380dp"
-            android:layout_marginBottom="@dimen/double_regular_margin"
-            android:textSize="@dimen/tablet_size_report" />
-
-        <ListView
-            android:id="@+id/eventList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="400dp"
-            android:layout_below="@+id/stationName"
-            android:divider="@null"></ListView>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</ScrollView>

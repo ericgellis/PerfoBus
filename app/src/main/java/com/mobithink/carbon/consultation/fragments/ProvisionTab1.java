@@ -1,6 +1,6 @@
 package com.mobithink.carbon.consultation.fragments;
 
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +10,12 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.model.RollingPointDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.utils.DrawBusTrip;
-
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
 
@@ -25,11 +23,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     TextView minDistanceBetweenStations;
     TextView averageDistanceBetweenStations;
     TextView maxDistanceBetweenStations;
-    double latitude;
-    double longitude;
 
     private GoogleMap mGoogleMap;
-
+    PolylineOptions stationLatLng;
 
     public ProvisionTab1() {
     }
@@ -55,12 +51,46 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         getTripDTO();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.add(new LatLng(43.600000, 1.433333));
+        polylineOptions.add(new LatLng(43.607232, 1.451205));
+        polylineOptions.add(new LatLng(43.609942, 1.455105));
+        polylineOptions.add(new LatLng(43.614354, 1.462143));
+
+        polylineOptions.add(new LatLng(43.616467, 1.465061));
+        polylineOptions.add(new LatLng(43.619139, 1.468494));
+        polylineOptions.add(new LatLng(43.625414, 1.475361));
+        polylineOptions.add(new LatLng(43.631192, 1.478279));
+
+        polylineOptions.add(new LatLng(43.640572, 1.475275));
+        polylineOptions.add(new LatLng(43.646162, 1.470211));
+        polylineOptions.add(new LatLng(43.654422, 1.475961));
+        polylineOptions.add(new LatLng(43.6667, 1.4833));
+
+        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
+                polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
+                /*LatLng latLng = new LatLng(, );
+                stationLatLng = new PolylineOptions();
+                stationLatLng.add(latLng);
+
+            }
+
+        }*/
+
+        mGoogleMap.addPolyline(polylineOptions.geodesic(true).color(R.color.mobiThinkBlue));
+
+        /*mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
+                .geodesic(true));*/
+
+        /*DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
                 .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
                 .run();
 
@@ -68,12 +98,12 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         markers.position(new LatLng(43.600000, 1.433333));
         mGoogleMap.addMarker(markers);
         markers.position(new LatLng(43.6667, 1.4833));
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(43.6667, 1.4833)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(43.6667, 1.4833)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));*/
 
-        /*for(RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
-            for(int i = 0; i<= getTripDTO().getRollingPointDTOList().size(); i++) {
-                DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong())
-                        .setToLatLong(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            for(int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++) {
+                DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong())
+                        .setToLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
                         .run();
             }
         }

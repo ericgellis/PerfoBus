@@ -9,11 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="110dp"
-        android:text="@string/speed"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/speed" />
 
     <TextView
         android:id="@+id/maxSpeedTextView"
@@ -21,11 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/speedTextView"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="@dimen/regular_margin"
         android:text="@string/max"
-        android:textColor="@color/green_chart"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/green_chart" />
 
     <TextView
         android:id="@+id/maxSpeedValue"
@@ -35,8 +33,7 @@
         android:layout_toEndOf="@+id/maxSpeedTextView"
         android:layout_marginStart="@dimen/regular_margin"
         android:text="@string/max"
-        android:textColor="@color/green_chart"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/green_chart" />
 
     <TextView
         android:id="@+id/averageSpeedTextView"
@@ -44,11 +41,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/maxSpeedTextView"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="@dimen/tablet_double_regular_margin"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="@dimen/regular_margin"
         android:text="@string/average"
-        android:textColor="@color/black"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/averageSpeedValue"
@@ -57,8 +53,7 @@
         android:layout_alignBaseline="@+id/averageSpeedTextView"
         android:layout_toEndOf="@+id/averageSpeedTextView"
         android:layout_marginStart="@dimen/regular_margin"
-        android:textColor="@color/black"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/minSpeedTextView"
@@ -66,10 +61,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/averageSpeedTextView"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="80dp"
         android:text="@string/min"
-        android:textColor="@color/red_chart"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/red_chart" />
 
     <TextView
         android:id="@+id/minSpeedValue"
@@ -78,12 +72,11 @@
         android:layout_alignBaseline="@+id/minSpeedTextView"
         android:layout_toEndOf="@+id/minSpeedTextView"
         android:layout_marginStart="@dimen/regular_margin"
-        android:textColor="@color/red_chart"
-        android:textSize="@dimen/tablet_regular_size_text"/>
+        android:textColor="@color/red_chart" />
 
     <LinearLayout
         android:id="@+id/speedChartLayout"
-        android:layout_width="750dp"
+        android:layout_width="475dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"></LinearLayout>
 
