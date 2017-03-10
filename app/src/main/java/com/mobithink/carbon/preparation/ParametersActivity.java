@@ -37,6 +37,9 @@ public class ParametersActivity extends Activity {
     private int mRadiusValue;
     private int mFrequencyValue;
 
+    private boolean hasFrequencyChanged = false;
+    private boolean hasRadiusChanged = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,7 @@ public class ParametersActivity extends Activity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hasFrequencyChanged = true;
                 mFrequencyValue = (Math.round(progress/FREQUENCY_STEP))*FREQUENCY_STEP + MINIMUM_FREQUENCY_VALUE;
                 mFrequencyNumberTextView.setText(String.valueOf(mFrequencyValue));
             }
@@ -91,6 +95,7 @@ public class ParametersActivity extends Activity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hasRadiusChanged = true;
                 mRadiusValue = (Math.round(progress/RADIUS_STEP))*RADIUS_STEP + MINIMUM_RADIUS_VALUE;
                 mRadiusNumberTextView.setText(String.valueOf(mRadiusValue));
             }
@@ -117,8 +122,18 @@ public class ParametersActivity extends Activity {
     }
 
     private void registerPreference() {
-        PreferenceManager.getInstance().setTimeFrequency(mFrequencyValue);
-        PreferenceManager.getInstance().setStationRadius(mRadiusValue);
+        if (hasFrequencyChanged) {
+            PreferenceManager.getInstance().setTimeFrequency(mFrequencyValue);
+        }
+        if (hasRadiusChanged) {
+            PreferenceManager.getInstance().setStationRadius(mRadiusValue);
+        }
+
+        if (hasRadiusChanged || hasFrequencyChanged) {
+            setResult(RESULT_OK);
+
+        }
         this.finish();
+
     }
 }

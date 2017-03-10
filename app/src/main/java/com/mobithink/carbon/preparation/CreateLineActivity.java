@@ -114,6 +114,7 @@ public class CreateLineActivity extends Activity {
             mChosenCity = (CityDTO) extras.getSerializable("chosenCity");
             if(mChosenCity!= null){
                 mCityAutocompleteView.setText(mChosenCity.getName());
+                mSelectedCityDTO = mChosenCity;
             }
         }
 
@@ -204,16 +205,16 @@ public class CreateLineActivity extends Activity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
-                    case 200:
+                    case 201:
                         Log.d("Success", "youhoo");
 
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("city", mSelectedCityDTO.getName());
-                        BusLineDTO mWrittenLine = new BusLineDTO();
                         bundle.putSerializable("line", mWriteLineTextInputLayout.getEditText().toString());
                         Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
                         intent.putExtras(bundle);
-                        getApplication().startActivity(intent);
+                        setResult(RESULT_OK, intent);
+                        finish();
 
                         break;
 

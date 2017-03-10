@@ -47,6 +47,8 @@ import retrofit2.Response;
 public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     public static final int CREATE_LINE = 1;
+    public static final int ANALYSE_LINE = 2;
+
     private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 101;
 
     View mRootView;
@@ -413,21 +415,35 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             bundle.putSerializable("direction",mSelectedDirection);
             bundle.putSerializable("line",mSelectedLineDTO);
             startDriving.putExtras(bundle);
-            this.startActivity(startDriving);
+            this.startActivityForResult(startDriving, ANALYSE_LINE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CREATE_LINE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Snackbar.make(mRootView, "Ligne crée avec succès", Snackbar.LENGTH_LONG).show();
-                getCityLines();
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Snackbar.make(mRootView, "La création d'une nouvelle ligne à été annulée", Snackbar.LENGTH_LONG).show();
-            }
+        switch (requestCode) {
+            case CREATE_LINE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Snackbar.make(mRootView, "Ligne crée avec succès", Snackbar.LENGTH_LONG).show();
+                    getCityLines();
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    Snackbar.make(mRootView, "La création d'une nouvelle ligne à été annulée", Snackbar.LENGTH_LONG).show();
+                }
+                break;
+
+            case ANALYSE_LINE:
+                if (resultCode == Activity.RESULT_OK) {
+                    setResult(Activity.RESULT_OK);
+                    finish();
+
+                }
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    Snackbar.make(mRootView, "La saisie du trajet à été annulée", Snackbar.LENGTH_LONG).show();
+                }
+                break;
         }
+
     }
 }
