@@ -286,7 +286,7 @@ public class DatabaseManager {
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(StationDataDTOName);
-        Log.i(TAG, "A station event has been created : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
+        Log.i(TAG, "A activity_station event has been created : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
 
         return eventId;
     }
@@ -324,7 +324,7 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, stationDataDTO.getStartTime());
 
         long stationDataId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, null, values);
-        Log.i(TAG, "A new station has been created : id = " + stationDataId + ", for TripId " + tripId);
+        Log.i(TAG, "A new activity_station has been created : id = " + stationDataId + ", for TripId " + tripId);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(stationDataDTO.getStationName());
         return stationDataId;
     }
@@ -344,7 +344,7 @@ public class DatabaseManager {
         openedDatabase.update(DatabaseOpenHelper.TABLE_STATION_TRIP_DATA, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(stationDataDTO.getId())});
 
-        Log.i(TAG, "A station has been updated : id = " + stationDataDTO.getId() + ", for TripId " + tripId + ", with endTime " + stationDataDTO.getEndTime());
+        Log.i(TAG, "A activity_station has been updated : id = " + stationDataDTO.getId() + ", for TripId " + tripId + ", with endTime " + stationDataDTO.getEndTime());
     }
 
     public void deleteStationData(long tripId, StationDataDTO stationDataDTO) {

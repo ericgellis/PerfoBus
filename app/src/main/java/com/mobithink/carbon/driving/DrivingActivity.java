@@ -1,5 +1,6 @@
 package com.mobithink.carbon.driving;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
@@ -13,9 +14,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,8 +31,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import android.location.LocationListener;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
@@ -69,6 +70,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private static final String TAG = "DrivingActivity";
 
     private static final int ANALYSE_STATION_ACTION = 7;
+    private static final int SHAKE_THRESHOLD = 2300;
     ImageView mWeatherImageView;
     TextView mWeatherTemperatureTextView;
     TextView mActualTime;
@@ -81,6 +83,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     TextView mLineNameTextView;
     Button mCancelButton;
     Button mEventButton;
+    Button mAddUnexpectedStation;
     Chronometer mCourseChronometer;
     Chronometer mSectionChronometer;
     RecyclerView mStationRecyclerView;
@@ -92,24 +95,22 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     FragmentManager fm = getFragmentManager();
     int resourceId;
     int step = 0;
+    private Button mUnrealizedStopButton;
     private WeatherService weatherService;
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
-
     private LocationManager locationManager;
     private SensorManager sensorManager;
     private Sensor accelerometer;
-
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 2300;
     private float currentSpeed = 0.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.driving);
+        setContentView(R.layout.activity_driving);
 
         final View bottomSheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -159,7 +160,24 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mNextStationNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToStationPage();
+                goToStationPage(false);
+            }
+        });
+
+        mAddUnexpectedStation = (Button) findViewById(R.id.add_unexpectedstation_button);
+        mAddUnexpectedStation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToStationPage(true);
+            }
+        });
+
+        mUnrealizedStopButton = (Button) findViewById(R.id.unrealizedStopButton);
+        mUnrealizedStopButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                skipStation();
+                return false;
             }
         });
 
@@ -218,15 +236,45 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mSectionChronometer.start();
     }
 
-    public void goToStationPage(){
+    public void skipStation() {
 
         StationDataDTO stationDataDTO = new StationDataDTO();
+
         stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
+        long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+        stationDataDTO.setId(stationId);
+        stationDataDTO.setEndTime(System.currentTimeMillis());
+        stationDataDTO.setEndTime(System.currentTimeMillis());
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            stationDataDTO.setGpsLat((long) location.getLatitude());
+            stationDataDTO.setGpsLong((long) location.getLongitude());
+
+        }
+
+        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
+
+        makeStep();
+
+    }
+
+    public void goToStationPage(boolean isUnexpectedStation) {
+
+        StationDataDTO stationDataDTO = new StationDataDTO();
+        if (!isUnexpectedStation) {
+            stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
+        } else {
+            stationDataDTO.setStationName("Arrêt imprévu");
+        }
         long stationStartTime = System.currentTimeMillis();
         stationDataDTO.setStartTime(stationStartTime);
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
         Bundle bundle = new Bundle();
+        bundle.putBoolean("isUnexpected", isUnexpectedStation);
         bundle.putSerializable("stationId", stationId);
         bundle.putSerializable("stationName", stationDataDTO.getStationName());
         bundle.putSerializable("stationStep", mStationAdapter.getStep());
@@ -335,17 +383,20 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == ANALYSE_STATION_ACTION && resultCode == Activity.RESULT_OK) {
-            step++;
-            if (step < mStationList.size()) {
-                mNextStationNameTextView.setText(mStationList.get(step).getStationName());
-                mStationAdapter.makeStep();
-                mStationAdapter.notifyDataSetChanged();
-                mSectionChronometer.stop();
-                mSectionChronometer.start();
-            } else {
-                endTrip();
-            }
+            makeStep();
+        }
+    }
 
+    private void makeStep() {
+        step++;
+        if (step < mStationList.size()) {
+            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+            mStationAdapter.makeStep();
+            mStationAdapter.notifyDataSetChanged();
+            mSectionChronometer.stop();
+            mSectionChronometer.start();
+        } else {
+            endTrip();
         }
     }
 

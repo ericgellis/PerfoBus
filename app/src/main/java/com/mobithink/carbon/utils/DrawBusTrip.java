@@ -33,6 +33,7 @@ import java.util.List;
  */
 
 public class DrawBusTrip {
+    public onDrawRoute callInterface;
     double from_lat;
     double from_log ;
     double to_lat;
@@ -43,7 +44,6 @@ public class DrawBusTrip {
     Context context;
     float zoom_level = 13.0f;
     String color_hash = "#006680";
-    public onDrawRoute callInterface;
     boolean show_loader = true;
     String loader_msg = "Please wait...";
 
@@ -54,10 +54,6 @@ public class DrawBusTrip {
 
     public static DrawBusTrip getInstance(onDrawRoute dlg, Context ctx) {
         return new DrawBusTrip(dlg, ctx);
-    }
-
-    public interface onDrawRoute {
-        public void afterDraw(String result);
     }
 
     public DrawBusTrip setFromLatLong(double fromlat, double fromlog) {
@@ -118,7 +114,7 @@ public class DrawBusTrip {
         urlString.append(Double.toString(destlat));
         urlString.append(",");
         urlString.append(Double.toString(destlog));
-        urlString.append("&sensor=false&mode=driving&alternatives=true");
+        urlString.append("&sensor=false&mode=activity_driving&alternatives=true");
         urlString.append("&key=" + google_key);
         return urlString.toString();
     }
@@ -204,9 +200,13 @@ public class DrawBusTrip {
         return response.toString();
     }
 
+    public interface onDrawRoute {
+        void afterDraw(String result);
+    }
+
     private class connectAsyncTask extends AsyncTask<Void, Void, String> {
-        private ProgressDialog progressDialog;
         String urls;
+        private ProgressDialog progressDialog;
 
         connectAsyncTask(String urlPass) {
             urls = urlPass;

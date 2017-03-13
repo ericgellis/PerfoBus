@@ -41,9 +41,11 @@ import static android.content.ContentValues.TAG;
 
 public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback {
 
+    private static final int UNEXPECTED_STATION_REGISTER_OK = 101;
     FragmentManager fm = getFragmentManager();
     StationDataDTO stationDataDTO;
     long stationId;
+    boolean isUnexpectedStation = false;
     String stationName;
     int stationStep;
     long stationStartTime;
@@ -59,7 +61,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     private Button mAddPeopleButton;
     private Button mRemovePeopleButton;
     private Button mChooseEventButton;
-    private Button mUnrealizedStopButton;
+
     private Button mStopTimeButton;
     private TextView mBoardingPeopleTextView;
     private TextView mExitPeopleTextView;
@@ -76,7 +78,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.station);
+        setContentView(R.layout.activity_station);
 
         mStationToolBar = (Toolbar) findViewById(R.id.stationToolBar);
         mChangeStationNameButton = (Button) findViewById(R.id.changeStationNameButton);
@@ -87,6 +89,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
 
         stationDataDTO = new StationDataDTO();
         Bundle extras = getIntent().getExtras();
+        isUnexpectedStation = extras.getBoolean("isUnexpected");
         stationId = (long) extras.getSerializable("stationId");
         stationName = (String) extras.getSerializable("stationName");
         stationStep = (int) extras.getSerializable("stationStep");
@@ -147,7 +150,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
             }
         });
         mChooseEventButton = (Button) findViewById(R.id.chooseEventButton);
-        mUnrealizedStopButton = (Button) findViewById(R.id.unrealizedStopButton);
+
         mStopTimeButton = (Button) findViewById(R.id.stopTimeButton);
 
         mBoardingPeopleTextView = (TextView) findViewById(R.id.boardingPeopleTextView);
@@ -181,13 +184,6 @@ public class StationActivity extends Activity implements IEventSelectedListener,
             }
         });
 
-        mUnrealizedStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stationSkip();
-            }
-        });
-
         mStopTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,7 +210,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
         alertDialog.setTitle("Ce n'est pas " + mStationNameTextView.getText().toString() + "?");
-        alertDialog.setMessage("Entrer le nouveau nom de la station");
+        alertDialog.setMessage("Entrer le nouveau nom de la activity_station");
         alertDialog.setView(edittext);
 
         alertDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
@@ -240,14 +236,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         finish();
     }
 
-    public void stationSkip() {
 
-        stationDataDTO.setEndTime(stationStartTime);
-        stationDataDTO.setGpsLat((long) latitude);
-        stationDataDTO.setGpsLong((long) longitude);
-        DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
-        backToDrivingPage(Activity.RESULT_OK);
-    }
 
     public void registerStationData() {
 
@@ -262,7 +251,11 @@ public class StationActivity extends Activity implements IEventSelectedListener,
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         Log.i(TAG, "registerStationData: Station has been updated");
-        backToDrivingPage(Activity.RESULT_OK);
+        if (isUnexpectedStation) {
+            backToDrivingPage(UNEXPECTED_STATION_REGISTER_OK);
+        } else {
+            backToDrivingPage(RESULT_OK);
+        }
     }
 
     //Select number of boarding people
