@@ -40,6 +40,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     Button mAnalyzeButton;
     Button mConsultButton;
+
     ImageView mParametersSettings;
     View mServerStatusView;
 

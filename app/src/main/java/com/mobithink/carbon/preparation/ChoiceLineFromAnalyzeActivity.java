@@ -425,11 +425,11 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
         switch (requestCode) {
             case CREATE_LINE:
                 if (resultCode == Activity.RESULT_OK) {
-                    Snackbar.make(mRootView, "Ligne crée avec succès", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRootView, "Ligne créée avec succès", Snackbar.LENGTH_LONG).show();
                     getCityLines();
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
-                    Snackbar.make(mRootView, "La création d'une nouvelle ligne à été annulée", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRootView, "La création d'une nouvelle ligne a été annulée", Snackbar.LENGTH_LONG).show();
                 }
                 break;
 
@@ -440,7 +440,7 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
-                    Snackbar.make(mRootView, "La saisie du trajet à été annulée", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRootView, "La saisie du trajet a été annulée", Snackbar.LENGTH_LONG).show();
                 }
                 break;
         }

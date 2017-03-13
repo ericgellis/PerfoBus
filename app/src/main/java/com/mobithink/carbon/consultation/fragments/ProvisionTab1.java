@@ -96,6 +96,8 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         }*/
 
         mGoogleMap.addPolyline(polylineOptions.geodesic(true).color(R.color.mobiThinkBlue));
+        //LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
         //prepareBuilder(latLngList);
         //googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
 

@@ -1,5 +1,7 @@
 package com.mobithink.carbon.consultation.fragments;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,7 +168,7 @@ public class CapacityTab4 extends GenericTabFragment {
             peopleNbGoOutBus.add(stationDataDTO.getNumberOfGoOut());
         }
         peopleNumberGoOutBus = new Integer[peopleNbGoOutBus.size()];
-        peopleNumberGoOutBus = peopleNbGoOutBus.toArray(peopleNumberComeInBus);
+        peopleNumberGoOutBus = peopleNbGoOutBus.toArray(peopleNumberGoOutBus);
 
 
         // Creating an  XYSeries for maximal capacity of bus
@@ -194,9 +196,11 @@ public class CapacityTab4 extends GenericTabFragment {
 
         // Creating XYSeriesRenderer to customize maxCapacitySeries
         XYSeriesRenderer maxCapacityRenderer = new XYSeriesRenderer();
-        maxCapacityRenderer.setColor(R.color.purple_chart);
-        maxCapacityRenderer.setLineWidth(2);
-        maxCapacityRenderer.setDisplayChartValues(true);
+
+        maxCapacityRenderer.setColor(Color.rgb(113, 86, 150));
+        maxCapacityRenderer.setLineWidth(3);
+        maxCapacityRenderer.setDisplayChartValues(false);
+
 
         // Creating XYSeriesRenderer to customize peopleNumberInBusSeries
         /*XYSeriesRenderer peopleNumberInBusRenderer = new XYSeriesRenderer();
@@ -208,7 +212,7 @@ public class CapacityTab4 extends GenericTabFragment {
 
         // Creating XYSeriesRenderer to customize peopleNumberComeInSeries
         XYSeriesRenderer peopleNumberComeInRenderer = new XYSeriesRenderer();
-        peopleNumberComeInRenderer.setColor(R.color.green_chart);
+        peopleNumberComeInRenderer.setColor(Color.rgb(167, 224, 165));
         peopleNumberComeInRenderer.setFillPoints(true);
         peopleNumberComeInRenderer.setLineWidth(2);
         peopleNumberComeInRenderer.setDisplayChartValues(true);
@@ -216,17 +220,22 @@ public class CapacityTab4 extends GenericTabFragment {
 
         //Creating XYSeriesRenderer to customize peopleNumberGoOutSeries
         XYSeriesRenderer peopleNumberGoOutRenderer = new XYSeriesRenderer();
-        peopleNumberGoOutRenderer.setColor(R.color.red_chart);
+        peopleNumberGoOutRenderer.setColor(Color.rgb(250, 110, 112));
         peopleNumberGoOutRenderer.setFillPoints(true);
         peopleNumberGoOutRenderer.setLineWidth(2);
         peopleNumberGoOutRenderer.setDisplayChartValues(true);
 
+
         multiRenderer.setXLabels(0);
+        multiRenderer.setXAxisMin(-1);
         multiRenderer.setZoomButtonsVisible(false);
-        multiRenderer.setZoomEnabled(false, false);
-        multiRenderer.setPanEnabled(false, false);
-        multiRenderer.setYLabelsVerticalPadding(5);
-        multiRenderer.setBarSpacing(4);
+        multiRenderer.setZoomEnabled(true, true);
+        multiRenderer.setPanEnabled(true, false);
+        multiRenderer.setYLabelsPadding(10);
+        multiRenderer.setYAxisMax(maxPeopleNumber + 10);
+        multiRenderer.setDisplayValues(false);
+        multiRenderer.setYLabelsAlign(Paint.Align.LEFT);
+        multiRenderer.setBarSpacing(2);
         for (int i = 0; i < stationNumber.length; i++) {
             multiRenderer.addXTextLabel(i, mStationName[i]);
         }

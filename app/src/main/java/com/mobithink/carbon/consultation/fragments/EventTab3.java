@@ -121,7 +121,6 @@ public class EventTab3 extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
-
         for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
             stationNameList.add(stationDataDTO.getStationName());
         }

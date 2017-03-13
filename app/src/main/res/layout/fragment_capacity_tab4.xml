@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/capacity_chart"
-        android:layout_width="425dp"
+        android:layout_width="450dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/double_regular_margin"
         android:orientation="vertical"></LinearLayout>
