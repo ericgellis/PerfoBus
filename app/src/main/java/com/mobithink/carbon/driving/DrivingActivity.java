@@ -18,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,11 +72,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     private static final int ANALYSE_STATION_ACTION = 7;
     private static final int SHAKE_THRESHOLD = 2300;
+
+    View mRootView;
     ImageView mWeatherImageView;
     TextView mWeatherTemperatureTextView;
     TextView mActualTime;
     TextView mActualDate;
     TextView mSpeedTextView;
+    TextView mNextStationTextView;
     TextView mNextStationNameTextView;
     Toolbar mDrivingToolBar;
     TextView mDirectionNameTextView;
@@ -105,12 +109,15 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private float currentSpeed = 0.0f;
+    private long tripId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_driving);
+
+        mRootView = findViewById(R.id.rootview);
 
         final View bottomSheet = findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -135,6 +142,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
             }
         });
 
+        mNextStationTextView = (TextView) findViewById(R.id.nextStationTextView);
         mWeatherImageView = (ImageView) findViewById(R.id.weatherImageView);
 
         mWeatherTemperatureTextView = (TextView) findViewById(R.id.weatherTemperatureTextView);
@@ -160,7 +168,11 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mNextStationNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToStationPage(false);
+                if (step < mStationList.size()) {
+                    goToStationPage(false);
+                } else {
+                    endTrip();
+                }
             }
         });
 
@@ -216,12 +228,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mLineNameTextView.setText(mLine.getName());
         mDirectionNameTextView.setText(mDirection.getStationName());
 
-        if (step < mStationList.size()) {
-            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
-        } else {
-            mNextStationNameTextView.setText("Terminus");
-        }
-
+        updateNextStationName();
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
@@ -234,6 +241,16 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         mCourseChronometer.start();
         mSectionChronometer.start();
+    }
+
+    private void updateNextStationName() {
+        if (step < mStationList.size()) {
+            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
+        } else {
+            mNextStationTextView.setVisibility(View.GONE);
+            mNextStationNameTextView.setText("Terminus");
+            mUnrealizedStopButton.setVisibility(View.GONE);
+        }
     }
 
     public void skipStation() {
@@ -310,18 +327,39 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     public void endTrip() {
         TripDTO tripDTO = new TripDTO();
-        tripDTO.setEndTime(System.currentTimeMillis());
-        if (mWeatherTemperatureTextView != null) {
-            tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());
-        } else {
-            tripDTO.setTemperature("200");
-        }
+
+        tripDTO.setTemperature(mWeatherTemperatureTextView.getText().toString());
         tripDTO.setEndTime(System.currentTimeMillis());
         tripDTO.setWeather(Integer.toString(resourceId));
-        long tripId = DatabaseManager.getInstance().updateTrip(CarbonApplicationManager.getInstance().getCurrentTripId(), tripDTO);
+        tripId = DatabaseManager.getInstance().updateTrip(CarbonApplicationManager.getInstance().getCurrentTripId(), tripDTO);
 
         stopService(new Intent(this, LocationService.class));
-        sendTripDto(tripId);
+
+        showSendDataDialog();
+    }
+
+    private void showSendDataDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setTitle("Saisie terminé");
+        alertDialogBuilder.setMessage("Fin de saisie pour la ligne, souhaitez vous envoyer les données au serveur ?");
+        alertDialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendTripDto(tripId);
+                dialog.cancel();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -346,13 +384,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
                         finish();
                         break;
                     default:
+                        Snackbar.make(mRootView, "L'envoi de donnée à échoué, veuillez réésayer", Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                Snackbar.make(mRootView, "L'envoi de donnée à échoué, veuillez réésayer", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -389,14 +428,12 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     private void makeStep() {
         step++;
+        updateNextStationName();
         if (step < mStationList.size()) {
-            mNextStationNameTextView.setText(mStationList.get(step).getStationName());
             mStationAdapter.makeStep();
             mStationAdapter.notifyDataSetChanged();
             mSectionChronometer.stop();
             mSectionChronometer.start();
-        } else {
-            endTrip();
         }
     }
 
