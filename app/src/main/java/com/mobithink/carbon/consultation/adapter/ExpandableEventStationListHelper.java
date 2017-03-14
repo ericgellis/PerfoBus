@@ -1,8 +1,7 @@
 package com.mobithink.carbon.consultation.adapter;
 
-import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
+
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 import java.text.SimpleDateFormat;
@@ -37,9 +36,6 @@ public class ExpandableEventStationListHelper  {
                     eventInStationTotalDuration += eventDuration;
                     expandableListDetail.put(listDataHeader.get(i),stationNameList);
                 }
-                //String eventInStationTotalDurationString = timeFormat.format( eventInStationTotalDuration);
-                //listDataHeader.add( " - " + eventInStationTotalDurationString);
-
             }
         }
 

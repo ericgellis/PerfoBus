@@ -8,28 +8,14 @@ import com.mobithink.carbon.database.model.StationDataDTO;
 
 public class Mathematics {
 
-    StationDataDTO stationDataDTO;
-    float lat_a_degre;
-    float lon_a_degre;
-    float lat_b_degre;
-    float lon_b_degre;
-    Double distance;
-
-    Double startTime;
-    Double endTime;
-    Double time;
 
 
-    Double vitesse;
-
-
-
-    public Double convertRad(float input){
+    public static Double convertRad(float input){
         return (Math.PI * input)/180;
     }
 
-    public Double gpsDistance(){
-
+    public static Double calculateGPSDistance(long lat_a_degre, long lon_a_degre, long lat_b_degre, long lon_b_degre){
+        Double distance;
         int R = 6378000; //Earth radius in meter
 
         Double lat_a = convertRad(lat_a_degre);
@@ -41,12 +27,5 @@ public class Mathematics {
         return distance;
     }
 
-    public Double speedBetweenTwoStation (){
-
-        time =  endTime - startTime;
-
-        vitesse = distance/time;
-        return vitesse;
-    }
 
 }
