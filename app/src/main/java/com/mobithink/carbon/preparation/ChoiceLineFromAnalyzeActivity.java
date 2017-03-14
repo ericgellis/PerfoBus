@@ -219,6 +219,10 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
             permissionNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
         }
 
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
+            permissionNeeded.add(android.Manifest.permission.VIBRATE);
+        }
+
         if (permissionNeeded.size() == 0) {
             startDriving();
         } else {

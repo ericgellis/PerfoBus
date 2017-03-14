@@ -2,7 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bgLayout"
+    android:id="@+id/rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.driving.DrivingActivity">
@@ -59,9 +59,9 @@
             android:id="@+id/speedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/actualTime"
             android:layout_alignBaseline="@+id/weatherTemperatureTextView"
             android:layout_marginStart="40dp"
+            android:layout_toEndOf="@+id/actualTime"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp" />
@@ -115,7 +115,7 @@
     </RelativeLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -130,6 +130,7 @@
             android:clickable="true">
 
             <TextView
+                android:id="@+id/nextStationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginBottom="@dimen/double_regular_margin"
@@ -145,11 +146,31 @@
                 android:textAlignment="center"
                 android:textColor="@color/lightBlue"
                 android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/unrealizedStopButton"
+                android:layout_width="@dimen/regular_size_rounded_button"
+                android:layout_height="@dimen/regular_size_rounded_button"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:background="@mipmap/ic_unrealized_stop" />
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/station_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nextStationRelativeLayout" />
+
+        <Button
+            android:id="@+id/add_unexpectedstation_button"
+            android:layout_width="@dimen/regular_size_rounded_button"
+            android:layout_height="@dimen/regular_size_rounded_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@mipmap/ic_green_plus" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
