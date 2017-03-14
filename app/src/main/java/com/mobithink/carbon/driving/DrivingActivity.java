@@ -17,6 +17,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -49,6 +52,7 @@ import com.mobithink.carbon.services.weatherdata.Channel;
 import com.mobithink.carbon.services.weatherdata.Item;
 import com.mobithink.carbon.station.StationActivity;
 import com.mobithink.carbon.utils.CarbonUtils;
+import com.mobithink.carbon.webservices.TechnicalService;
 import com.mobithink.carbon.webservices.TripService;
 
 import java.text.DecimalFormat;
@@ -274,6 +278,9 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(250);
+
         makeStep();
 
     }
@@ -427,12 +434,15 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     }
 
     private void makeStep() {
+        //TODO Appel a supprimer lorsqu'on utilisera le serveur payant
+        wakeUp();
+
         step++;
         updateNextStationName();
         if (step < mStationList.size()) {
             mStationAdapter.makeStep();
             mStationAdapter.notifyDataSetChanged();
-            mSectionChronometer.stop();
+            mSectionChronometer.setBase(SystemClock.elapsedRealtime());
             mSectionChronometer.start();
         }
     }
@@ -517,6 +527,32 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    //TODO a supprimer lorsqu'on utilisera le serveur "payant"
+    private void wakeUp() {
+        TechnicalService technicalService = RetrofitManager.build().create(TechnicalService.class);
+
+        Call<Void> call = technicalService.checkStatus();
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(this.getClass().getName(), "The Serveur status is up");
+                        break;
+                    default:
+                        wakeUp();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                wakeUp();
+            }
+        });
     }
 
 }
