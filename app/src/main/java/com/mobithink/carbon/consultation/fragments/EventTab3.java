@@ -181,7 +181,7 @@ public class EventTab3 extends GenericTabFragment {
         totalTrip.setBackgroundResource(R.color.white);
         totalTrip.setTextColor(getResources().getColor(R.color.black));
         detailedRelativeLayout.setVisibility(View.VISIBLE);
-        
+
         eventList = new ArrayList<>();
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), R.layout.itemview_event_driving_listview, R.id.eventName, eventList);
         eventListView.setAdapter(adapter3);
