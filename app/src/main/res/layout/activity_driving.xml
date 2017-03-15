@@ -102,15 +102,32 @@
             android:layout_marginStart="200dp"
             android:textColor="@color/lightBlue" />
 
+        <ListView
+            android:id="@+id/driving_event_custom_listview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/sectiontextView"
+            android:layout_marginBottom="@dimen/regular_margin"></ListView>
+
         <Button
             android:id="@+id/eventButton"
-            android:layout_width="match_parent"
+            android:layout_width="205dp"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="70dp"
             android:background="@color/orange_button_event"
-            android:text="@string/event"
+            android:text="@string/indriving"
             android:textColor="@color/white" />
+        
+        <Button
+            android:id="@+id/crossRoadEventButton"
+            android:layout_width="205dp"
+            android:layout_height="70dp"
+            android:layout_toEndOf="@+id/eventButton"
+            android:layout_alignBottom="@+id/eventButton"
+            android:text="@string/in_crossroad"
+            android:background="@color/orange_button_event"
+            android:textColor="@color/white"/>
 
     </RelativeLayout>
 

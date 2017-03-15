@@ -57,6 +57,7 @@ public class EventTab3 extends GenericTabFragment {
     long timeInStation;
     long totalTimeInStation = 0;
     long averageTimeInStation;
+    long tripTotalTime;
 
     long tripBetweenStationsDistance = 0;
     long tripDistance = 0;
@@ -215,9 +216,11 @@ public class EventTab3 extends GenericTabFragment {
 
         timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
 
-        timeSavingResultPourcent = (timeSavingResult/totalTimeInStation)*100;
+        tripTotalTime = getTripDTO().getEndTime()-getTripDTO().getStartTime();
 
-        stationLossTimePourcenttextView.setText(+timeSavingResultPourcent + "% - (gain potentiel "+ timeSavingResult/60000+" min)");
+        timeSavingResultPourcent = (timeSavingResult/tripTotalTime)*100;
+
+        stationLossTimePourcenttextView.setText(+timeSavingResultPourcent + "% (gain potentiel "+ timeSavingResult/60000+" min)");
 
     }
 

@@ -1,7 +1,8 @@
-package com.mobithink.carbon.station;
+package com.mobithink.carbon.driving;
 
 import android.app.DialogFragment;
 import android.graphics.Point;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Display;
@@ -14,34 +15,36 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.station.IEventSelectedListener;
+import com.mobithink.carbon.station.StationEventListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mplaton on 14/02/2017.
+ * Created by mplaton on 15/03/2017.
  */
 
-public class StationEventDialogFragment extends DialogFragment {
-
+public class DrivingEventDialogFragment extends DialogFragment implements LocationListener, OnMapReadyCallback {
     EventDTO eventDTO;
     private ListView mStationEventListView;
     private IEventSelectedListener mListener;
+
+    double longitude;
+    double latitude;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.station_event_dialog_fragment, container, false);
-
-        Bundle bundle = getArguments();
-        final double stationLongitude = (double) bundle.getSerializable("stationLongitude");
-        final double stationLatitude = (double) bundle.getSerializable("stationLatitude");
-        final String stationName = (String) bundle.getSerializable("stationName");
 
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
         final List<String> eventType = stationEventNameList();
@@ -54,11 +57,10 @@ public class StationEventDialogFragment extends DialogFragment {
 
                 eventDTO = new EventDTO();
                 eventDTO.setEventName(eventType.get(position));
-                eventDTO.setStationName(stationName);
                 eventDTO.setStartTime(System.currentTimeMillis());
-                eventDTO.setGpsLat((long) stationLatitude);
-                eventDTO.setGpsLong((long) stationLongitude);
-                eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO));
+                eventDTO.setGpsLat((long) latitude);
+                eventDTO.setGpsLong((long) longitude);
+                eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();
 
@@ -83,20 +85,34 @@ public class StationEventDialogFragment extends DialogFragment {
 
     public List<String> stationEventNameList(){
         List<String> eventType = new ArrayList<String>();
-        eventType.add(new String("Trop d'arrêts"));
+        eventType.add(new String("Giration difficile"));
+        eventType.add(new String("Voie étroite"));
+        eventType.add(new String("Chicane, écluse"));
+        eventType.add(new String("Dos d'âne, trapézoïdal"));
+        eventType.add(new String("Pavé trop rugueux"));
+        eventType.add(new String("Stationnement latéral"));
         eventType.add(new String("Stationnement illicite"));
-        eventType.add(new String("Attente pour correspondance"));
-        eventType.add(new String("Capacité station"));
-        eventType.add(new String("Foule"));
-        eventType.add(new String("Incivilité"));
-        eventType.add(new String("Demande d'informations à bord"));
-        eventType.add(new String("Vente à bord et échange de monnaie"));
-        eventType.add(new String("Réinsertion dans la circulation"));
-        eventType.add(new String("Incident technique"));
+        eventType.add(new String("Stationnement alterné (effet chicane)"));
+        eventType.add(new String("Passage à niveau"));
+        eventType.add(new String("Itinéraire en tiroir ou boucle"));
+        eventType.add(new String("Itinéraire sinueux"));
+        eventType.add(new String("Trafic"));
+        eventType.add(new String("Panne"));
+
         return eventType;
     }
 
-    public void setListener(IEventSelectedListener stationActivity) {
-        mListener = stationActivity;
+    public void setListener(IEventSelectedListener drivingActivity) {
+        mListener = drivingActivity;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
+
     }
 }

@@ -96,8 +96,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                     + KEY_TRAFFIC + " INTEGER,"
                     + KEY_CREATION_DATE + " DATETIME,"
-                    + KEY_LATITUDE + " INTEGER,"
-                    + KEY_LONGITUDE + " INTEGER,"
+                    + KEY_LATITUDE + " DOUBLE PRECISION,"
+                    + KEY_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_TRIP_ID + " INTEGER" + ")";
     // Create table STATION_TRIP_DATA
     private static final String CREATE_TABLE_STATION_TRIP_DATA =
@@ -109,8 +109,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
                     + KEY_STEP + " INTEGER,"
-                    + KEY_LATITUDE + " INTEGER,"
-                    + KEY_LONGITUDE + " INTEGER,"
+                    + KEY_LATITUDE + " DOUBLE PRECISION,"
+                    + KEY_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_TRIP_ID + " INTEGER" + ")";
     // Create table EVENT
     private static final String CREATE_TABLE_EVENT =
@@ -119,8 +119,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_EVENT_NAME + " TEXT,"
                     + KEY_START_DATETIME + " DATETIME,"
                     + KEY_END_DATETIME + " DATETIME,"
-                    + KEY_LATITUDE + " INTEGER,"
-                    + KEY_LONGITUDE + " INTEGER,"
+                    + KEY_LATITUDE + " DOUBLE PRECISION,"
+                    + KEY_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_NAME + " TEXT" + ")";
     // Database Version

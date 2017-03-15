@@ -30,6 +30,8 @@
     <string name="section">Tronçon :</string>
     <string name="atmo">ATMO</string>
     <string name="dir">dir.</string>
+    <string name="indriving">En section courante</string>
+    <string name="in_crossroad">Au carrefour</string>
 
     <string-array name="condition_codes_icons">
         <item>&#xF0BC;</item>

@@ -65,7 +65,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         mGoogleMap = googleMap;
         PolylineOptions polylineOptions = new PolylineOptions();
 
-        polylineOptions.add(new LatLng(43.600000, 1.433333));
+        /*polylineOptions.add(new LatLng(43.600000, 1.433333));
         polylineOptions.add(new LatLng(43.607232, 1.451205));
         polylineOptions.add(new LatLng(43.609942, 1.455105));
         polylineOptions.add(new LatLng(43.614354, 1.462143));
@@ -78,24 +78,25 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         polylineOptions.add(new LatLng(43.640572, 1.475275));
         polylineOptions.add(new LatLng(43.646162, 1.470211));
         polylineOptions.add(new LatLng(43.654422, 1.475961));
-        polylineOptions.add(new LatLng(43.6667, 1.4833));
+        polylineOptions.add(new LatLng(43.6667, 1.4833));*/
 
-        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
             for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
                 polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
 
                 ArrayList<LatLng> latLngList = new ArrayList();
-                LatLng latLng = new LatLng( stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong());
+                LatLng latLng = new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong());
                 latLngList.add(latLng);
                 for(int j = 0; j<latLngList.size(); j++){
                     polylineOptions.add(latLngList.get(j));
+                    mGoogleMap.addPolyline(polylineOptions.add(latLngList.get(j)).geodesic(true).color(R.color.mobiThinkBlue));
                 }
 
             }
 
-        }*/
+        }
 
-        mGoogleMap.addPolyline(polylineOptions.geodesic(true).color(R.color.mobiThinkBlue));
+
         //LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
         //prepareBuilder(latLngList);

@@ -31,13 +31,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -50,7 +53,10 @@ import com.mobithink.carbon.services.WeatherService;
 import com.mobithink.carbon.services.WeatherServiceCallback;
 import com.mobithink.carbon.services.weatherdata.Channel;
 import com.mobithink.carbon.services.weatherdata.Item;
+import com.mobithink.carbon.station.IEventSelectedListener;
 import com.mobithink.carbon.station.StationActivity;
+import com.mobithink.carbon.station.StationEventCustomListViewAdapter;
+import com.mobithink.carbon.station.StationEventDialogFragment;
 import com.mobithink.carbon.utils.CarbonUtils;
 import com.mobithink.carbon.webservices.TechnicalService;
 import com.mobithink.carbon.webservices.TripService;
@@ -70,7 +76,7 @@ import retrofit2.Response;
  * Created by mplaton on 01/02/2017.
  */
 
-public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, SensorEventListener {
+public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, SensorEventListener, IEventSelectedListener{
 
     private static final String TAG = "DrivingActivity";
 
@@ -90,7 +96,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     TextView mCityNameTextView;
     TextView mLineNameTextView;
     Button mCancelButton;
-    Button mEventButton;
+    Button mEventInDrivingButton;
+    Button mEventInCrossroadButton;
     Button mAddUnexpectedStation;
     Chronometer mCourseChronometer;
     Chronometer mSectionChronometer;
@@ -104,6 +111,10 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     int resourceId;
     int step = 0;
     private Button mUnrealizedStopButton;
+    private ListView mEventInDrivingCustomListView;
+    private StationEventCustomListViewAdapter  mEventInDrivingCustomListViewAdapter;
+    private ListView mEventInCrossRoadCustomListView;
+    private StationEventCustomListViewAdapter  mEventInCrossRoadCustomListViewAdapter;
     private WeatherService weatherService;
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
@@ -160,11 +171,24 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         mNextStationNameTextView = (TextView) findViewById(R.id.nextStationNameTextView);
 
-        mEventButton = (Button) findViewById(R.id.eventButton);
-        mEventButton.setOnClickListener(new View.OnClickListener() {
+        mEventInDrivingButton = (Button) findViewById(R.id.eventButton);
+        mEventInDrivingCustomListView = (ListView) findViewById(R.id.driving_event_custom_listview);
+        mEventInDrivingCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
+        mEventInDrivingCustomListView.setAdapter( mEventInDrivingCustomListViewAdapter);
+        mEventInDrivingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToChooseEvent();
+                goToChooseEventInDriving();
+            }
+        });
+
+        mEventInCrossroadButton = (Button) findViewById(R.id.crossRoadEventButton);
+        mEventInCrossRoadCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
+        mEventInDrivingCustomListView.setAdapter( mEventInCrossRoadCustomListViewAdapter);
+        mEventInCrossroadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChooseEventInCrossroad();
             }
         });
 
@@ -391,14 +415,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
                         finish();
                         break;
                     default:
-                        Snackbar.make(mRootView, "L'envoi de donnée à échoué, veuillez réésayer", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mRootView, "L'envoi de données a échoué, veuillez réessayer", Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Snackbar.make(mRootView, "L'envoi de donnée à échoué, veuillez réésayer", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mRootView, "L'envoi de données a échoué, veuillez réessayer", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -408,6 +432,29 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         EventDialogFragment dialogFragment = new EventDialogFragment();
         dialogFragment.show(fm, "Choisir un évènement");
+    }
+
+    public void goToChooseEventInDriving(){
+
+        DrivingEventDialogFragment dialogFragment = new DrivingEventDialogFragment();
+        dialogFragment.setListener(this);
+        dialogFragment.show(fm, "Choisir un évènement");
+
+    }
+
+    public void goToChooseEventInCrossroad(){
+
+        CrossRoadEventDialogFragment dialogFragment = new CrossRoadEventDialogFragment();
+        dialogFragment.setListener(this);
+        dialogFragment.show(fm, "Choisir un évènement");
+    }
+
+    @Override
+    public void onEventSelected(EventDTO event) {
+        mEventInDrivingCustomListViewAdapter.addData(event);
+        mEventInDrivingCustomListViewAdapter.notifyDataSetChanged();
+        mEventInCrossRoadCustomListViewAdapter.addData(event);
+        mEventInCrossRoadCustomListViewAdapter.notifyDataSetChanged();
     }
 
     @Override
