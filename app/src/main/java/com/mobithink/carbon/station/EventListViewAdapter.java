@@ -16,12 +16,9 @@ import java.util.List;
  * Created by mplaton on 14/02/2017.
  */
 
-public class StationEventListViewAdapter extends ArrayAdapter<String> {
+public class EventListViewAdapter extends ArrayAdapter<String> {
 
-    EventDTO eventDTO;
-
-
-    public StationEventListViewAdapter(Context context, List<String> eventType) {
+    public EventListViewAdapter(Context context, List<String> eventType) {
         super(context, 0, eventType);
     }
 

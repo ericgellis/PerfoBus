@@ -23,7 +23,7 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 import com.mobithink.carbon.station.IEventSelectedListener;
-import com.mobithink.carbon.station.StationEventListViewAdapter;
+import com.mobithink.carbon.station.EventListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
         final List<String> eventType = stationEventNameList();
 
-        StationEventListViewAdapter adapter = new StationEventListViewAdapter(getActivity(), eventType);
+        EventListViewAdapter adapter = new EventListViewAdapter(getActivity(), eventType);
         mStationEventListView.setAdapter(adapter);
         mStationEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

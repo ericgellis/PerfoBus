@@ -15,8 +15,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.database.model.StationDataDTO;
-import com.mobithink.carbon.utils.Mathematics;
+import com.rey.material.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ public class EventTab3 extends GenericTabFragment {
     RelativeLayout mainRelativeLayout;
     RelativeLayout detailedRelativeLayout;
 
-    ListView stationListView;
-    ArrayList<String> stationNameList;
+    ListView eventMainListView;
+    ArrayList<String> eventNameMainList;
 
     ListView eventInDrivingListView;
     ArrayList<String> eventInDrivingList;
@@ -48,22 +47,10 @@ public class EventTab3 extends GenericTabFragment {
     TextView eventInStationTotalDurationTextView;
     TextView stationLossTimePourcenttextView;
 
-    TextView stationName;
-    ListView eventListView;
-    ArrayList<String> eventList;
-    private String selectedStationName;
+    TextView eventName;
+    ImageView eventImageView;
+    private String selectedEventName;
 
-    long interStationObjective = 600;
-    long timeInStation;
-    long totalTimeInStation = 0;
-    long averageTimeInStation;
-    long tripTotalTime;
-
-    long tripBetweenStationsDistance = 0;
-    long tripDistance = 0;
-
-    long timeSavingResult;
-    long timeSavingResultPourcent;
 
     public EventTab3() {
     }
@@ -82,8 +69,8 @@ public class EventTab3 extends GenericTabFragment {
         eventInStationTotalDurationTextView  = (TextView) rootView.findViewById(R.id.eventInStationTotalDuration);
         stationLossTimePourcenttextView  = (TextView) rootView.findViewById(R.id.stationLossTimePourcent);
 
-        stationName = (TextView) rootView.findViewById(R.id.stationName);
-        eventListView = (ListView) rootView.findViewById(R.id.eventList);
+        eventName = (TextView) rootView.findViewById(R.id.eventName);
+        //eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
         totalTrip.setBackgroundResource(R.color.lightBlue);
@@ -94,14 +81,14 @@ public class EventTab3 extends GenericTabFragment {
             }
         });
 
-        stationListView = (ListView) rootView.findViewById(R.id.station_list_view);
-        stationNameList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.itemview_station_listview, R.id.stationNameTextView, stationNameList);
-        stationListView.setAdapter(adapter);
-        stationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        eventMainListView = (ListView) rootView.findViewById(R.id.event_list_view);
+        eventNameMainList = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.itemview_station_listview, R.id.stationNameTextView, eventNameMainList);
+        eventMainListView.setAdapter(adapter);
+        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedStationName = stationNameList.get(position);
+                selectedEventName = eventNameMainList.get(position);
                 showDetailedInformations();
             }
         });
@@ -127,8 +114,6 @@ public class EventTab3 extends GenericTabFragment {
             }
         });
 
-        timeSavingInStation();
-
         return rootView;
     }
 
@@ -136,16 +121,26 @@ public class EventTab3 extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
-            stationNameList.add(stationDataDTO.getStationName());
-        }
-
         String totalTimeString;
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
+
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+            if (eventDTO.getStationName() != null){
+                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+
+                String timeString = timeFormat.format(eventDuration);
+                eventNameMainList.add(eventDTO.getEventName() + " - " + eventDTO.getStationName() + " - " + timeString);
+            } else {
+                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                String timeString = timeFormat.format(eventDuration);
+                eventNameMainList.add(eventDTO.getEventName() + " - " + timeString);
+            }
+
+        }
+
         long eventTotalDuration = 0;
         for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-
             if (eventDTO != null && eventDTO.getStationName() == null) {
                 long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
                 String timeString = timeFormat.format(eventDuration);
@@ -174,7 +169,7 @@ public class EventTab3 extends GenericTabFragment {
         mainRelativeLayout.setVisibility(View.VISIBLE);
         totalTrip.setBackgroundResource(R.color.lightBlue);
         totalTrip.setTextColor(getResources().getColor(R.color.white));
-        stationListView.setBackgroundResource(R.color.white);
+        eventMainListView.setBackgroundResource(R.color.white);
     }
 
     public void showDetailedInformations(){
@@ -183,45 +178,12 @@ public class EventTab3 extends GenericTabFragment {
         totalTrip.setTextColor(getResources().getColor(R.color.black));
         detailedRelativeLayout.setVisibility(View.VISIBLE);
 
-        eventList = new ArrayList<>();
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), R.layout.itemview_event_driving_listview, R.id.eventName, eventList);
-        eventListView.setAdapter(adapter3);
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
-        long eventStationTotalDuration = 0;
 
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO.getStationName() != null && eventDTO.getStationName().equals(selectedStationName) ) {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                String timeString = timeFormat.format(eventDuration);
-                eventList.add(eventDTO.getEventName() + " - " + timeString) ;
-                eventStationTotalDuration +=eventDuration;
-            }
-        }
+        eventName.setText(selectedEventName);
 
-        stationName.setText(selectedStationName +" - " +timeFormat.format(eventStationTotalDuration));
-    }
-
-    public void timeSavingInStation(){
-
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
-            for(int i=0; i+1< getTripDTO().getStationDataDTOList().size(); i++) {
-                timeInStation = stationDataDTO.getEndTime() - stationDataDTO.getStartTime();
-                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i+1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i+1).getGpsLong()));
-            }
-            totalTimeInStation += timeInStation;
-            tripDistance+=tripBetweenStationsDistance;
-        }
-
-        averageTimeInStation = totalTimeInStation/getTripDTO().getStationDataDTOList().size();
-
-        timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
-
-        tripTotalTime = getTripDTO().getEndTime()-getTripDTO().getStartTime();
-
-        timeSavingResultPourcent = (timeSavingResult/tripTotalTime)*100;
-
-        stationLossTimePourcenttextView.setText(+timeSavingResultPourcent + "% (gain potentiel "+ timeSavingResult/60000+" min)");
 
     }
+
 
 }

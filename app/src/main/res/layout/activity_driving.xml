@@ -111,7 +111,7 @@
 
         <Button
             android:id="@+id/eventButton"
-            android:layout_width="205dp"
+            android:layout_width="210dp"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="70dp"
@@ -121,7 +121,7 @@
         
         <Button
             android:id="@+id/crossRoadEventButton"
-            android:layout_width="205dp"
+            android:layout_width="210dp"
             android:layout_height="70dp"
             android:layout_toEndOf="@+id/eventButton"
             android:layout_alignBottom="@+id/eventButton"

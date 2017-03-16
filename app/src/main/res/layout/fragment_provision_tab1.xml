@@ -6,74 +6,109 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/tripMapView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.google.android.gms.maps.MapView>
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/currentPerformanceCardView"></com.google.android.gms.maps.MapView>
 
-    <TextView
-        android:id="@+id/interstation"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:id="@+id/currentPerformanceCardView"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/interstation"
-        android:textColor="@color/grey_provision" />
+        android:layout_margin="@dimen/regular_margin"
+        android:elevation="5dp">
 
-    <TextView
-        android:id="@+id/minDistanceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/interstation"
-        android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginStart="20dp"
-        android:text="@string/min"
-        android:textColor="@color/green_chart" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/currentPerformance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:layout_marginTop="@dimen/double_regular_margin"
+                android:text="@string/current_performance"
+                android:textColor="@color/grey_provision" />
 
-    <TextView
-        android:id="@+id/minDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/minDistanceTextView"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_toEndOf="@+id/minDistanceTextView"
-        android:textColor="@color/green_chart" />
+            <TextView
+                android:id="@+id/minDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/currentPerformance"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:text="@string/min"
+                android:textColor="@color/green_chart" />
 
-    <TextView
-        android:id="@+id/averageDistanceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/minDistanceTextView"
-        android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginStart="20dp"
-        android:text="@string/average"
-        android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/minDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/minDistanceTextView"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_toEndOf="@+id/minDistanceTextView"
+                android:textColor="@color/green_chart" />
 
-    <TextView
-        android:id="@+id/averageDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/averageDistanceTextView"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_toEndOf="@+id/averageDistanceTextView"
-        android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/averageDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/minDistanceTextView"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:text="@string/average"
+                android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/maxDistanceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/averageDistanceTextView"
-        android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginStart="20dp"
-        android:text="@string/max"
-        android:textColor="@color/red_chart" />
+            <TextView
+                android:id="@+id/averageDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/averageDistanceTextView"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_toEndOf="@+id/averageDistanceTextView"
+                android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/maxDistance"
-        android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/maxDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/averageDistanceTextView"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:text="@string/max"
+                android:textColor="@color/red_chart" />
+
+            <TextView
+                android:id="@+id/maxDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/maxDistanceTextView"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_toEndOf="@+id/maxDistanceTextView"
+                android:textColor="@color/red_chart" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/margeOfPerformanceCardView"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/maxDistanceTextView"
-        android:layout_marginStart="@dimen/regular_margin"
-        android:layout_toEndOf="@+id/maxDistanceTextView"
-        android:textColor="@color/red_chart" />
+        android:layout_below="@+id/currentPerformanceCardView"
+        android:layout_margin="@dimen/regular_margin"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/margeOfPerformance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/double_regular_margin"
+            android:layout_marginStart="@dimen/double_regular_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:text="@string/marge_performance"
+            android:textColor="@color/grey_provision" />
+
+    </android.support.v7.widget.CardView>
+
 
 </RelativeLayout>

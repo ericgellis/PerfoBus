@@ -31,6 +31,7 @@ public class CapacityTab4 extends GenericTabFragment {
 
     LinearLayout capacityChartLinearLayout;
 
+    TextView maxCapacityTextView;
     TextView maxPeopleTextView;
     TextView averagePeopleTextView;
     TextView minPeopleTextView;
@@ -65,6 +66,7 @@ public class CapacityTab4 extends GenericTabFragment {
         movementByStationButton = (Button) rootView.findViewById(R.id.movementByStationButton);
         detailByStationButton = (Button) rootView.findViewById(R.id.detailByStationButton);
 
+        maxCapacityTextView = (TextView) rootView.findViewById(R.id.maxCapacity);
         maxPeopleTextView = (TextView) rootView.findViewById(R.id.maxPeople);
         averagePeopleTextView = (TextView) rootView.findViewById(R.id.averagePeople);
         minPeopleTextView = (TextView) rootView.findViewById(R.id.minPeople);
@@ -95,6 +97,8 @@ public class CapacityTab4 extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
+
+        maxCapacityTextView.setText(String.valueOf(getTripDTO().getVehicleCapacity()));
 
         if (capacityChartGraphicalView == null) {
             initCombinedChart();

@@ -15,7 +15,7 @@
         android:textSize="18sp"/>
 
     <ListView
-        android:id="@+id/station_list_view"
+        android:id="@+id/event_list_view"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/totalTrip"></ListView>
@@ -103,20 +103,19 @@
         android:layout_marginStart="150dp"
         android:visibility="gone">
         <TextView
-            android:id="@+id/stationName"
+            android:id="@+id/eventName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="@dimen/double_regular_margin"
             android:layout_marginBottom="@dimen/double_regular_margin" />
 
-        <ListView
-            android:id="@+id/eventList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_below="@+id/stationName"
-            android:divider="@null"></ListView>
+        <!--<ImageView
+            android:id="@+id/eventImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/eventName"
+            android:src="@color/mobiThinkBlue"/>-->
 
     </RelativeLayout>
 

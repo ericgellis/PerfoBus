@@ -66,7 +66,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     private TextView mBoardingPeopleTextView;
     private TextView mExitPeopleTextView;
     private ListView mStationEventCustomListView;
-    private StationEventCustomListViewAdapter mStationEventCustomListViewAdapter;
+    private EventCustomListViewAdapter mStationEventCustomListViewAdapter;
     private String [] eventTypeList;
     private Toolbar mStationToolBar;
     private Button mChangeStationNameButton;
@@ -158,7 +158,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         mExitPeopleTextView = (TextView) findViewById(R.id.exitPeopleTextView);
         mExitPeopleTextView.setText("0");
 
-        mStationEventCustomListViewAdapter = new StationEventCustomListViewAdapter(this);
+        mStationEventCustomListViewAdapter = new EventCustomListViewAdapter(this);
         mStationEventCustomListView.setAdapter(mStationEventCustomListViewAdapter);
 
         mChangeStationNameButton.setOnClickListener(new View.OnClickListener() {

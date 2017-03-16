@@ -102,6 +102,8 @@
 
     <!-- provision_tab1-->
     <string name="interstation">Interstations</string>
+    <string name="current_performance">Performance actuelle</string>
+    <string name="marge_performance">Marge de performance</string>
 
     <!-- speed_tab2-->
     <string name="speed">Vitesse</string>

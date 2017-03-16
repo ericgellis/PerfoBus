@@ -20,18 +20,35 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.utils.DrawBusTrip;
+import com.mobithink.carbon.utils.Mathematics;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
 
     MapView mtripMapView;
     TextView minDistanceBetweenStations;
-    TextView averageDistanceBetweenStations;
+    TextView averageDistanceBetweenStationsTextView;
     TextView maxDistanceBetweenStations;
 
     private GoogleMap mGoogleMap;
     PolylineOptions stationLatLng;
+
+
+
+    long interStationObjective = 600;
+    long timeInStation;
+    long totalTimeInStation = 0;
+    long averageTimeInStation;
+    long tripTotalTime;
+
+    long averageDistanceBetweenStations;
+    long tripBetweenStationsDistance = 0;
+    long tripDistance = 0;
+
+    long timeSavingResult;
+    long timeSavingResultPourcent;
 
     public ProvisionTab1() {
     }
@@ -47,9 +64,10 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         mtripMapView.getMapAsync(this);
 
         minDistanceBetweenStations = (TextView) rootView.findViewById(R.id.minDistance);
-        averageDistanceBetweenStations = (TextView) rootView.findViewById(R.id.averageDistance);
+        averageDistanceBetweenStationsTextView = (TextView) rootView.findViewById(R.id.averageDistance);
         maxDistanceBetweenStations = (TextView) rootView.findViewById(R.id.maxDistance);
 
+        timeSavingInStation();
         return rootView;
     }
 
@@ -65,7 +83,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         mGoogleMap = googleMap;
         PolylineOptions polylineOptions = new PolylineOptions();
 
-        /*polylineOptions.add(new LatLng(43.600000, 1.433333));
+        polylineOptions.add(new LatLng(43.600000, 1.433333));
         polylineOptions.add(new LatLng(43.607232, 1.451205));
         polylineOptions.add(new LatLng(43.609942, 1.455105));
         polylineOptions.add(new LatLng(43.614354, 1.462143));
@@ -78,9 +96,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         polylineOptions.add(new LatLng(43.640572, 1.475275));
         polylineOptions.add(new LatLng(43.646162, 1.470211));
         polylineOptions.add(new LatLng(43.654422, 1.475961));
-        polylineOptions.add(new LatLng(43.6667, 1.4833));*/
+        polylineOptions.add(new LatLng(43.6667, 1.4833));
 
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
             for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
                 polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
 
@@ -94,7 +112,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
 
             }
 
-        }
+        }*/
 
 
         //LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -128,9 +146,45 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
             markers.position(new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()));
             mGoogleMap.addMarker(markers);
         }*/
+
+        /*ArrayList<Long> distanceTab = new ArrayList<>() ;
+            for(int i=0; i+1< getTripDTO().getStationDataDTOList().size(); i++) {
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
+                distanceTab.add(tripBetweenStationsDistance);
+            }
+
+        long minVal = distanceTab.indexOf(Collections.min(distanceTab));
+        long maxVal = distanceTab.indexOf(Collections.max(distanceTab));
+
+        minDistanceBetweenStations.setText(String.valueOf(minVal) + " m");
+        maxDistanceBetweenStations.setText(String.valueOf(maxVal)+ " m");*/
     }
 
     @Override
     public void afterDraw(String result) {
+    }
+
+    public void timeSavingInStation(){
+
+        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+            for(int i=0; i+1< getTripDTO().getStationDataDTOList().size(); i++) {
+                timeInStation = stationDataDTO.getEndTime() - stationDataDTO.getStartTime();
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i+1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i+1).getGpsLong()));
+            }
+            totalTimeInStation += timeInStation;
+            tripDistance+=tripBetweenStationsDistance;
+        }
+
+        /*averageDistanceBetweenStations = tripDistance/(getTripDTO().getStationDataDTOList().size()-1);
+        averageDistanceBetweenStationsTextView.setText(String.valueOf(averageDistanceBetweenStations) + " m");*/
+
+        averageTimeInStation = totalTimeInStation/getTripDTO().getStationDataDTOList().size();
+
+        timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
+
+        tripTotalTime = getTripDTO().getEndTime()-getTripDTO().getStartTime();
+
+        timeSavingResultPourcent = (timeSavingResult/tripTotalTime)*100;
+
     }
 }
