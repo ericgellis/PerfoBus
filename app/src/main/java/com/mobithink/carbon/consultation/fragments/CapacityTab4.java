@@ -10,6 +10,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.LineData;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.database.model.TripDTO;
@@ -52,6 +61,8 @@ public class CapacityTab4 extends GenericTabFragment {
     // Creating a XYMultipleSeriesRenderer to customize the whole chart
     XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
 
+    private CombinedChart mCombinedChart;
+
     public CapacityTab4() {
 
     }
@@ -61,7 +72,7 @@ public class CapacityTab4 extends GenericTabFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_capacity_tab4, container, false);
 
-        capacityChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.capacity_chart);
+        //capacityChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.capacity_chart);
 
         movementByStationButton = (Button) rootView.findViewById(R.id.movementByStationButton);
         detailByStationButton = (Button) rootView.findViewById(R.id.detailByStationButton);
@@ -90,7 +101,88 @@ public class CapacityTab4 extends GenericTabFragment {
             }
         });
 
+
+        mCombinedChart = (CombinedChart) rootView.findViewById(R.id.combined_chart);
+        mCombinedChart.getDescription().setEnabled(false);
+        mCombinedChart.setBackgroundColor(Color.WHITE);
+        mCombinedChart.setDrawGridBackground(false);
+        mCombinedChart.setDrawBarShadow(false);
+        mCombinedChart.setHighlightFullBarEnabled(false);
+        mCombinedChart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
+        });
+
+        Legend l =  mCombinedChart.getLegend();
+        l.setWordWrapEnabled(true);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+
+        CombinedData data = new CombinedData();
+
+        data.setData(generateComeInData());
+        //data.setData(generateinBusData());
+
+        XAxis xAxis = mCombinedChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        xAxis.setAxisMaximum(data.getXMax() + 0.25f);
+
+        mCombinedChart.setData(data);
+        mCombinedChart.invalidate();
+
         return rootView;
+    }
+
+
+    private BarData generateComeInData() {
+
+        ArrayList<BarEntry> comeInEntry = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> goOutEntry = new ArrayList<BarEntry>();
+
+        ArrayList<String> names = new ArrayList<>();
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            names.add(stationDataDTO.getStationName());
+        }
+
+        int i = 0;
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            BarEntry entry = new BarEntry(i,Float.valueOf(stationDataDTO.getNumberOfComeIn()));
+            comeInEntry.add(entry);
+            BarEntry entry1 = new BarEntry(i,Float.valueOf(-1*stationDataDTO.getNumberOfGoOut()));
+            goOutEntry.add(entry1);
+            i++;
+        }
+
+        BarDataSet set1 = new BarDataSet(comeInEntry, "Personnes montant dans le bus");
+        set1.setColor(Color.rgb(167, 224, 165));
+        set1.setValueTextColor(Color.rgb(167, 224, 165));
+        set1.setValueTextSize(10f);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        BarDataSet set2 = new BarDataSet(goOutEntry, "Personnes descendant du bus");
+        set2.setColor(Color.rgb(250, 110, 112));
+        set2.setValueTextColor(Color.rgb(250, 110, 112));
+        set2.setValueTextSize(10f);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        float groupSpace = 0.5f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.45f; // x2 dataset
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        BarData d = new BarData(set1, set2);
+        d.setBarWidth(barWidth);
+
+        // make this BarData object grouped
+        d.groupBars(0, groupSpace, barSpace); // start at x = 0
+
+        return d;
+
+    }
+
+    private LineData generateinBusData() {
+        return null;
     }
 
     @Override
@@ -100,13 +192,13 @@ public class CapacityTab4 extends GenericTabFragment {
 
         maxCapacityTextView.setText(String.valueOf(getTripDTO().getVehicleCapacity()));
 
-        if (capacityChartGraphicalView == null) {
+        /*if (capacityChartGraphicalView == null) {
             initCombinedChart();
             capacityChartGraphicalView = ChartFactory.getCombinedXYChartView(getContext(), dataset, multiRenderer, types);
             capacityChartLinearLayout.addView(capacityChartGraphicalView);
         } else {
             capacityChartGraphicalView.repaint();
-        }
+        }*/
     }
 
 
