@@ -31,7 +31,7 @@ public class RetrofitManager {
 
     private static final String BASE_URL_AXEL = "http://172.20.70.72:8080/";
 
-    private static final String BASE_URL_MELANIE = "http://172.20.70.31:8080/";
+    private static final String BASE_URL_MELANIE = "http://172.20.70.69:8080/";
 
     private static final String SECURITY_TOKEN = "Basic ZXJpYzptb2JpMjAxN3RoaW5r";
 
