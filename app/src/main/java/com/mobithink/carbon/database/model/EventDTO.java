@@ -15,6 +15,8 @@ public class EventDTO implements Serializable {
     private Long endTime;
     private Long gpsLat;
     private Long gpsLong;
+    private Long gpsEndLat;
+    private Long gpsEndLong;
     private String stationName;
     private List<Long> pictureIdList;
 
@@ -22,13 +24,15 @@ public class EventDTO implements Serializable {
 
     }
 
-    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, String stationName) {
+    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, Long gpsEndLat, Long gpsEndLong, String stationName) {
         this.id = id;
         this.eventName = eventName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.gpsLat = gpsLat;
         this.gpsLong = gpsLong;
+        this.gpsEndLat = gpsEndLat;
+        this.gpsEndLong = gpsEndLong;
         this.stationName = stationName;
     }
 
@@ -95,4 +99,12 @@ public class EventDTO implements Serializable {
     public void setStationName(String stationName) {
         this.stationName = stationName;
     }
+
+    public Long getGpsEndLat() {return gpsEndLat;}
+
+    public void setGpsEndLat(Long gpsEndLat) {this.gpsEndLat = gpsEndLat;}
+
+    public Long getGpsEndLong() {return gpsEndLong;}
+
+    public void setGpsEndLong(Long gpsEndLong) {this.gpsEndLong = gpsEndLong;}
 }

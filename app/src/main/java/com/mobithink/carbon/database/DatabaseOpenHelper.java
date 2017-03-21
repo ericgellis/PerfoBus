@@ -24,6 +24,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_ID = "_id";
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_END_LONGITUDE = "end_longitude";
+    public static final String KEY_END_LATITUDE = "end_latitude";
     public static final String KEY_CREATION_DATE = "creationDate";
     public static final String KEY_TRIP_ID = "trip_id";
     public static final String KEY_LINE_ID = "line_id";
@@ -121,6 +123,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_END_DATETIME + " DATETIME,"
                     + KEY_LATITUDE + " DOUBLE PRECISION,"
                     + KEY_LONGITUDE + " DOUBLE PRECISION,"
+                    + KEY_END_LATITUDE + " DOUBLE PRECISION,"
+                    + KEY_END_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_NAME + " TEXT" + ")";
     // Database Version

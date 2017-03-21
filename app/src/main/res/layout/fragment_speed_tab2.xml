@@ -74,10 +74,10 @@
         android:layout_marginStart="@dimen/regular_margin"
         android:textColor="@color/red_chart" />
 
-    <LinearLayout
-        android:id="@+id/speedChartLayout"
-        android:layout_width="475dp"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/multi_line_chart"
+        android:layout_width="610dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_margin="@dimen/double_regular_margin"></com.github.mikephil.charting.charts.LineChart>
 
 </RelativeLayout>

@@ -83,7 +83,6 @@ public class SummaryTab5 extends GenericTabFragment {
         mRadarChart.getYAxis().setDrawLabels(false);
         mRadarChart.getYAxis().setAxisMinimum(0f);
         mRadarChart.getYAxis().setAxisMaximum(5f);
-        
 
         setData();
 

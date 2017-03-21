@@ -1,42 +1,37 @@
 package com.mobithink.carbon.consultation.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
+import com.mobithink.carbon.driving.adapters.MyXAxisValueFormatter;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.chart.CombinedXYChart;
-import org.achartengine.chart.LineChart;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.util.ArrayList;
 
 
-public class SpeedTab2 extends GenericTabFragment {
+public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelectedListener {
 
     TextView maxSpeedValueTextView;
     TextView averageSpeedValueTextView;
     TextView minSpeedValueTextView;
 
-    LinearLayout speedChartLayout;
-
-    GraphicalView speedChartGraphicalView;
-
-    CombinedXYChart.XYCombinedChartDef[] types = new CombinedXYChart.XYCombinedChartDef[] {new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 0), new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 1), new CombinedXYChart.XYCombinedChartDef(LineChart.TYPE, 2)};
-    // Creating a dataset to hold each series
-    XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-    // Creating a XYMultipleSeriesRenderer to customize the whole chart
-    XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
+    private LineChart mMultiLineChart;
+    String[] namesTab;
 
     public SpeedTab2() {
     }
@@ -50,7 +45,51 @@ public class SpeedTab2 extends GenericTabFragment {
         averageSpeedValueTextView = (TextView) rootView.findViewById(R.id.averageSpeedValue);
         minSpeedValueTextView = (TextView) rootView.findViewById(R.id.minSpeedValue);
 
-        speedChartLayout = (LinearLayout) rootView.findViewById(R.id.speedChartLayout);
+        mMultiLineChart = (LineChart) rootView.findViewById(R.id.multi_line_chart);
+        mMultiLineChart.setOnChartValueSelectedListener(this);
+
+        mMultiLineChart.setDrawGridBackground(false);
+        mMultiLineChart.getDescription().setEnabled(false);
+        mMultiLineChart.setDrawBorders(false);
+
+        mMultiLineChart.getAxisLeft().setEnabled(true);
+        mMultiLineChart.getAxisLeft().setDrawGridLines(false);
+        mMultiLineChart.getAxisRight().setEnabled(false);
+        mMultiLineChart.getAxisRight().setDrawAxisLine(false);
+        mMultiLineChart.getAxisRight().setDrawGridLines(false);
+        mMultiLineChart.getXAxis().setDrawAxisLine(true);
+        mMultiLineChart.getXAxis().setDrawGridLines(false);
+
+        ArrayList<String> names = new ArrayList<>();
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            names.add(stationDataDTO.getStationName());
+        }
+
+        namesTab = names.toArray(new String[names.size()]);
+
+        XAxis xAxis =  mMultiLineChart.getXAxis();
+        xAxis.setValueFormatter(new MyXAxisValueFormatter(namesTab));
+        xAxis.setDrawLabels(true);
+        xAxis.setLabelRotationAngle(-90);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        // enable touch gestures
+        mMultiLineChart.setTouchEnabled(true);
+
+        // enable scaling and dragging
+        mMultiLineChart.setDragEnabled(true);
+        mMultiLineChart.setScaleEnabled(true);
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        mMultiLineChart.setPinchZoom(false);
+
+        Legend l = mMultiLineChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+
+        mMultiLineChart.setData(generateLineChart ());
 
         return rootView;
     }
@@ -60,90 +99,53 @@ public class SpeedTab2 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-        if (speedChartGraphicalView == null) {
-            initCombinedChart();
-            speedChartGraphicalView = ChartFactory.getCombinedXYChartView(getContext(), dataset, multiRenderer, types);
-            speedChartLayout.addView(speedChartGraphicalView);
-        } else {
-            speedChartGraphicalView.repaint();
-        }
     }
 
-    public void initCombinedChart() {
+    private LineData generateLineChart (){
 
-        String[] mStationName;
-        Integer[] mStationNumber;
+        ArrayList<Entry> maxSpeedEntry = new ArrayList<Entry>();
+        ArrayList<Entry> minSpeedEntry = new ArrayList<Entry>();
+        ArrayList<Entry> tripSpeedEntry = new ArrayList<>();
 
-        Integer[] maxSpeed;
-        Integer[] minSpeed;
-        Integer[] tripSpeed;
-
-        ArrayList<String> names = new ArrayList<>();
+        int i = 0;
         for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            names.add(stationDataDTO.getStationName());
-        }
-        mStationName = new String[names.size()];
-        mStationName = names.toArray(mStationName);
-
-        ArrayList<Integer> stationNb = new ArrayList<>();
-        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            stationNb.add(stationDataDTO.getStationStep());
-        }
-        mStationNumber = new Integer[stationNb.size()];
-        mStationNumber = stationNb.toArray(mStationNumber);
-
-
-
-        // Creating an  XYSeries for maximal speed
-        XYSeries maxSpeedSeries = new XYSeries("Vitesse maximale");
-        // Creating an  XYSeries for minimal speed
-        XYSeries minSpeedSeries = new XYSeries("Vitesse minimale");
-        // Creating an  XYSeries for bus speed for trip
-        XYSeries speedSeries = new XYSeries("Vitesse pendant le trajet");
-
-        // Adding data to XYSeries for maximal speed, XYSeries for minimal speed, XYSeries for bus speed for trip
-        /*for (int i = 0; i < mStationNumber.length; i++) {
-            maxSpeedSeries.add(mStationNumber[i], maxSpeed[i]);
-            minSpeedSeries.add(mStationNumber[i], minSpeed[i]);
-            speedSeries.add(mStationNumber[i], tripSpeed[i]);
-        }*/
-
-        // Adding Series to the dataset
-        dataset.addSeries(maxSpeedSeries);
-        dataset.addSeries(minSpeedSeries);
-        dataset.addSeries(speedSeries);
-
-        // Creating XYSeriesRenderer to customize maxSpeedSeries
-        XYSeriesRenderer maxSpeedRenderer = new XYSeriesRenderer();
-        maxSpeedRenderer.setColor(R.color.green_chart);
-        maxSpeedRenderer.setLineWidth(2);
-        maxSpeedRenderer.setDisplayChartValues(true);
-
-        // Creating XYSeriesRenderer to customize minSpeedSeries
-        XYSeriesRenderer minSpeedRenderer = new XYSeriesRenderer();
-        minSpeedRenderer.setColor(R.color.red_chart);
-        minSpeedRenderer.setLineWidth(2);
-        minSpeedRenderer.setDisplayChartValues(true);
-
-        // Creating XYSeriesRenderer to customize busSpeedSeries
-        XYSeriesRenderer busSpeedRenderer = new XYSeriesRenderer();
-        busSpeedRenderer.setColor(R.color.black);
-        busSpeedRenderer.setLineWidth(2);
-        busSpeedRenderer.setDisplayChartValues(true);
-
-
-        multiRenderer.setXLabels(0);
-        multiRenderer.setXTitle("km");
-        multiRenderer.setZoomButtonsVisible(false);
-        multiRenderer.setZoomEnabled(false, false);
-        multiRenderer.setPanEnabled(false, false);
-        for(int i=0;i<mStationNumber.length;i++){
-            multiRenderer.addXTextLabel(i, mStationName[i]);
+            Entry entry = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfComeIn()));
+            maxSpeedEntry.add(entry);
+            Entry entry1 = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfGoOut()));
+            tripSpeedEntry.add(entry1);
+            Entry entry2 = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfGoOut()));
+            minSpeedEntry.add(entry2);
+            i++;
         }
 
-        multiRenderer.addSeriesRenderer(maxSpeedRenderer);
-        multiRenderer.addSeriesRenderer(minSpeedRenderer);
-        multiRenderer.addSeriesRenderer(busSpeedRenderer);
+        LineDataSet set1 = new LineDataSet(maxSpeedEntry, "Vitesse maximale");
+        set1.setColor(Color.rgb(167, 224, 165));
+        set1.setDrawValues(false);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineDataSet set2 = new LineDataSet(tripSpeedEntry, "Vitesse pendant le trajet");
+        set2.setColor(Color.rgb(0, 0, 0));
+        set2.setDrawValues(false);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineDataSet set3 = new LineDataSet(minSpeedEntry, "Vitesse minimale");
+        set3.setColor(Color.rgb(250, 110, 112));
+        set3.setDrawValues(false);
+        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineData ld = new LineData(set1, set2, set3);
+
+        return ld;
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 
 }

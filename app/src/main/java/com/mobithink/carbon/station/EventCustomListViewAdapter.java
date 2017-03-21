@@ -3,6 +3,7 @@ package com.mobithink.carbon.station;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -17,6 +18,9 @@ import android.widget.Chronometer;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
@@ -32,12 +36,15 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 15/02/2017.
  */
 
-public class EventCustomListViewAdapter extends BaseAdapter {
+public class EventCustomListViewAdapter extends BaseAdapter implements LocationListener, OnMapReadyCallback {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private final LayoutInflater mInflater;
     List<EventDTO> eventDTOList = new ArrayList<>();
     EventDTO eventDTO;
+
+    double longitude;
+    double latitude;
 
     Uri imageUri;
     Context mContext;
@@ -139,6 +146,8 @@ public class EventCustomListViewAdapter extends BaseAdapter {
 
     public void stopAndRegisterEvent(EventDTO event) {
 
+        event.setGpsEndLat((long) latitude);
+        event.setGpsEndLong((long) longitude);
         event.setEndTime(System.currentTimeMillis());
         DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), event);
 
@@ -153,5 +162,15 @@ public class EventCustomListViewAdapter extends BaseAdapter {
         public Button microButton;
         public Button photoButton;
         public Button stopButton;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
+
     }
 }

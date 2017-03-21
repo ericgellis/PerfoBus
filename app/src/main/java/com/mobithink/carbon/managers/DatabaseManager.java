@@ -283,6 +283,8 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_EVENT_NAME, eventDTO.getEventName());
         values.put(DatabaseOpenHelper.KEY_START_DATETIME, eventDTO.getStartTime());
         values.put(DatabaseOpenHelper.KEY_STATION_DATA_NAME, StationDataDTOName);
+        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
+        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(StationDataDTOName);
@@ -294,8 +296,8 @@ public class DatabaseManager {
     public void updateEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
-        values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
-        values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
+        values.put(DatabaseOpenHelper.KEY_END_LATITUDE, eventDTO.getGpsLat());
+        values.put(DatabaseOpenHelper.KEY_END_LONGITUDE, eventDTO.getGpsLong());
 
         getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
                 new String[]{String.valueOf(eventDTO.getId())});
