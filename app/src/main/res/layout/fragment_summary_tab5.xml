@@ -166,10 +166,10 @@
         android:text="@string/capacity" />
 
     <TextView
-        android:id="@+id/trafficNumber"
+        android:id="@+id/confortSavingNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/traffic"
+        android:layout_alignBaseline="@+id/confortSaving"
         android:layout_marginStart="360dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="5"
@@ -177,13 +177,33 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/traffic"
+        android:id="@+id/confortSaving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/capacity"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="400dp"
-        android:text="@string/traffic" />
+        android:text="@string/confort_saving" />
+
+    <TextView
+        android:id="@+id/securitySavingNumber"
+        android:layout_width="@dimen/mini_regular_size_rounded_button"
+        android:layout_height="@dimen/mini_regular_size_rounded_button"
+        android:layout_alignBaseline="@+id/securitySaving"
+        android:layout_marginStart="360dp"
+        android:background="@drawable/textview_grey_circle_design"
+        android:text="6"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/securitySaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/confortSaving"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:layout_marginStart="400dp"
+        android:text="@string/security_saving" />
 
     <Button
         android:id="@+id/pdfButton"

@@ -92,6 +92,7 @@ public class StationEventDialogFragment extends DialogFragment {
         eventType.add(new String("Demande d'informations à bord"));
         eventType.add(new String("Vente à bord et échange de monnaie"));
         eventType.add(new String("Réinsertion dans la circulation"));
+        eventType.add(new String("PMR"));
         eventType.add(new String("Incident technique"));
         return eventType;
     }

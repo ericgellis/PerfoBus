@@ -126,6 +126,8 @@
     <string name="commercial_speed">Vitesse commerciale</string>
     <string name="average_loss">Perte moyenne</string>
     <string name="traffic">Trafic</string>
+    <string name="confort_saving">Gain confort</string>
+    <string name="security_saving">Gain sécurité</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
