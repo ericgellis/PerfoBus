@@ -97,18 +97,48 @@
         android:layout_below="@+id/currentPerformanceCardView"
         android:layout_margin="@dimen/regular_margin"
         android:elevation="5dp">
-
-        <TextView
-            android:id="@+id/margeOfPerformance"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/double_regular_margin"
-            android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginTop="@dimen/regular_margin"
-            android:text="@string/marge_performance"
-            android:textColor="@color/grey_provision" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/margeOfPerformance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/double_regular_margin"
+                android:layout_marginStart="@dimen/double_regular_margin"
+                android:layout_marginTop="@dimen/regular_margin"
+                android:text="@string/marge_performance"
+                android:textColor="@color/grey_provision" />
+
+            <TextView
+                android:id="@+id/saving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/margeOfPerformance"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginBottom="@dimen/double_regular_margin"
+                android:text="@string/saving"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/savingInMinutesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/saving"
+                android:layout_alignBaseline="@+id/saving"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_toEndOf="@+id/saving"/>
+
+            <TextView
+                android:id="@+id/savingInEuroTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/savingInMinutesTextView"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_toEndOf="@+id/saving"/>
+
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-
 
 </RelativeLayout>

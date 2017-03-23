@@ -48,6 +48,8 @@ public class EventTab3 extends GenericTabFragment {
     TextView stationLossTimePourcenttextView;
 
     TextView eventName;
+    TextView eventTimeSaving;
+    TextView eventExplanations;
     ImageView eventImageView;
     private String selectedEventName;
 
@@ -70,6 +72,8 @@ public class EventTab3 extends GenericTabFragment {
         stationLossTimePourcenttextView  = (TextView) rootView.findViewById(R.id.stationLossTimePourcent);
 
         eventName = (TextView) rootView.findViewById(R.id.eventName);
+        eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
+        eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
         //eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
@@ -128,13 +132,16 @@ public class EventTab3 extends GenericTabFragment {
         for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
             if (eventDTO.getStationName() != null){
                 long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-
                 String timeString = timeFormat.format(eventDuration);
                 eventNameMainList.add(eventDTO.getEventName() + " - " + eventDTO.getStationName() + " - " + timeString);
+                //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
+                //eventTimeSaving.setText(timeSavingString);
             } else {
                 long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
                 String timeString = timeFormat.format(eventDuration);
                 eventNameMainList.add(eventDTO.getEventName() + " - " + timeString);
+                //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
+                //eventTimeSaving.setText(timeSavingString);
             }
 
         }
@@ -178,9 +185,8 @@ public class EventTab3 extends GenericTabFragment {
         totalTrip.setTextColor(getResources().getColor(R.color.black));
         detailedRelativeLayout.setVisibility(View.VISIBLE);
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
-
         eventName.setText(selectedEventName);
+
 
 
     }

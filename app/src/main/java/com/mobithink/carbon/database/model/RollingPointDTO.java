@@ -14,18 +14,19 @@ public class RollingPointDTO implements Serializable {
     private Double gpsLat;
     private Double gpsLong;
     private int trafficIndex;
-
+    private Double speed;
 
     public RollingPointDTO() {
     }
 
-    public RollingPointDTO(Long id, Long tripId, Long pointTime, Double gpsLat, Double gpsLong, int trafficIndex) {
+    public RollingPointDTO(Long id, Long tripId, Long pointTime, Double gpsLat, Double gpsLong, int trafficIndex, Double speed) {
         this.id = id;
         this.tripId = tripId;
         this.pointTime = pointTime;
         this.gpsLat = gpsLat;
         this.gpsLong = gpsLong;
         this.trafficIndex = trafficIndex;
+        this.speed = speed;
     }
 
     public Long getId() {
@@ -74,5 +75,13 @@ public class RollingPointDTO implements Serializable {
 
     public void setTrafficIndex(int trafficIndex) {
         this.trafficIndex = trafficIndex;
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
     }
 }

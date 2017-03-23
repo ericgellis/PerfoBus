@@ -44,21 +44,28 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         maxSpeedValueTextView = (TextView) rootView.findViewById(R.id.maxSpeedValue);
         averageSpeedValueTextView = (TextView) rootView.findViewById(R.id.averageSpeedValue);
         minSpeedValueTextView = (TextView) rootView.findViewById(R.id.minSpeedValue);
-
         mMultiLineChart = (LineChart) rootView.findViewById(R.id.multi_line_chart);
+
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTripDTO();
+
         mMultiLineChart.setOnChartValueSelectedListener(this);
 
         mMultiLineChart.setDrawGridBackground(false);
         mMultiLineChart.getDescription().setEnabled(false);
         mMultiLineChart.setDrawBorders(false);
-
         mMultiLineChart.getAxisLeft().setEnabled(true);
         mMultiLineChart.getAxisLeft().setDrawGridLines(false);
         mMultiLineChart.getAxisRight().setEnabled(false);
         mMultiLineChart.getAxisRight().setDrawAxisLine(false);
         mMultiLineChart.getAxisRight().setDrawGridLines(false);
-        mMultiLineChart.getXAxis().setDrawAxisLine(true);
-        mMultiLineChart.getXAxis().setDrawGridLines(false);
+        mMultiLineChart.setVisibleXRangeMaximum(7f);
+
 
         ArrayList<String> names = new ArrayList<>();
         for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
@@ -69,19 +76,22 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
 
         XAxis xAxis =  mMultiLineChart.getXAxis();
         xAxis.setValueFormatter(new MyXAxisValueFormatter(namesTab));
-        xAxis.setDrawLabels(true);
         xAxis.setLabelRotationAngle(-90);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineWidth(1f);
+
 
         // enable touch gestures
-        mMultiLineChart.setTouchEnabled(true);
+        //mMultiLineChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mMultiLineChart.setDragEnabled(true);
-        mMultiLineChart.setScaleEnabled(true);
+        mMultiLineChart.setDragEnabled(false);
+        //mMultiLineChart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mMultiLineChart.setPinchZoom(false);
+        //mMultiLineChart.setPinchZoom(false);
 
         Legend l = mMultiLineChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -90,14 +100,6 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         l.setDrawInside(false);
 
         mMultiLineChart.setData(generateLineChart ());
-
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getTripDTO();
 
     }
 
@@ -122,16 +124,22 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         set1.setColor(Color.rgb(167, 224, 165));
         set1.setDrawValues(false);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(3f);
 
         LineDataSet set2 = new LineDataSet(tripSpeedEntry, "Vitesse pendant le trajet");
         set2.setColor(Color.rgb(0, 0, 0));
         set2.setDrawValues(false);
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set2.setDrawCircles(false);
+        set2.setLineWidth(3f);
 
         LineDataSet set3 = new LineDataSet(minSpeedEntry, "Vitesse minimale");
         set3.setColor(Color.rgb(250, 110, 112));
         set3.setDrawValues(false);
         set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set3.setDrawCircles(false);
+        set3.setLineWidth(3f);
 
         LineData ld = new LineData(set1, set2, set3);
 

@@ -144,7 +144,6 @@ public class SummaryTab5 extends GenericTabFragment {
         entries.add(new RadarEntry(4f, 4));
         entries.add(new RadarEntry(1f, 5));
         entries.add(new RadarEntry(5f, 6));
-        entries.add(new RadarEntry(3f, 7));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Trip");
         dataSet.setColor(Color.rgb(0, 102, 128));

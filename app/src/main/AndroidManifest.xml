@@ -42,7 +42,6 @@
         <activity android:name="com.mobithink.carbon.station.StationActivity" />
         <activity android:name="com.mobithink.carbon.consultation.ConsultationActivity"
             android:theme="@style/NoActionBar"/>
-        <activity android:name="com.mobithink.carbon.event.EventActivity" />
 
         <uses-library android:name="com.google.android.maps" />
 

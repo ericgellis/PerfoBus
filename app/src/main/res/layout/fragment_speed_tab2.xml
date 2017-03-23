@@ -76,7 +76,7 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/multi_line_chart"
-        android:layout_width="610dp"
+        android:layout_width="630dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/double_regular_margin"></com.github.mikephil.charting.charts.LineChart>
 

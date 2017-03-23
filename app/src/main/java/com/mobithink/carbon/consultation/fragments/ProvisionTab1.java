@@ -22,8 +22,10 @@ import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.utils.DrawBusTrip;
 import com.mobithink.carbon.utils.Mathematics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
 
@@ -31,11 +33,11 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     TextView minDistanceBetweenStations;
     TextView averageDistanceBetweenStationsTextView;
     TextView maxDistanceBetweenStations;
+    TextView savingInMinutesTextView;
+    TextView savingInEuroTextView;
 
     private GoogleMap mGoogleMap;
     PolylineOptions stationLatLng;
-
-
 
     long interStationObjective = 600;
     long timeInStation;
@@ -66,6 +68,8 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         minDistanceBetweenStations = (TextView) rootView.findViewById(R.id.minDistance);
         averageDistanceBetweenStationsTextView = (TextView) rootView.findViewById(R.id.averageDistance);
         maxDistanceBetweenStations = (TextView) rootView.findViewById(R.id.maxDistance);
+        savingInMinutesTextView = (TextView) rootView.findViewById(R.id.savingInMinutesTextView);
+        savingInEuroTextView = (TextView) rootView.findViewById(R.id.savingInEuroTextView);
 
         timeSavingInStation();
         return rootView;
@@ -75,6 +79,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         getTripDTO();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
+        savingInMinutesTextView.setText(timeFormat.format(timeSavingResult)+ "min");
+        savingInEuroTextView.setText("soit euro");
 
     }
 
