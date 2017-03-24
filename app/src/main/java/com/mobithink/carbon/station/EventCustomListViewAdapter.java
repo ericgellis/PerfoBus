@@ -1,13 +1,18 @@
 package com.mobithink.carbon.station;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +26,14 @@ import android.widget.TextView;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +45,13 @@ import static android.content.ContentValues.TAG;
 
 public class EventCustomListViewAdapter extends BaseAdapter implements LocationListener, OnMapReadyCallback {
 
+    private static MediaRecorder mediaRecorder;
+    private static String audioFilePath;
+    boolean isRecording = false;
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int MY_REQUEST_CODE = 0;
+
     private final LayoutInflater mInflater;
     List<EventDTO> eventDTOList = new ArrayList<>();
     EventDTO eventDTO;
@@ -112,6 +125,12 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                 takePhoto();
             }
         });
+        viewHolder.microButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerVoice();
+            }
+        });
 
         viewHolder.stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,17 +150,50 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
         eventDTOList.add(event);
     }
 
-    public void takePhoto() {
-        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }*/
 
-        /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    public void takePhoto() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
         imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
                 String.valueOf(System.currentTimeMillis()) + ".jpg"));
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
-        ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);*/
+
+    }
+
+    public void registerVoice(){
+
+        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory() + "/Record/")).exists();
+        if (!exists) {
+            new File(android.os.Environment.getExternalStorageDirectory() + "/Record/").mkdirs();
+        }
+
+        mediaRecorder = new MediaRecorder();
+        try {
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory()+"/Record/test.3gp");
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mediaRecorder.prepare();
+
+        } catch (IllegalStateException e) {
+            Log.e("RECORDING :: ",e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("RECORDING :: ",e.getMessage());
+            e.printStackTrace();
+        }
+
+        if (isRecording == false) {
+            mediaRecorder.start();
+            isRecording = true;
+        }else{
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            isRecording = false;
+        }
     }
 
     public void stopAndRegisterEvent(EventDTO event) {
@@ -173,4 +225,5 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
         latitude = location.getLatitude();
 
     }
+
 }

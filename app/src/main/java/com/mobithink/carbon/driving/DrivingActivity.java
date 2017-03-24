@@ -81,6 +81,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private static final int ANALYSE_STATION_ACTION = 7;
     private static final int SHAKE_THRESHOLD = 2300;
 
+    public static final int MY_REQUEST_CODE = 0;
+
     View mRootView;
     ImageView mWeatherImageView;
     TextView mWeatherTemperatureTextView;
@@ -128,6 +130,14 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_driving);
+
+        if (checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_REQUEST_CODE);
+        }
+
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission to record denied");
+        }
 
         mRootView = findViewById(R.id.rootview);
 
