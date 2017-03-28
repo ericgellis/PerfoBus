@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.consultation.ConsultationActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -171,6 +173,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
             @Override
             public void onClick(View v) {
                 showResultListView();
+
             }
         });
 

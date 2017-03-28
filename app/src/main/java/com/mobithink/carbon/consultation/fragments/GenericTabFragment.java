@@ -4,6 +4,9 @@ package com.mobithink.carbon.consultation.fragments;
 import android.support.v4.app.Fragment;
 
 import com.mobithink.carbon.consultation.ConsultationActivity;
+import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 /**

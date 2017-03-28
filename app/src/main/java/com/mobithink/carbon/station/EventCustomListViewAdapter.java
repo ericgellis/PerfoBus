@@ -47,7 +47,8 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     private static MediaRecorder mediaRecorder;
     private static String audioFilePath;
-    boolean isRecording = false;
+    //boolean isRecording = false;
+    boolean isRecording = true;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int MY_REQUEST_CODE = 0;
@@ -156,7 +157,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
-        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
+        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"fname_" +
                 String.valueOf(System.currentTimeMillis()) + ".jpg"));
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
 
@@ -164,36 +165,44 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     public void registerVoice(){
 
-        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory() + "/Record/")).exists();
+        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp")).exists();
         if (!exists) {
-            new File(android.os.Environment.getExternalStorageDirectory() + "/Record/").mkdirs();
+            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp").mkdirs();
         }
 
-        mediaRecorder = new MediaRecorder();
-        try {
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory()+"/Record/test.3gp");
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.prepare();
-
-        } catch (IllegalStateException e) {
-            Log.e("RECORDING :: ",e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("RECORDING :: ",e.getMessage());
-            e.printStackTrace();
+        if (hasMicrophone()){
+            if(isRecording){
+                try {
+                    mediaRecorder = new MediaRecorder();
+                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp");
+                    mediaRecorder.prepare();
+                } catch (IllegalStateException e) {
+                    Log.e("RECORDING :: ",e.getMessage());
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.e("RECORDING :: ",e.getMessage());
+                    e.printStackTrace();
+                }
+                mediaRecorder.start();
+                isRecording = false;
+            } else {
+                if (mediaRecorder != null){
+                    mediaRecorder.stop();
+                    mediaRecorder.release();
+                    mediaRecorder = null;
+                    isRecording = true;
+                }
+            }
         }
+    }
 
-        if (isRecording == false) {
-            mediaRecorder.start();
-            isRecording = true;
-        }else{
-            mediaRecorder.stop();
-            mediaRecorder.release();
-            mediaRecorder = null;
-            isRecording = false;
-        }
+    protected boolean hasMicrophone() {
+        PackageManager pmanager = mContext.getPackageManager();
+        return pmanager.hasSystemFeature(
+                PackageManager.FEATURE_MICROPHONE);
     }
 
     public void stopAndRegisterEvent(EventDTO event) {

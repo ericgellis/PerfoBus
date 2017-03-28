@@ -15,6 +15,9 @@ import android.view.WindowManager;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.TabPagerAdapter;
+import com.mobithink.carbon.database.model.BusLineDTO;
+import com.mobithink.carbon.database.model.CityDTO;
+import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 
@@ -25,6 +28,9 @@ import com.mobithink.carbon.database.model.TripDTO;
 public class ConsultationActivity extends AppCompatActivity {
 
     public TripDTO mTripDTO;
+    public BusLineDTO mBusLineDTO;
+    public CityDTO mCityDTO;
+    public StationDTO mSelectedDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,11 @@ public class ConsultationActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         mTripDTO = (TripDTO) extras.getSerializable("tripDTO");
+
+        Bundle extras1 = getIntent().getExtras();
+        mBusLineDTO = (BusLineDTO) extras1.getSerializable("busLineName");
+        mCityDTO = (CityDTO) extras1.getSerializable("cityName");
+        mSelectedDirection = (StationDTO) extras1.getSerializable("directionName");
     }
 
     public TripDTO getmTripDTO() {
@@ -79,5 +90,6 @@ public class ConsultationActivity extends AppCompatActivity {
     public void setmTripDTO(TripDTO mTripDTO) {
         this.mTripDTO = mTripDTO;
     }
+
 
 }

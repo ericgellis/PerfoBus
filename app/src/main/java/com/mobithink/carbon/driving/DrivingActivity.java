@@ -79,7 +79,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private static final String TAG = "DrivingActivity";
 
     private static final int ANALYSE_STATION_ACTION = 7;
-    private static final int SHAKE_THRESHOLD = 2300;
+    private static final int SHAKE_THRESHOLD = 10;
 
     public static final int MY_REQUEST_CODE = 0;
 
@@ -247,7 +247,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this,accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
+        turnOnGps();
         Intent serviceIntent = new Intent(this, LocationService.class);
         startService(serviceIntent);
 
@@ -274,8 +274,15 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         String timeString = timeFormat.format(c.getTime());
         mActualTime.setText(timeString);
 
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         mCourseChronometer.start();
         mSectionChronometer.start();
+    }
+
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     private void updateNextStationName() {
@@ -379,7 +386,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private void showSendDataDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setCancelable(true);
-        alertDialogBuilder.setTitle("Saisie terminé");
+        alertDialogBuilder.setTitle("Saisie terminée");
         alertDialogBuilder.setMessage("Fin de saisie pour la ligne, souhaitez vous envoyer les données au serveur ?");
         alertDialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
@@ -503,8 +510,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     @Override
     public void onLocationChanged(Location location) {
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
 
         currentSpeed = location.getSpeed() * 3.6f;
         mSpeedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
@@ -517,7 +522,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        turnOnGps();
     }
 
     @Override
@@ -540,8 +545,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        Sensor mySensor = sensorEvent.sensor;
-        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        accelerometer = sensorEvent.sensor;
+        if (accelerometer.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
@@ -588,7 +593,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 200:
-                        Log.d(this.getClass().getName(), "The Serveur status is up");
+                        Log.d(this.getClass().getName(), "The server status is up");
                         break;
                     default:
                         wakeUp();

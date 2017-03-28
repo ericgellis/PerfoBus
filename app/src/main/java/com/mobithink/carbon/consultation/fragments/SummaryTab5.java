@@ -102,12 +102,13 @@ public class SummaryTab5 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
+
         Picasso.with(getContext()).load(getTripDTO().getWeather()).into(mWeatherImageView);
 
         mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
-        //mCityNameTextView.setText(busLineDTO.getCityDto().getName());
-        //mLineNameTextView.setText(busLineDTO.getName());
-        //mDirectionNameTextView.setText(mDirection.getStationName());
+        //mCityNameTextView.setText.getName());
+        //mLineNameTextView.setText(.getName());
+        //mDirectionNameTextView.setText(.getStationName());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         mEnteredTimeTextView.setText(timeFormat.format(getTripDTO().getStartTime()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
