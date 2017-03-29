@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +16,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.rey.material.widget.ImageView;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class EventTab3 extends GenericTabFragment {
         eventName = (TextView) rootView.findViewById(R.id.eventName);
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
         eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
-        //eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
+        eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
         totalTrip.setBackgroundResource(R.color.lightBlue);
