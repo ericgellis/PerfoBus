@@ -5,14 +5,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,10 +38,16 @@ import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import static android.R.attr.bitmap;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -46,16 +57,12 @@ import static android.content.ContentValues.TAG;
 public class EventCustomListViewAdapter extends BaseAdapter implements LocationListener, OnMapReadyCallback {
 
     private static MediaRecorder mediaRecorder;
-    private static String audioFilePath;
-    //boolean isRecording = false;
     boolean isRecording = true;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    public static final int MY_REQUEST_CODE = 0;
 
     private final LayoutInflater mInflater;
     List<EventDTO> eventDTOList = new ArrayList<>();
-    EventDTO eventDTO;
 
     double longitude;
     double latitude;
@@ -63,7 +70,11 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     Uri imageUri;
     Context mContext;
 
+    String mCurrentPhotoPath;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
+    private Uri mImageUri;
+    File photo;
     public EventCustomListViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
@@ -155,13 +166,54 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     public void takePhoto() {
 
+        /*boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/fname_")).exists();
+        if (!exists) {
+            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/fname_").mkdirs();
+        }*/
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
-        imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"fname_" +
+        /*imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/fname_/" +
                 String.valueOf(System.currentTimeMillis()) + ".jpg"));
-        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);*/
 
+        //Bitmap bitmap = (Bitmap)mContext.getExtras().get("data");
+        /*try {
+            FileOutputStream outStream = null;
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File(sdCard.getAbsolutePath() + "/camtest");
+            dir.mkdirs();
+            String fileName = String.format("%d.jpg", System.currentTimeMillis());
+            File outFile = new File(dir, fileName);
+            outStream = new FileOutputStream(outFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            outStream.flush();
+            outStream.close();}
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }*/
+
+        /*File outputFile = new File(Environment.getExternalStorageDirectory(), "photo_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
+
+
+
+
 
     public void registerVoice(){
 
@@ -186,11 +238,13 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                     Log.e("RECORDING :: ",e.getMessage());
                     e.printStackTrace();
                 }
+                Toast.makeText(mContext, "Micro ouvert", Toast.LENGTH_SHORT).show();
                 mediaRecorder.start();
                 isRecording = false;
             } else {
                 if (mediaRecorder != null){
                     mediaRecorder.stop();
+                    Toast.makeText(mContext, "Micro fermé", Toast.LENGTH_SHORT).show();
                     mediaRecorder.release();
                     mediaRecorder = null;
                     isRecording = true;
@@ -230,9 +284,12 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     }
     @Override
     public void onLocationChanged(Location location) {
-        longitude = location.getLongitude();
-        latitude = location.getLatitude();
-
+        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
     }
 
 }

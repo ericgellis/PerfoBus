@@ -139,6 +139,11 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
             Log.i(TAG, "Permission to record denied");
         }
 
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+
+
         mRootView = findViewById(R.id.rootview);
 
         final View bottomSheet = findViewById(R.id.bottom_sheet);

@@ -30,6 +30,7 @@
                     android:host="carbon"
                     android:scheme="mobithink" />
             </intent-filter>
+
         </activity>
 
         <activity android:name="com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity" />
