@@ -57,24 +57,22 @@ import static android.content.ContentValues.TAG;
 public class EventCustomListViewAdapter extends BaseAdapter implements LocationListener, OnMapReadyCallback {
 
     private static MediaRecorder mediaRecorder;
-    boolean isRecording = true;
+    private boolean isRecording = true;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private final LayoutInflater mInflater;
     List<EventDTO> eventDTOList = new ArrayList<>();
 
-    double longitude;
-    double latitude;
+    private double longitude;
+    private double latitude;
 
-    Uri imageUri;
-    Context mContext;
+    private Uri imageUri;
+    private Context mContext;
+    private String mCurrentPhotoPath;
 
-    String mCurrentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 1;
+    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-    private Uri mImageUri;
-    File photo;
     public EventCustomListViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
@@ -163,73 +161,58 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     }
 
 
-
     public void takePhoto() {
 
-        /*boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/fname_")).exists();
+        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto")).exists();
         if (!exists) {
-            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/fname_").mkdirs();
-        }*/
+            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto").mkdirs();
+        }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
-        /*imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/fname_/" +
-                String.valueOf(System.currentTimeMillis()) + ".jpg"));
-        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);*/
+        try{
+            imageUri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ ".provider", createImageFile());
+        } catch (IOException ex) {
 
-        //Bitmap bitmap = (Bitmap)mContext.getExtras().get("data");
-        /*try {
-            FileOutputStream outStream = null;
-            File sdCard = Environment.getExternalStorageDirectory();
-            File dir = new File(sdCard.getAbsolutePath() + "/camtest");
-            dir.mkdirs();
-            String fileName = String.format("%d.jpg", System.currentTimeMillis());
-            File outFile = new File(dir, fileName);
-            outStream = new FileOutputStream(outFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.flush();
-            outStream.close();}
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }*/
+        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+        ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
 
-        /*File outputFile = new File(Environment.getExternalStorageDirectory(), "photo_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/");
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
 
 
 
     public void registerVoice(){
 
-        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp")).exists();
+        boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio")).exists();
         if (!exists) {
-            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp").mkdirs();
+            new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio").mkdirs();
         }
 
         if (hasMicrophone()){
             if(isRecording){
+                mediaRecorder = new MediaRecorder();
                 try {
-                    mediaRecorder = new MediaRecorder();
+
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                     mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                    mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/myaudio.3gp");
+                    String audioFileName = "audio_" + timeStamp + "_";
+                    mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioFileName+".3gp");
                     mediaRecorder.prepare();
                 } catch (IllegalStateException e) {
                     Log.e("RECORDING :: ",e.getMessage());

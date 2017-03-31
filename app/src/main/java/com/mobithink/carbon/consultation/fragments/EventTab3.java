@@ -1,6 +1,7 @@
 package com.mobithink.carbon.consultation.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,8 @@ public class EventTab3 extends GenericTabFragment {
     TextView eventTimeSaving;
     TextView eventExplanations;
     ImageView eventImageView;
+    RecyclerView eventRecyclerView;
+
     private String selectedEventName;
 
 
@@ -76,6 +79,7 @@ public class EventTab3 extends GenericTabFragment {
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
         eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
         eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
+        eventRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventRecyclerView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
         totalTrip.setBackgroundResource(R.color.lightBlue);
