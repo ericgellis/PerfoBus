@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 /**
  * Created by mplaton on 31/03/2017.
@@ -16,14 +20,15 @@ import com.mobithink.carbon.R;
 public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.ViewHolder>{
 
     private Context mContext;
+    private List<EventDTO> eventDTOList;
 
     public class ViewHolder extends GenericViewHolder {
-        public ImageView mEventImageRecyclerView;
-        
+        public ImageView mEventImageView;
+
         public ViewHolder (View view){
             super(view, true);
 
-            mEventImageRecyclerView = (ImageView) view.findViewById(R.id.eventImageRecyclerView);
+            mEventImageView = (ImageView) view.findViewById(R.id.eventImageRecyclerView);
 
         }
     }
@@ -41,6 +46,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     @Override
     public void onBindViewHolder(EventRecyclerViewAdapter.ViewHolder holder, int position) {
+        final EventDTO eventDTO = eventDTOList.get(position);
+
+        //Picasso.with(mContext).load(eventDTO.getPictureNameList()).resize(150, 150).centerCrop().into(holder.mEventImageView);
 
     }
 

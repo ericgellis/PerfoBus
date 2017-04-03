@@ -71,6 +71,9 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     private Context mContext;
     private String mCurrentPhotoPath;
 
+    List<String> imageNameList = new ArrayList<>();
+    String audioFileName;
+
     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
     public EventCustomListViewAdapter(Context context) {
@@ -189,8 +192,10 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                 storageDir      /* directory */
         );
 
+        imageNameList.add(imageFileName+".jpg");
+
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
 
@@ -211,7 +216,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                     mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                    String audioFileName = "audio_" + timeStamp + "_";
+                    audioFileName = "audio_" + timeStamp + "_";
                     mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioFileName+".3gp");
                     mediaRecorder.prepare();
                 } catch (IllegalStateException e) {
@@ -234,6 +239,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                 }
             }
         }
+
     }
 
     protected boolean hasMicrophone() {
@@ -244,6 +250,8 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     public void stopAndRegisterEvent(EventDTO event) {
 
+        event.setVoiceMemo(audioFileName+".3gp");
+        event.setPictureNameList(imageNameList);
         event.setGpsEndLat((long) latitude);
         event.setGpsEndLong((long) longitude);
         event.setEndTime(System.currentTimeMillis());

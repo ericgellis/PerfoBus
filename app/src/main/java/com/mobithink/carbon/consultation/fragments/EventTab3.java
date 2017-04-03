@@ -1,6 +1,7 @@
 package com.mobithink.carbon.consultation.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.consultation.adapter.EventRecyclerViewAdapter;
 import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
@@ -52,8 +54,10 @@ public class EventTab3 extends GenericTabFragment {
     TextView eventName;
     TextView eventTimeSaving;
     TextView eventExplanations;
-    ImageView eventImageView;
+    ImageView eventAudioView;
     RecyclerView eventRecyclerView;
+    EventRecyclerViewAdapter eventRecyclerViewAdapter;
+
 
     private String selectedEventName;
 
@@ -78,7 +82,7 @@ public class EventTab3 extends GenericTabFragment {
         eventName = (TextView) rootView.findViewById(R.id.eventName);
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
         eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
-        eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
+        eventAudioView = (ImageView) rootView.findViewById(R.id.eventAudioView);
         eventRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventRecyclerView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
@@ -192,7 +196,10 @@ public class EventTab3 extends GenericTabFragment {
 
         eventName.setText(selectedEventName);
 
-
+        /*eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),);
+        eventRecyclerView.setAdapter(eventRecyclerViewAdapter);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        eventRecyclerView.setLayoutManager(horizontalLayoutManager);*/
 
     }
 

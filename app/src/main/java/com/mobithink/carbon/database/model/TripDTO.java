@@ -27,6 +27,12 @@ public class TripDTO implements Serializable {
 
     public Long busLineid;
 
+    public String cityName;
+
+    public String lineName;
+
+    public String direction;
+
     public List<StationDataDTO> stationDataDTOList;
 
     public List<RollingPointDTO> rollingPointDTOList;
@@ -130,5 +136,37 @@ public class TripDTO implements Serializable {
 
     public void setEventDTOList(List<EventDTO> eventDTOList) {
         this.eventDTOList = eventDTOList;
+    }
+
+    public Long getBusLineid() {
+        return busLineid;
+    }
+
+    public void setBusLineid(Long busLineid) {
+        this.busLineid = busLineid;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 }

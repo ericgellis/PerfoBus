@@ -20,6 +20,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_STATION_TRIP_DATA = "stationTripDatas";
     public static final String TABLE_EVENT = "events";
     public static final String TABLE_ROLLING_POINT = "rollingPoints";
+    public static final String TABLE_PICTURE = "picture";
     // Common column names
     public static final String KEY_ID = "_id";
     public static final String KEY_LONGITUDE = "longitude";
@@ -55,6 +56,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     // EVENT Table - column names
     public static final String KEY_EVENT_NAME = "eventName";
     public static final String KEY_STATION_DATA_NAME = "stationData_name";
+    public static final String KEY_VOICE_MEMO = "voice_memo";
+    // PICTURE Table - column names
+    public static final String KEY_PICTURE_NAME ="picture_name";
+    public static final String KEY_EVENT_ID = "event_id";
 
     // Create table CITY
     private static final String CREATE_TABLE_CITY =
@@ -125,8 +130,16 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_END_LATITUDE + " DOUBLE PRECISION,"
                     + KEY_END_LONGITUDE + " DOUBLE PRECISION,"
+                    + KEY_VOICE_MEMO + " TEXT,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_NAME + " TEXT" + ")";
+    // Create table PICTURE
+    private static final String CREATE_TABLE_PICTURE =
+            "CREATE TABLE " + TABLE_PICTURE
+                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                    + KEY_PICTURE_NAME + " TEXT,"
+                    + KEY_EVENT_ID + " INTEGER"+ ")";
+
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
@@ -152,6 +165,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
             db.execSQL(CREATE_TABLE_ROLLING_POINT);
             db.execSQL(CREATE_TABLE_EVENT);
+            db.execSQL(CREATE_TABLE_PICTURE);
         }
         if (oldVersion < 2) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CITY);
@@ -162,6 +176,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATION_TRIP_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLLING_POINT);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PICTURE);
 
             db.execSQL(CREATE_TABLE_CITY);
             db.execSQL(CREATE_TABLE_LINE);
@@ -171,6 +186,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
             db.execSQL(CREATE_TABLE_ROLLING_POINT);
             db.execSQL(CREATE_TABLE_EVENT);
+            db.execSQL(CREATE_TABLE_PICTURE);
         }
     }
 

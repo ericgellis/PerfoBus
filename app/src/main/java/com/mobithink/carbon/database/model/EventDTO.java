@@ -20,13 +20,14 @@ public class EventDTO implements Serializable {
     private String stationName;
     private Long timeSaving;
     private List<String> pictureNameList;
-    private List<String> voiceMemoNameList;
+    private String voiceMemo;
+
 
     public EventDTO() {
 
     }
 
-    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, Long gpsEndLat, Long gpsEndLong, String stationName, Long timeSaving) {
+    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, Long gpsEndLat, Long gpsEndLong, String stationName, Long timeSaving, List pictureNameList, String voiceMemo) {
         this.id = id;
         this.eventName = eventName;
         this.startTime = startTime;
@@ -37,6 +38,8 @@ public class EventDTO implements Serializable {
         this.gpsEndLong = gpsEndLong;
         this.stationName = stationName;
         this.timeSaving = timeSaving;
+        this.pictureNameList = pictureNameList;
+        this.voiceMemo = voiceMemo;
     }
 
     public Long getId() {
@@ -119,11 +122,11 @@ public class EventDTO implements Serializable {
         this.pictureNameList = pictureNameList;
     }
 
-    public List<String> getVoiceMemoNameList() {
-        return voiceMemoNameList;
+    public String getVoiceMemo() {
+        return voiceMemo;
     }
 
-    public void setVoiceMemoNameList(List<String> voiceNameList) {
-        this.voiceMemoNameList = voiceNameList;
+    public void setVoiceMemo(String voiceMemo) {
+        this.voiceMemo = voiceMemo;
     }
 }
