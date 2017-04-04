@@ -125,25 +125,22 @@
             android:layout_below="@+id/eventTimeSaving"
             android:layout_marginStart="@dimen/double_regular_margin"/>
 
+
+        <ImageView
+            android:id="@+id/eventImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/eventExplanations"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/double_regular_margin" />
+
         <ImageView
             android:id="@+id/eventAudioView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/eventName"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/double_regular_margin"
-            android:layout_marginBottom="@dimen/double_regular_margin"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_toEndOf="@+id/eventImageView"
+            android:layout_alignBottom="@+id/eventImageView"
             android:background="@mipmap/ic_white_audio"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/eventRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/eventName"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/double_regular_margin">
-        </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
 

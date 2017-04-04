@@ -55,12 +55,9 @@ public class EventTab3 extends GenericTabFragment {
     TextView eventTimeSaving;
     TextView eventExplanations;
     ImageView eventAudioView;
-    RecyclerView eventRecyclerView;
-    EventRecyclerViewAdapter eventRecyclerViewAdapter;
-
+    ImageView eventImageView;
 
     private String selectedEventName;
-
 
     public EventTab3() {
     }
@@ -83,7 +80,7 @@ public class EventTab3 extends GenericTabFragment {
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
         eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
         eventAudioView = (ImageView) rootView.findViewById(R.id.eventAudioView);
-        eventRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventRecyclerView);
+        eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
         totalTrip.setBackgroundResource(R.color.lightBlue);
@@ -136,7 +133,6 @@ public class EventTab3 extends GenericTabFragment {
         getTripDTO();
         String totalTimeString;
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
-
 
         for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
             if (eventDTO.getStationName() != null){
@@ -196,10 +192,6 @@ public class EventTab3 extends GenericTabFragment {
 
         eventName.setText(selectedEventName);
 
-        /*eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),);
-        eventRecyclerView.setAdapter(eventRecyclerViewAdapter);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        eventRecyclerView.setLayoutManager(horizontalLayoutManager);*/
 
     }
 

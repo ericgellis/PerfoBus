@@ -71,7 +71,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     private Context mContext;
     private String mCurrentPhotoPath;
 
-    List<String> imageNameList = new ArrayList<>();
+    String imageFileName;
     String audioFileName;
 
     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -184,15 +184,13 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        imageNameList.add(imageFileName+".jpg");
 
         // Save a file: path for use with ACTION_VIEW intents
         //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
@@ -250,8 +248,8 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     public void stopAndRegisterEvent(EventDTO event) {
 
-        event.setVoiceMemo(audioFileName+".3gp");
-        event.setPictureNameList(imageNameList);
+        event.setVoiceMemo(audioFileName);
+        event.setPicture(imageFileName);
         event.setGpsEndLat((long) latitude);
         event.setGpsEndLong((long) longitude);
         event.setEndTime(System.currentTimeMillis());

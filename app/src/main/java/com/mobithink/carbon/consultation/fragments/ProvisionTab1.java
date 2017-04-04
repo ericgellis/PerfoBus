@@ -130,11 +130,11 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         /*mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
                 .geodesic(true));*/
 
-        /*DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
+        DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
                 .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
                 .run();
 
-        MarkerOptions markers = new MarkerOptions();
+        /*MarkerOptions markers = new MarkerOptions();
         markers.position(new LatLng(43.600000, 1.433333));
         mGoogleMap.addMarker(markers);
         markers.position(new LatLng(43.6667, 1.4833));
