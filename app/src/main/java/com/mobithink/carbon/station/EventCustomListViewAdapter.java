@@ -175,7 +175,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
         try{
             imageUri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ ".provider", createImageFile());
         } catch (IOException ex) {
-
+            Log.e("No photo", "No photo");
         }
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
         ((Activity) mContext).startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
@@ -184,17 +184,11 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/");
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
+        imageFileName = "JPEG_" + timeStamp;
+        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +imageFileName + ".jpg" );
         // Save a file: path for use with ACTION_VIEW intents
         //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
+        return storageDir;
     }
 
 
@@ -214,7 +208,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                     mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                    audioFileName = "audio_" + timeStamp + "_";
+                    audioFileName = "audio_" + timeStamp;
                     mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioFileName+".3gp");
                     mediaRecorder.prepare();
                 } catch (IllegalStateException e) {
