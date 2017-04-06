@@ -153,38 +153,29 @@ public class EventTab3 extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
-        String totalTimeString;
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+        if (getTripDTO().getEventDTOList() != null) {
+            long eventTotalDuration = 0;
+            long eventInStationTotalDuration = 0;
+
+            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
                 eventNameMainList.add(eventDTO);
-        }
 
-        long eventTotalDuration = 0;
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO != null && eventDTO.getStationName() == null) {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                String timeString = timeFormat.format(eventDuration);
-                eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
-                eventTotalDuration+=eventDuration;
+                if (eventDTO.getStationName() == null) {
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    String timeString = timeFormat.format(eventDuration);
+                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
+                    eventTotalDuration+=eventDuration;
 
+                } else {
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    eventInStationTotalDuration+=eventDuration;
+                }
+                eventTotalDurationTextView.setText(" - " +timeFormat.format(eventTotalDuration) + " - ");
+                eventInStationTotalDurationTextView.setText(" - " +timeFormat.format(eventInStationTotalDuration) + " - ");
             }
-            totalTimeString = timeFormat.format(eventTotalDuration);
-            eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
-
         }
-
-        long eventInStationTotalDuration = 0;
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO != null && eventDTO.getStationName() != null) {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                eventInStationTotalDuration+=eventDuration;
-            }
-            totalTimeString = timeFormat.format(eventInStationTotalDuration);
-            eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
-        }
-
-
     }
     
     public void showGeneralInformations(){

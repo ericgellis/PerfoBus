@@ -21,18 +21,12 @@ public class MyXAxisValueFormatter implements IAxisValueFormatter {
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         // "value" represents the position of the label on the axis (x or y)
-        Log.d(TAG, "getFormattedValue: " + value);
-
         int intValue = Math.round(value);
-
         if (intValue < 0) {
-            Log.d(TAG, "mValues: " + mValues[0]);
             return mValues[0];
         } else if (intValue > (mValues.length -1)){
-            Log.d(TAG, "mValues: " + mValues[mValues.length -1]);
             return mValues[mValues.length - 1];
         } else {
-            Log.d(TAG, "mValues: " + mValues[intValue]);
             return mValues[intValue];
         }
     }
