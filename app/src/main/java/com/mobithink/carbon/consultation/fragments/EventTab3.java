@@ -224,7 +224,7 @@ public class EventTab3 extends GenericTabFragment {
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
-        
+
     }
 
 
