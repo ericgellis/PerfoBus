@@ -105,6 +105,8 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         polylineOptions.add(new LatLng(43.654422, 1.475961));
         polylineOptions.add(new LatLng(43.6667, 1.4833));
 
+        mGoogleMap.addPolyline(polylineOptions.color(R.color.mobiThinkBlue).geodesic(true));
+
         /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
             for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
                 polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
@@ -122,17 +124,16 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         }*/
 
 
-        //LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
-        //prepareBuilder(latLngList);
-        //googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
+//        prepareBuilder(latLngList);
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
+//
+          //mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE).geodesic(true));
 
-        /*mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
-                .geodesic(true));*/
-
-        DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
-                .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
-                .run();
+//        DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
+//                .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+//                .run();
 
         /*MarkerOptions markers = new MarkerOptions();
         markers.position(new LatLng(43.600000, 1.433333));

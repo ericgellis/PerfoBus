@@ -115,6 +115,12 @@ public class EventTab3 extends GenericTabFragment {
         eventNameMainList = new ArrayList<>();
         EventMainListViewAdapter adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
         eventMainListView.setAdapter(adapter);
+        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showDetailedInformations(position);
+            }
+        });
 
         eventInDrivingListView = (ListView) rootView.findViewById(R.id.eventInDrivingListView);
         eventInDrivingList = new ArrayList<>();
@@ -175,38 +181,7 @@ public class EventTab3 extends GenericTabFragment {
             eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
         }
 
-        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String selectedEventName = eventNameMainList.get(position).getEventName();
-                if (eventNameMainList.get(position).getStationName() != null){
-                    eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
-                } else {
-                    eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
-                }
-                eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving());
-                PerformanceExplanations performanceExplanations = new PerformanceExplanations();
-                eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
 
-//                if (eventNameMainList.get(position).getPicture() != null){
-//                    File root = Environment.getExternalStorageDirectory();
-//                    Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
-//                    eventImageView.setImageBitmap(bMap);
-//                }
-
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                try {
-                    mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+eventNameMainList.get(position).getVoiceMemo()+".3gp");
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException ioe){
-                    ioe.printStackTrace();
-                }
-
-                showDetailedInformations();
-            }
-        });
     }
     
     public void showGeneralInformations(){
@@ -217,13 +192,39 @@ public class EventTab3 extends GenericTabFragment {
         eventMainListView.setBackgroundResource(R.color.white);
     }
 
-    public void showDetailedInformations(){
+    public void showDetailedInformations(int position){
         mainRelativeLayout.setVisibility(View.GONE);
         totalTrip.setBackgroundResource(R.color.white);
         totalTrip.setTextColor(getResources().getColor(R.color.black));
         detailedRelativeLayout.setVisibility(View.VISIBLE);
 
+        if (eventNameMainList.get(position).getStationName() != null){
+            eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
+        } else {
+            eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
+        }
+        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving());
+        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
+        eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
 
+//                if (eventNameMainList.get(position).getPicture() != null){
+//                    File root = Environment.getExternalStorageDirectory();
+//                    Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
+//                    eventImageView.setImageBitmap(bMap);
+//                }
+
+        Picasso.with(getContext()).load(new File (Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +eventNameMainList.get(position).getPicture() + ".jpg")).into(eventImageView);
+
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+eventNameMainList.get(position).getVoiceMemo()+".3gp");
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+        
     }
 
 
