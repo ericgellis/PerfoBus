@@ -1,7 +1,9 @@
 package com.mobithink.carbon.consultation;
 
 
+import android.Manifest;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
@@ -32,6 +34,8 @@ public class ConsultationActivity extends AppCompatActivity {
     public CityDTO mCityDTO;
     public StationDTO mSelectedDirection;
 
+    public static final int MY_REQUEST_CODE = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,6 +43,10 @@ public class ConsultationActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_consultation);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
+        }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 

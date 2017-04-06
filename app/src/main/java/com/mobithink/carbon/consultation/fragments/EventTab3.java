@@ -1,9 +1,17 @@
 package com.mobithink.carbon.consultation.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +24,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.consultation.adapter.EventRecyclerViewAdapter;
+import com.mobithink.carbon.consultation.adapter.EventMainListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.utils.PerformanceExplanations;
+import com.squareup.picasso.Picasso;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +49,7 @@ public class EventTab3 extends GenericTabFragment {
     RelativeLayout detailedRelativeLayout;
 
     ListView eventMainListView;
-    ArrayList<String> eventNameMainList;
+    ArrayList<EventDTO> eventNameMainList;
 
     ListView eventInDrivingListView;
     ArrayList<String> eventInDrivingList;
@@ -56,12 +70,10 @@ public class EventTab3 extends GenericTabFragment {
     TextView eventTimeSaving;
     TextView eventExplanations;
     ImageView eventAudioView;
-    RecyclerView eventRecyclerView;
-    EventRecyclerViewAdapter eventRecyclerViewAdapter;
-
+    ImageView eventImageView;
 
     private String selectedEventName;
-
+    public static final int MY_REQUEST_CODE = 0;
 
     public EventTab3() {
     }
@@ -73,6 +85,10 @@ public class EventTab3 extends GenericTabFragment {
         Log.d(TAG, "onCreateView");
 
         View rootView = inflater.inflate(R.layout.fragment_event_tab3, container, false);
+
+        if (ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
+        }
 
         mainRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.mainRelativeLayout);
         detailedRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.detailedRelativeLayout);
@@ -86,7 +102,7 @@ public class EventTab3 extends GenericTabFragment {
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
         eventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
         eventAudioView = (ImageView) rootView.findViewById(R.id.eventAudioView);
-        eventRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventRecyclerView);
+        eventImageView = (ImageView) rootView.findViewById(R.id.eventImageView);
 
         totalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
         totalTrip.setBackgroundResource(R.color.lightBlue);
@@ -99,13 +115,12 @@ public class EventTab3 extends GenericTabFragment {
 
         eventMainListView = (ListView) rootView.findViewById(R.id.event_list_view);
         eventNameMainList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.itemview_station_listview, R.id.stationNameTextView, eventNameMainList);
+        EventMainListViewAdapter adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
         eventMainListView.setAdapter(adapter);
         eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedEventName = eventNameMainList.get(position);
-                showDetailedInformations();
+                showDetailedInformations(position);
             }
         });
 
@@ -138,45 +153,37 @@ public class EventTab3 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
         String totalTimeString;
-        long eventTotalDuration = 0;
-        long eventInStationTotalDuration = 0;
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
-        if (getTripDTO().getEventDTOList() != null) {
-            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-                if (eventDTO.getStationName() != null){
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    String timeString = timeFormat.format(eventDuration);
-                    eventNameMainList.add(eventDTO.getEventName() + " - " + eventDTO.getStationName() + " - " + timeString);
-                    //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
-                    //eventTimeSaving.setText(timeSavingString);
-                } else {
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    String timeString = timeFormat.format(eventDuration);
-                    eventNameMainList.add(eventDTO.getEventName() + " - " + timeString);
-                    //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
-                    //eventTimeSaving.setText(timeSavingString);
-                }
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                eventNameMainList.add(eventDTO);
+        }
 
-                if (eventDTO.getStationName() == null) {
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    String timeString = timeFormat.format(eventDuration);
-                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
-                    eventTotalDuration+=eventDuration;
-
-                }
-                totalTimeString = timeFormat.format(eventTotalDuration);
-                eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
-
-                if (eventDTO.getStationName() != null) {
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    eventInStationTotalDuration+=eventDuration;
-                }
-                totalTimeString = timeFormat.format(eventInStationTotalDuration);
-                eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+        long eventTotalDuration = 0;
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+            if (eventDTO != null && eventDTO.getStationName() == null) {
+                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                String timeString = timeFormat.format(eventDuration);
+                eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
+                eventTotalDuration+=eventDuration;
 
             }
+            totalTimeString = timeFormat.format(eventTotalDuration);
+            eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+
         }
+
+        long eventInStationTotalDuration = 0;
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+            if (eventDTO != null && eventDTO.getStationName() != null) {
+                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                eventInStationTotalDuration+=eventDuration;
+            }
+            totalTimeString = timeFormat.format(eventInStationTotalDuration);
+            eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+        }
+
+
     }
     
     public void showGeneralInformations(){
@@ -187,18 +194,38 @@ public class EventTab3 extends GenericTabFragment {
         eventMainListView.setBackgroundResource(R.color.white);
     }
 
-    public void showDetailedInformations(){
+    public void showDetailedInformations(int position){
         mainRelativeLayout.setVisibility(View.GONE);
         totalTrip.setBackgroundResource(R.color.white);
         totalTrip.setTextColor(getResources().getColor(R.color.black));
         detailedRelativeLayout.setVisibility(View.VISIBLE);
 
-        eventName.setText(selectedEventName);
+        if (eventNameMainList.get(position).getStationName() != null){
+            eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
+        } else {
+            eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
+        }
+        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving());
+        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
+        eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
 
-        /*eventRecyclerViewAdapter = new EventRecyclerViewAdapter(getContext(),);
-        eventRecyclerView.setAdapter(eventRecyclerViewAdapter);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        eventRecyclerView.setLayoutManager(horizontalLayoutManager);*/
+//                if (eventNameMainList.get(position).getPicture() != null){
+//                    File root = Environment.getExternalStorageDirectory();
+//                    Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
+//                    eventImageView.setImageBitmap(bMap);
+//                }
+
+        Picasso.with(getContext()).load(new File (Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +eventNameMainList.get(position).getPicture() + ".jpg")).into(eventImageView);
+
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+eventNameMainList.get(position).getVoiceMemo()+".3gp");
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
 
     }
 

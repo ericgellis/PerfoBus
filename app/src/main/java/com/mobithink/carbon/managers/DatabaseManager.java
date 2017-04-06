@@ -209,6 +209,10 @@ public class DatabaseManager {
                 ev.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
                 ev.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
                 ev.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+                ev.setGpsEndLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LONGITUDE)));
+                ev.setGpsEndLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LATITUDE)));
+                ev.setVoiceMemo(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_VOICE_MEMO)));
+                ev.setPicture(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_PICTURE)));
                 ev.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_DATA_NAME)));
 
                 eventDTOList.add(ev);
@@ -298,6 +302,8 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_END_LATITUDE, eventDTO.getGpsEndLat());
         values.put(DatabaseOpenHelper.KEY_END_LONGITUDE, eventDTO.getGpsEndLong());
+        values.put(DatabaseOpenHelper.KEY_VOICE_MEMO, eventDTO.getVoiceMemo());
+        values.put(DatabaseOpenHelper.KEY_PICTURE, eventDTO.getPicture());
 
         try {
             getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
@@ -395,4 +401,5 @@ public class DatabaseManager {
 
         return stationDataDTO;
     }
+
 }

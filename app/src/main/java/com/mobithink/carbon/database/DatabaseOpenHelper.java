@@ -57,9 +57,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_EVENT_NAME = "eventName";
     public static final String KEY_STATION_DATA_NAME = "stationData_name";
     public static final String KEY_VOICE_MEMO = "voice_memo";
-    // PICTURE Table - column names
-    public static final String KEY_PICTURE_NAME ="picture_name";
-    public static final String KEY_EVENT_ID = "event_id";
+    public static final String KEY_PICTURE = "picture";
 
     // Create table CITY
     private static final String CREATE_TABLE_CITY =
@@ -131,14 +129,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_END_LATITUDE + " DOUBLE PRECISION,"
                     + KEY_END_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_VOICE_MEMO + " TEXT,"
+                    + KEY_PICTURE + " TEXT,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_NAME + " TEXT" + ")";
-    // Create table PICTURE
-    private static final String CREATE_TABLE_PICTURE =
-            "CREATE TABLE " + TABLE_PICTURE
-                    + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                    + KEY_PICTURE_NAME + " TEXT,"
-                    + KEY_EVENT_ID + " INTEGER"+ ")";
+
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -165,7 +159,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
             db.execSQL(CREATE_TABLE_ROLLING_POINT);
             db.execSQL(CREATE_TABLE_EVENT);
-            db.execSQL(CREATE_TABLE_PICTURE);
         }
         if (oldVersion < 2) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CITY);
@@ -186,7 +179,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STATION_TRIP_DATA);
             db.execSQL(CREATE_TABLE_ROLLING_POINT);
             db.execSQL(CREATE_TABLE_EVENT);
-            db.execSQL(CREATE_TABLE_PICTURE);
         }
     }
 
@@ -194,6 +186,5 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         updateDatabase(db, oldVersion, newVersion);
     }
-
 
 }
