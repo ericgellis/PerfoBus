@@ -2,6 +2,7 @@ package com.mobithink.carbon.consultation.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,19 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.adapters.MyXAxisValueFormatter;
 
-
 import java.util.ArrayList;
 
 
-public class CapacityTab4 extends GenericTabFragment {
-
+public class CapacityTab4 extends GenericTabFragment implements OnChartValueSelectedListener {
 
     TextView maxCapacityTextView;
     TextView maxPeopleTextView;
@@ -45,6 +48,9 @@ public class CapacityTab4 extends GenericTabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_capacity_tab4, container, false);
 
         maxCapacityTextView = (TextView) rootView.findViewById(R.id.maxCapacity);
@@ -72,95 +78,138 @@ public class CapacityTab4 extends GenericTabFragment {
         mCombinedChart.setPinchZoom(false);
         mCombinedChart.setDoubleTapToZoomEnabled(false);
         mCombinedChart.setAutoScaleMinMaxEnabled(true);
-        mCombinedChart.setHighlightFullBarEnabled(true);
+        mCombinedChart.setHighlightFullBarEnabled(false);
         mCombinedChart.setDrawOrder(new CombinedChart.DrawOrder[]{
-                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
         });
 
-        Legend l = mCombinedChart.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
+        mCombinedChart.setOnChartValueSelectedListener(this);
+
+        Legend legend = mCombinedChart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(false);
+
 
         CombinedData data = new CombinedData();
 
-        data.setData(generateBarCharts());
-        //data.setData(generateinBusData());
+        data.setData(generateBarData());
+        data.setData(generateLineData());
 
         ArrayList<String> names = new ArrayList<>();
         for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
             names.add(stationDataDTO.getStationName());
         }
 
+        Log.d(TAG, "names size : " + names.size());
+
         namesTab = names.toArray(new String[names.size()]);
 
         XAxis xAxis = mCombinedChart.getXAxis();
-        xAxis.setAxisMaximum(data.getXMax() + 0.25f);
+
+        //xAxis max and min
+        xAxis.setAxisMinimum(-0.5f);
+        xAxis.setAxisMaximum(data.getXMax() + 0.5f);
+
+        //xAxis labels
+        xAxis.setLabelRotationAngle(-90);
         xAxis.setValueFormatter(new MyXAxisValueFormatter(namesTab));
-        xAxis.setDrawLabels(true);
+
+        //xAxis line
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineWidth(1f);
-
-        xAxis.setLabelRotationAngle(-90);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        mCombinedChart.setVisibleXRangeMaximum(7f);
+
+        mCombinedChart.setVisibleXRangeMaximum(data.getXMax() * 1f);
         mCombinedChart.setVisibleYRangeMinimum(2f, YAxis.AxisDependency.LEFT);
-        mCombinedChart.getCenter();
         mCombinedChart.setDragEnabled(true);
         mCombinedChart.getXAxis().setDrawGridLines(false);
         mCombinedChart.getAxisRight().setEnabled(false);
+
         mCombinedChart.setData(data);
         mCombinedChart.invalidate();
-
     }
 
+    private LineData generateLineData() {
+        LineData data = new LineData();
 
-    private BarData generateBarCharts() {
-
-        ArrayList<BarEntry> comeInEntry = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> goOutEntry = new ArrayList<BarEntry>();
+        ArrayList<Entry> allEntry = new ArrayList<>();
 
         int i = 0;
+        float total = 0f;
         for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            BarEntry entry = new BarEntry(i, Float.valueOf(stationDataDTO.getNumberOfComeIn()));
-            comeInEntry.add(entry);
-            BarEntry entry1 = new BarEntry(i, Float.valueOf(-1 * stationDataDTO.getNumberOfGoOut()));
-            goOutEntry.add(entry1);
+            float comeIn = (float) stationDataDTO.getNumberOfComeIn();
+            float comeOut = (float) (-1 * stationDataDTO.getNumberOfGoOut());
+            total = total + comeIn + comeOut;
+            Entry entry = new Entry(i,total);
+            allEntry.add(entry);
             i++;
         }
 
-        BarDataSet set1 = new BarDataSet(comeInEntry, "Personnes montant dans le bus");
-        set1.setColor(Color.rgb(167, 224, 165));
-        set1.setDrawValues(false);
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        LineDataSet set = new LineDataSet(allEntry, "nombre de personnes dans le véhicule");
+        set.setColor(Color.rgb(255, 127, 39));
+        set.setLineWidth(2.5f);
+        set.setCircleColor(Color.rgb(255, 127, 39));
+        set.setCircleRadius(5f);
+        set.setFillColor(Color.rgb(255, 127, 39));
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set.setDrawValues(false);
+        set.setValueTextSize(10f);
+        set.setValueTextColor(Color.rgb(255, 127, 39));
 
-        BarDataSet set2 = new BarDataSet(goOutEntry, "Personnes descendant du bus");
-        set2.setColor(Color.rgb(250, 110, 112));
-        set2.setDrawValues(false);
-        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        data.addDataSet(set);
 
-        float groupSpace = 0.5f;
-        float barSpace = 0.02f; // x2 dataset
-        float barWidth = 0.45f; // x2 dataset
-        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
-
-        BarData d = new BarData(set1, set2);
-        d.setBarWidth(barWidth);
-
-        // make this BarData object grouped
-        d.groupBars(0, groupSpace, barSpace); // start at x = 0
-
-        return d;
-
-    }
-
-    private LineData generateinBusData() {
-        return null;
+        return data;
     }
 
 
+    private BarData generateBarData() {
 
+        ArrayList<BarEntry> allEntry = new ArrayList<>();
+
+        int i = 0;
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            float comeIn = (float) stationDataDTO.getNumberOfComeIn();
+            float comeOut = (float) (-1 * stationDataDTO.getNumberOfGoOut());
+            // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
+            BarEntry entry = new BarEntry(i,new float[]{comeOut, comeIn} );
+            allEntry.add(entry);
+            i++;
+        }
+
+        BarDataSet set = new BarDataSet(allEntry, "Charge");
+        set.setDrawIcons(false);
+        set.setDrawValues(false);
+        set.setValueTextSize(7f);
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setColors(Color.rgb(250, 110, 112), Color.rgb(167, 224, 165));
+        set.setStackLabels(new String[]{
+                "Personnes descendant du bus", "Personnes montant dans le bus"
+        });
+
+        BarData data = new BarData(set);
+        data.setBarWidth(1f); // x2 dataset
+
+        return data;
+
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if (e != null) {
+            Entry entry = e;
+            Log.i(TAG,"Value Selected : " + Math.abs(entry.getX()));
+        } else {
+            Log.i(TAG,"null value selected");
+        }
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i(TAG, "NOTING SELECTED");
+    }
 }
 

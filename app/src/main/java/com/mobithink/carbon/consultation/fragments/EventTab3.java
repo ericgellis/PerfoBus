@@ -3,6 +3,7 @@ package com.mobithink.carbon.consultation.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class EventTab3 extends GenericTabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView");
 
         View rootView = inflater.inflate(R.layout.fragment_event_tab3, container, false);
 
@@ -135,48 +138,44 @@ public class EventTab3 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
         String totalTimeString;
+        long eventTotalDuration = 0;
+        long eventInStationTotalDuration = 0;
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
+        if (getTripDTO().getEventDTOList() != null) {
+            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                if (eventDTO.getStationName() != null){
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    String timeString = timeFormat.format(eventDuration);
+                    eventNameMainList.add(eventDTO.getEventName() + " - " + eventDTO.getStationName() + " - " + timeString);
+                    //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
+                    //eventTimeSaving.setText(timeSavingString);
+                } else {
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    String timeString = timeFormat.format(eventDuration);
+                    eventNameMainList.add(eventDTO.getEventName() + " - " + timeString);
+                    //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
+                    //eventTimeSaving.setText(timeSavingString);
+                }
 
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO.getStationName() != null){
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                String timeString = timeFormat.format(eventDuration);
-                eventNameMainList.add(eventDTO.getEventName() + " - " + eventDTO.getStationName() + " - " + timeString);
-                //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
-                //eventTimeSaving.setText(timeSavingString);
-            } else {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                String timeString = timeFormat.format(eventDuration);
-                eventNameMainList.add(eventDTO.getEventName() + " - " + timeString);
-                //String timeSavingString = timeFormat.format(eventDTO.getTimeSaving());
-                //eventTimeSaving.setText(timeSavingString);
+                if (eventDTO.getStationName() == null) {
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    String timeString = timeFormat.format(eventDuration);
+                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
+                    eventTotalDuration+=eventDuration;
+
+                }
+                totalTimeString = timeFormat.format(eventTotalDuration);
+                eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+
+                if (eventDTO.getStationName() != null) {
+                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+                    eventInStationTotalDuration+=eventDuration;
+                }
+                totalTimeString = timeFormat.format(eventInStationTotalDuration);
+                eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
+
             }
-
-        }
-
-        long eventTotalDuration = 0;
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO != null && eventDTO.getStationName() == null) {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                String timeString = timeFormat.format(eventDuration);
-                eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
-                eventTotalDuration+=eventDuration;
-
-            }
-            totalTimeString = timeFormat.format(eventTotalDuration);
-            eventTotalDurationTextView.setText(" - " +totalTimeString + " - ");
-
-        }
-
-        long eventInStationTotalDuration = 0;
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-            if (eventDTO != null && eventDTO.getStationName() != null) {
-                long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                eventInStationTotalDuration+=eventDuration;
-            }
-            totalTimeString = timeFormat.format(eventInStationTotalDuration);
-            eventInStationTotalDurationTextView.setText(" - " +totalTimeString + " - ");
         }
     }
     

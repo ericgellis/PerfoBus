@@ -9,10 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -46,15 +42,16 @@ import com.mobithink.carbon.database.model.TripDTO;
 import com.mobithink.carbon.driving.adapters.StationAdapter;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.services.LocationService;
 import com.mobithink.carbon.services.WeatherService;
 import com.mobithink.carbon.services.WeatherServiceCallback;
 import com.mobithink.carbon.services.weatherdata.Channel;
 import com.mobithink.carbon.services.weatherdata.Item;
+import com.mobithink.carbon.station.EventCustomListViewAdapter;
 import com.mobithink.carbon.station.IEventSelectedListener;
 import com.mobithink.carbon.station.StationActivity;
-import com.mobithink.carbon.station.EventCustomListViewAdapter;
 import com.mobithink.carbon.utils.CarbonUtils;
 import com.mobithink.carbon.webservices.TechnicalService;
 import com.mobithink.carbon.webservices.TripService;
@@ -74,7 +71,7 @@ import retrofit2.Response;
  * Created by mplaton on 01/02/2017.
  */
 
-public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, SensorEventListener, IEventSelectedListener{
+public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, IEventSelectedListener{
 
     private static final String TAG = "DrivingActivity";
 
@@ -118,8 +115,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
     private LocationManager locationManager;
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private float currentSpeed = 0.0f;
@@ -177,6 +172,9 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mActualTime = (TextView) findViewById(R.id.actualTime);
         mActualDate = (TextView) findViewById(R.id.actualDate);
         mSpeedTextView = (TextView) findViewById(R.id.speedTextView);
+
+        //set the speed to 0
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.##").format(currentSpeed)));
 
         //Chrono
         mCourseChronometer = (Chronometer) findViewById(R.id.chronometerCourse);
@@ -250,11 +248,16 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         weatherService.refreshWeather(mCity.getName() + ", France");
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this,accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
+                this);
+
+
         turnOnGps();
+
         Intent serviceIntent = new Intent(this, LocationService.class);
+
         startService(serviceIntent);
 
     }
@@ -276,19 +279,17 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         String dateString = dateFormat.format(c.getTime());
         mActualDate.setText(dateString);
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.FRANCE);
         String timeString = timeFormat.format(c.getTime());
         mActualTime.setText(timeString);
-
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         mCourseChronometer.start();
         mSectionChronometer.start();
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
     }
 
     private void updateNextStationName() {
@@ -296,7 +297,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
             mNextStationNameTextView.setText(mStationList.get(step).getStationName());
         } else {
             mNextStationTextView.setVisibility(View.GONE);
-            mNextStationNameTextView.setText("Terminus");
+            mNextStationNameTextView.setText(R.string.Terminus);
             mUnrealizedStopButton.setVisibility(View.GONE);
         }
     }
@@ -516,9 +517,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     @Override
     public void onLocationChanged(Location location) {
-
         currentSpeed = location.getSpeed() * 3.6f;
-        mSpeedTextView.setText(new DecimalFormat("#.##").format(currentSpeed));
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.##").format(currentSpeed)));
     }
 
     @Override
@@ -547,45 +547,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, this);
             }
         }
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        accelerometer = sensorEvent.sensor;
-        if (accelerometer.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-
-            long curTime = System.currentTimeMillis();
-
-            if ((curTime - lastUpdate) > 100) {
-                long diffTime = (curTime - lastUpdate);
-                lastUpdate = curTime;
-
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-
-                if (speed < SHAKE_THRESHOLD) {
-                    if (currentSpeed > 0) {
-                        currentSpeed = currentSpeed - 1;
-                    } else {
-                        currentSpeed = 0;
-                    }
-                    mSpeedTextView.setText(new DecimalFormat("#.##").format(currentSpeed) + " km/h");
-
-                } else {
-
-                }
-                last_x = x;
-                last_y = y;
-                last_z = z;
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     //TODO a supprimer lorsqu'on utilisera le serveur "payant"

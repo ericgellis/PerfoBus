@@ -1,7 +1,5 @@
 package com.mobithink.carbon.utils;
 
-import com.mobithink.carbon.database.model.StationDataDTO;
-
 /**
  * Created by mplaton on 06/03/2017.
  */

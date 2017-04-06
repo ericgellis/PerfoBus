@@ -18,7 +18,7 @@ import com.mobithink.carbon.consultation.fragments.SummaryTab5;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
-    int tabCount;
+    private int tabCount;
 
     public TabPagerAdapter(FragmentManager fm, int numberOfTabs) {
         super(fm);
@@ -29,20 +29,15 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ProvisionTab1 tab1 = new ProvisionTab1();
-                return tab1;
+                return new ProvisionTab1();
             case 1:
-                SpeedTab2 tab2 = new SpeedTab2();
-                return tab2;
+                return new SpeedTab2();
             case 2:
-                EventTab3 tab3 = new EventTab3();
-                return tab3;
+                return new EventTab3();
             case 3:
-                CapacityTab4 tab4 = new CapacityTab4();
-                return tab4;
+                return new CapacityTab4();
             case 4:
-                SummaryTab5 tab5 = new SummaryTab5();
-                return tab5;
+                return new SummaryTab5();
             default:
                 return null;
         }

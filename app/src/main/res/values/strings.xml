@@ -32,6 +32,8 @@
     <string name="dir">dir.</string>
     <string name="indriving">En section courante</string>
     <string name="in_crossroad">Au carrefour</string>
+    <string name="Terminus">Terminus</string>
+    <string name="current_speed">%1$s km/h</string>
 
     <string-array name="condition_codes_icons">
         <item>&#xF0BC;</item>

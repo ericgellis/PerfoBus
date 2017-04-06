@@ -25,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
@@ -48,6 +49,8 @@ import retrofit2.Response;
 
 public class CreateLineActivity extends Activity {
 
+    private static final String TAG = "CreateLineActivity";
+
     AutoCompleteTextView mCityAutocompleteView;
     ArrayAdapter<CityDTO> cityAdapter;
     CityDTO mSelectedCityDTO;
@@ -67,6 +70,7 @@ public class CreateLineActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_create_line);
@@ -196,7 +200,7 @@ public class CreateLineActivity extends Activity {
 
     }
 
-    public void registerLine(BusLineDTO busLineDTO){
+    public void registerLine(final BusLineDTO busLineDTO){
         LineService lineService = RetrofitManager.build().create(LineService.class);
 
         Call<Void> call = lineService.register(busLineDTO);
@@ -206,26 +210,24 @@ public class CreateLineActivity extends Activity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 201:
-                        Log.d("Success", "youhoo");
-
+                        Log.i(TAG,"lineService.register success with " + busLineDTO.toString());
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("city", mSelectedCityDTO.getName());
-                        bundle.putSerializable("line", mWriteLineTextInputLayout.getEditText().toString());
+                        bundle.putSerializable("city", busLineDTO.getCityDto().getName());
+                        bundle.putSerializable("line", busLineDTO.getName());
                         Intent intent = new Intent(getApplication(), ChoiceLineFromAnalyzeActivity.class);
                         intent.putExtras(bundle);
                         setResult(RESULT_OK, intent);
                         finish();
-
                         break;
 
                     default:
-
+                        Log.e(TAG, "lineService.register fail with code " + response.code() +" and body " + response.message());
                         break;
                 }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                Log.e(TAG, "lineService.register error", t);
             }
         });
     }
@@ -241,27 +243,30 @@ public class CreateLineActivity extends Activity {
 
     private void getCities() {
         LineService groupService = RetrofitManager.build().create(LineService.class);
-
         Call<List<CityDTO>> call = groupService.getCities();
+        final Context context = this.getApplicationContext();
 
         call.enqueue(new Callback<List<CityDTO>>() {
             @Override
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
-
+                        Log.d(TAG, "groupService.getCities success : " + response.body().size());
                         cityAdapter.addAll(response.body());
                         cityAdapter.notifyDataSetChanged();
-
                         break;
                     default:
+                        String message = "groupService.getCities fail with code " + response.code() +" and message " + response.message();
+                        Log.e(TAG, message);
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-                //TODO
+                Log.e(TAG, "groupService.getCities error", t);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

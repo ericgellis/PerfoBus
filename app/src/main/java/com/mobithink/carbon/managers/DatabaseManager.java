@@ -293,15 +293,20 @@ public class DatabaseManager {
         return eventId;
     }
 
-    public void updateEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {
+    public void updateEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) throws Exception {
         ContentValues values = new ContentValues();
         values.put(DatabaseOpenHelper.KEY_END_DATETIME, eventDTO.getEndTime());
         values.put(DatabaseOpenHelper.KEY_END_LATITUDE, eventDTO.getGpsEndLat());
         values.put(DatabaseOpenHelper.KEY_END_LONGITUDE, eventDTO.getGpsEndLong());
 
-        getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
-                new String[]{String.valueOf(eventDTO.getId())});
-        Log.i(TAG, "A event has been updated : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
+        try {
+            getOpenedDatabase().update(DatabaseOpenHelper.TABLE_EVENT, values, DatabaseOpenHelper.KEY_ID + " = ?",
+                    new String[]{String.valueOf(eventDTO.getId())});
+            Log.i(TAG, "A event has been updated : id = " + eventDTO.getId() + ", for TripId " + tripId + ", for StationDataName " + StationDataDTOName + ", with endTime " + eventDTO.getEndTime());
+        } catch (Exception e)  {
+            throw e;
+        }
+
     }
 
     public void deleteEvent(long tripId, String StationDataDTOName, EventDTO eventDTO) {

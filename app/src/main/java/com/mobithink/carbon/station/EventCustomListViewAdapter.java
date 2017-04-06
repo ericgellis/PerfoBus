@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaRecorder;
@@ -13,9 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,23 +28,18 @@ import android.widget.Toast;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.R.attr.bitmap;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -148,7 +140,12 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
         viewHolder.stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopAndRegisterEvent(event);
+                try {
+                    stopAndRegisterEvent(event);
+                } catch (Exception e) {
+                    Log.e(TAG, "updateEvent: error on SQLLiteDataBase: ", e);
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
                 copi.stop();
                 layoutCopi.setVisibility(View.GONE);
 
@@ -248,7 +245,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                 PackageManager.FEATURE_MICROPHONE);
     }
 
-    public void stopAndRegisterEvent(EventDTO event) {
+    public void stopAndRegisterEvent(EventDTO event) throws Exception {
 
         event.setVoiceMemo(audioFileName+".3gp");
         event.setPictureNameList(imageNameList);

@@ -1,21 +1,16 @@
 package com.mobithink.carbon.consultation.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
@@ -23,8 +18,6 @@ import com.mobithink.carbon.utils.DrawBusTrip;
 import com.mobithink.carbon.utils.Mathematics;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback, DrawBusTrip.onDrawRoute {
@@ -58,6 +51,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_provision_tab1, container, false);
 
         mtripMapView = (MapView) rootView.findViewById(R.id.tripMapView);
@@ -105,66 +101,70 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         polylineOptions.add(new LatLng(43.654422, 1.475961));
         polylineOptions.add(new LatLng(43.6667, 1.4833));
 
-        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
-            for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
-                polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
+        //real trip
+//        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+//            for (int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++ ){
+//                polylineOptions.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
+//
+//                ArrayList<LatLng> latLngList = new ArrayList();
+//                LatLng latLng = new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong());
+//                latLngList.add(latLng);
+//                for(int j = 0; j<latLngList.size(); j++){
+//                    polylineOptions.add(latLngList.get(j));
+//                    mGoogleMap.addPolyline(polylineOptions.add(latLngList.get(j)).geodesic(true).color(R.color.mobiThinkBlue));
+//                }
+//
+//            }
+//
+//        }
 
-                ArrayList<LatLng> latLngList = new ArrayList();
-                LatLng latLng = new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong());
-                latLngList.add(latLng);
-                for(int j = 0; j<latLngList.size(); j++){
-                    polylineOptions.add(latLngList.get(j));
-                    mGoogleMap.addPolyline(polylineOptions.add(latLngList.get(j)).geodesic(true).color(R.color.mobiThinkBlue));
-                }
 
-            }
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
+//        prepareBuilder(latLngList);
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
+//
+//        mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
+//                .geodesic(true));
 
-        }*/
+//        if (getActivity().getApplicationContext() != null) {
+//            DrawBusTrip.getInstance(this, getActivity().getApplicationContext()).setFromLatLong(43.600000, 1.433333)
+//                    .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+//                    .run();
+//        }
 
 
-        //LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
-        //prepareBuilder(latLngList);
-        //googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
-
-        /*mGoogleMap.addPolyline(new PolylineOptions().add(stationLatLng).color(Color.BLUE)
-                .geodesic(true));*/
-
-        /*DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(43.600000, 1.433333)
-                .setToLatLong(43.6667, 1.4833).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
-                .run();
-
-        MarkerOptions markers = new MarkerOptions();
-        markers.position(new LatLng(43.600000, 1.433333));
-        mGoogleMap.addMarker(markers);
-        markers.position(new LatLng(43.6667, 1.4833));
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(43.6667, 1.4833)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));*/
-
-        /*for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            for(int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++) {
-                DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong())
-                        .setToLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
-                        .run();
-            }
-        }
-
-        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
-            MarkerOptions markers = new MarkerOptions();
-            markers.position(new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()));
-            mGoogleMap.addMarker(markers);
-        }*/
-
-        /*ArrayList<Long> distanceTab = new ArrayList<>() ;
-            for(int i=0; i+1< getTripDTO().getStationDataDTOList().size(); i++) {
-                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
-                distanceTab.add(tripBetweenStationsDistance);
-            }
-
-        long minVal = distanceTab.indexOf(Collections.min(distanceTab));
-        long maxVal = distanceTab.indexOf(Collections.max(distanceTab));
-
-        minDistanceBetweenStations.setText(String.valueOf(minVal) + " m");
-        maxDistanceBetweenStations.setText(String.valueOf(maxVal)+ " m");*/
+//        MarkerOptions markers = new MarkerOptions();
+//        markers.position(new LatLng(43.600000, 1.433333));
+//        mGoogleMap.addMarker(markers);
+//        markers.position(new LatLng(43.6667, 1.4833));
+//        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(43.6667, 1.4833)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));
+//
+//        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+//            for(int i = 0; i<= getTripDTO().getStationDataDTOList().size(); i++) {
+//                DrawBusTrip.getInstance(this, getActivity()).setFromLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong())
+//                        .setToLatLong(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()).setGmapAndKey("AIzaSyDNRm3UOtZ9_o-Y2Tpoq5w2S8aj3P2K7eo", mGoogleMap)
+//                        .run();
+//            }
+//        }
+//
+//        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
+//            MarkerOptions markers = new MarkerOptions();
+//            markers.position(new LatLng(stationDataDTO.getGpsLat(), stationDataDTO.getGpsLong()));
+//            mGoogleMap.addMarker(markers);
+//        }
+//
+//        ArrayList<Long> distanceTab = new ArrayList<>() ;
+//            for(int i=0; i+1< getTripDTO().getStationDataDTOList().size(); i++) {
+//                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
+//                distanceTab.add(tripBetweenStationsDistance);
+//            }
+//
+//        long minVal = distanceTab.indexOf(Collections.min(distanceTab));
+//        long maxVal = distanceTab.indexOf(Collections.max(distanceTab));
+//
+//        minDistanceBetweenStations.setText(String.valueOf(minVal) + " m");
+//        maxDistanceBetweenStations.setText(String.valueOf(maxVal)+ " m");
     }
 
     @Override

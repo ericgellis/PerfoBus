@@ -1,6 +1,7 @@
 package com.mobithink.carbon.database.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -168,5 +169,26 @@ public class TripDTO implements Serializable {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    @Override
+    public String toString() {
+        return "TripDTO{" +
+                "id=" + id +
+                ", tripName='" + tripName + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", atmo=" + atmo +
+                ", temperature='" + temperature + '\'' +
+                ", weather='" + weather + '\'' +
+                ", vehicleCapacity=" + vehicleCapacity +
+                ", busLineid=" + busLineid +
+                ", cityName='" + cityName + '\'' +
+                ", lineName='" + lineName + '\'' +
+                ", direction='" + direction + '\'' +
+                ", stationDataDTOList=" + stationDataDTOList +
+                ", rollingPointDTOList=" + rollingPointDTOList +
+                ", eventDTOList=" + eventDTOList +
+                '}';
     }
 }

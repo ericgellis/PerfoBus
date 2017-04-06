@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -52,7 +53,7 @@ public class DrawBusTrip {
         this.callInterface = dlg;
     }
 
-    public static DrawBusTrip getInstance(onDrawRoute dlg, Context ctx) {
+    public static DrawBusTrip getInstance(onDrawRoute dlg, @NonNull Context ctx) {
         return new DrawBusTrip(dlg, ctx);
     }
 
@@ -216,7 +217,7 @@ public class DrawBusTrip {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            if (show_loader == true) {
+            if (show_loader) {
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setMessage(loader_msg);
                 progressDialog.setIndeterminate(true);

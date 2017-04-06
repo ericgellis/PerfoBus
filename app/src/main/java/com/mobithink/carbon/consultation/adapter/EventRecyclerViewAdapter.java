@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

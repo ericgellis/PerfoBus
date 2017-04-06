@@ -2,6 +2,7 @@ package com.mobithink.carbon.consultation.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.adapters.MyXAxisValueFormatter;
-
 
 import java.util.ArrayList;
 
@@ -39,6 +39,9 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_speed_tab2, container, false);
 
         maxSpeedValueTextView = (TextView) rootView.findViewById(R.id.maxSpeedValue);

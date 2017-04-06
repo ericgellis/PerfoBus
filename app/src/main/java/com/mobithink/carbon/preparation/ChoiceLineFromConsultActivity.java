@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.consultation.ConsultationActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -42,6 +40,8 @@ import retrofit2.Response;
  */
 
 public class ChoiceLineFromConsultActivity extends Activity {
+
+    private static final String TAG = ChoiceLineFromConsultActivity.class.getName();
 
     TextInputLayout mWriteCityNameTextInputLayout;
     TextInputLayout mWriteLineTextInputLayout;
@@ -126,7 +126,9 @@ public class ChoiceLineFromConsultActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     mSelectedLineDTO = lineAdapter.getItem(which);
-                                    mWriteLineTextInputEditText.setText(mSelectedLineDTO.getName());
+                                    if (mSelectedLineDTO != null) {
+                                        mWriteLineTextInputEditText.setText(mSelectedLineDTO.getName());
+                                    }
                                     getLineStations();
                                 }
                             })
@@ -150,7 +152,9 @@ public class ChoiceLineFromConsultActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     mSelectedDirection = directionAdapter.getItem(which);
-                                    mWriteDirectionTextInputEditText.setText(mSelectedDirection.getStationName());
+                                    if (mSelectedDirection != null) {
+                                        mWriteDirectionTextInputEditText.setText(mSelectedDirection.getStationName());
+                                    }
 
                                     if (mSelectedDirection.equals(directionAdapter.getItem(0))) {
                                         Collections.reverse(listStation);
@@ -172,11 +176,36 @@ public class ChoiceLineFromConsultActivity extends Activity {
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showResultListView();
-
+                checkField();
             }
         });
 
+    }
+
+    private void checkField() {
+        boolean hasError = false;
+
+        if ((mWriteCityNameAutoCompleteTextView.getText().toString().equals(""))) {
+            hasError = true;
+            mWriteCityNameTextInputLayout.setErrorEnabled(true);
+            mWriteCityNameTextInputLayout.setError("Vous devez sélectionner une ville");
+        }
+
+        if ((mWriteLineTextInputEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mWriteLineTextInputLayout.setErrorEnabled(true);
+            mWriteLineTextInputLayout.setError("Vous devez sélectionner une ligne");
+        }
+
+        if ((mWriteDirectionTextInputEditText.getText().toString().equals(""))) {
+            hasError = true;
+            mWriteDirectionTextInputLayout.setErrorEnabled(true);
+            mWriteDirectionTextInputLayout.setError("Vous devez sélectionner une direction");
+        }
+
+        if (!hasError) {
+            showResultListView();
+        }
     }
 
     @Override
@@ -197,6 +226,8 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
                 switch (response.code()) {
                     case 200:
+                        Log.i(TAG,"showResultListView success with size  : " + response.body().size());
+
                         mTripList.clear();
                         mTripList.addAll(response.body());
 
@@ -206,12 +237,14 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
                         break;
                     default:
+                        Log.e(TAG, "showResultListView fail with code " + response.code() +" and message " + response.message());
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<TripDTO>> call, Throwable t) {
+                Log.e(TAG, "showResultListView error", t);
             }
         });
     }
@@ -226,6 +259,7 @@ public class ChoiceLineFromConsultActivity extends Activity {
             public void onResponse(Call<List<StationDTO>> call, Response<List<StationDTO>> response) {
                 switch (response.code()) {
                     case 200:
+                        Log.i(TAG,"getLineStations success with size  : " + response.body().size());
                         listStation.clear();
                         listStation.addAll(response.body());
 
@@ -237,13 +271,14 @@ public class ChoiceLineFromConsultActivity extends Activity {
                         }
                         break;
                     default:
+                        Log.e(TAG, "getLineStations fail with code " + response.code() +" and message " + response.message());
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<StationDTO>> call, Throwable t) {
-                //TODO
+                Log.e(TAG, "getLineStations error", t);
             }
         });
     }
@@ -259,19 +294,22 @@ public class ChoiceLineFromConsultActivity extends Activity {
             public void onResponse(Call<List<BusLineDTO>> call, Response<List<BusLineDTO>> response) {
                 switch (response.code()) {
                     case 200:
+                        Log.i(TAG,"getCityLines success with size  : " + response.body().size());
+
                         lineAdapter.clear();
                         lineAdapter.addAll(response.body());
                         lineAdapter.notifyDataSetChanged();
 
                         break;
                     default:
+                        Log.e(TAG, "getCityLines fail with code " + response.code() +" and message " + response.message());
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<BusLineDTO>> call, Throwable t) {
-                //TODO
+                Log.e(TAG, "getCityLines error", t);
             }
         });
     }
@@ -286,19 +324,22 @@ public class ChoiceLineFromConsultActivity extends Activity {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 switch (response.code()) {
                     case 200:
+                        Log.i(TAG,"getCities success with size  : " + response.body().size());
+
                         cityAdapter.clear();
                         cityAdapter.addAll(response.body());
                         cityAdapter.notifyDataSetChanged();
 
                         break;
                     default:
+                        Log.e(TAG, "getCities fail with code " + response.code() +" and message " + response.message());
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
-                //TODO
+                Log.e(TAG, "getCities error", t);
             }
         });
     }

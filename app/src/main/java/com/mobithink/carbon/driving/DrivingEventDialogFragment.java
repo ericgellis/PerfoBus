@@ -22,8 +22,8 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
-import com.mobithink.carbon.station.IEventSelectedListener;
 import com.mobithink.carbon.station.EventListViewAdapter;
+import com.mobithink.carbon.station.IEventSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;

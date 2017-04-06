@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.TabPagerAdapter;
@@ -26,6 +24,8 @@ import com.mobithink.carbon.database.model.TripDTO;
  */
 
 public class ConsultationActivity extends AppCompatActivity {
+
+    private static final String TAG = ConsultationActivity.class.getName();
 
     public TripDTO mTripDTO;
     public BusLineDTO mBusLineDTO;
@@ -76,11 +76,9 @@ public class ConsultationActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         mTripDTO = (TripDTO) extras.getSerializable("tripDTO");
-
-        Bundle extras1 = getIntent().getExtras();
-        mBusLineDTO = (BusLineDTO) extras1.getSerializable("busLineName");
-        mCityDTO = (CityDTO) extras1.getSerializable("cityName");
-        mSelectedDirection = (StationDTO) extras1.getSerializable("directionName");
+        mBusLineDTO = (BusLineDTO) extras.getSerializable("busLineName");
+        mCityDTO = (CityDTO) extras.getSerializable("cityName");
+        mSelectedDirection = (StationDTO) extras.getSerializable("directionName");
     }
 
     public TripDTO getmTripDTO() {

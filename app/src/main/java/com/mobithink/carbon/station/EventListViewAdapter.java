@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.mobithink.carbon.R;
-import com.mobithink.carbon.database.model.EventDTO;
 
 import java.util.List;
 

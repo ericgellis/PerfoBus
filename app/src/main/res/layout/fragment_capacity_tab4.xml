@@ -8,7 +8,7 @@
         android:id="@+id/combined_chart"
         android:layout_width="480dp"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/double_regular_margin"></com.github.mikephil.charting.charts.CombinedChart>
+        android:layout_margin="@dimen/double_regular_margin" />
 
     <TextView
         android:id="@+id/capacityTextView"

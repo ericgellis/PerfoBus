@@ -33,6 +33,8 @@ public class RetrofitManager {
 
     private static final String BASE_URL_MELANIE = "http://172.20.70.87:8080/";
 
+    private static final String BASE_URL_PAUL = "http://172.20.70.65:8080/";
+
     private static final String SECURITY_TOKEN = "Basic ZXJpYzptb2JpMjAxN3RoaW5r";
 
     static Retrofit mRetrofitInstance;
@@ -49,9 +51,9 @@ public class RetrofitManager {
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
                 builder.addInterceptor(interceptor);
                 //Change this if you want to try an other server in integration or developement need
-                baseURL = BASE_URL_MELANIE;
+                baseURL = BASE_URL_PAUL;
             } else {
-                baseURL = BASE_URL;
+                baseURL = BASE_URL_PAUL;
             }
 
             builder.connectTimeout(60, TimeUnit.SECONDS);

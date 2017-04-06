@@ -4,9 +4,6 @@ package com.mobithink.carbon.consultation.fragments;
 import android.support.v4.app.Fragment;
 
 import com.mobithink.carbon.consultation.ConsultationActivity;
-import com.mobithink.carbon.database.model.BusLineDTO;
-import com.mobithink.carbon.database.model.CityDTO;
-import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.TripDTO;
 
 /**
@@ -14,6 +11,7 @@ import com.mobithink.carbon.database.model.TripDTO;
  */
 
 public abstract class GenericTabFragment extends Fragment {
+    protected final String TAG = getClass().getName();
 
     protected TripDTO getTripDTO() {
         return ((ConsultationActivity) getActivity()).getmTripDTO();
