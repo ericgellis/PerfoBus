@@ -18,8 +18,6 @@ public class StationDataDTO implements Serializable {
     private Double gpsLat;
     private Double gpsLong;
 
-    private Double gpsLat;
-    private Double gpsLong;
 
     public StationDataDTO() {
     }
