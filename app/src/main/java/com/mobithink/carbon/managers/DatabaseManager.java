@@ -207,10 +207,10 @@ public class DatabaseManager {
                 ev.setEventName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_EVENT_NAME)));
                 ev.setStartTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
                 ev.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
-                ev.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
-                ev.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
-                ev.setGpsEndLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LONGITUDE)));
-                ev.setGpsEndLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LATITUDE)));
+                ev.setGpsLong(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+                ev.setGpsLat(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+                ev.setGpsEndLong(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LONGITUDE)));
+                ev.setGpsEndLat(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_LATITUDE)));
                 ev.setVoiceMemo(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_VOICE_MEMO)));
                 ev.setPicture(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_PICTURE)));
                 ev.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_DATA_NAME)));
@@ -254,8 +254,8 @@ public class DatabaseManager {
                 sdDTO.setStartTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_START_DATETIME)));
                 sdDTO.setEndTime(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
                 sdDTO.setStationStep(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STEP)));
-                sdDTO.setGpsLong(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
-                sdDTO.setGpsLat(cursor.getLong(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+                sdDTO.setGpsLong(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+                sdDTO.setGpsLat(cursor.getDouble(cursor.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
                 sdDTO.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_NAME)));
 
                 stationDataDTOList.add(sdDTO);
@@ -394,8 +394,8 @@ public class DatabaseManager {
         stationDataDTO.setEndTime(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_END_DATETIME)));
         stationDataDTO.setNumberOfComeIn(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_COME_IN)));
         stationDataDTO.setNumberOfGoOut(c.getInt(c.getColumnIndex(DatabaseOpenHelper.KEY_GO_OUT)));
-        stationDataDTO.setGpsLong(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
-        stationDataDTO.setGpsLat(c.getLong(c.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
+        stationDataDTO.setGpsLong(c.getDouble(c.getColumnIndex(DatabaseOpenHelper.KEY_LONGITUDE)));
+        stationDataDTO.setGpsLat(c.getDouble(c.getColumnIndex(DatabaseOpenHelper.KEY_LATITUDE)));
 
         c.close();
 

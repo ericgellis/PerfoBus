@@ -245,8 +245,8 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         stationDataDTO.setNumberOfComeIn(numberOfPeopleIn);
         stationDataDTO.setNumberOfGoOut(numberOfPeopleOut);
         stationDataDTO.setEndTime(System.currentTimeMillis());
-        stationDataDTO.setGpsLat((long) latitude);
-        stationDataDTO.setGpsLong((long) longitude);
+        stationDataDTO.setGpsLat(latitude);
+        stationDataDTO.setGpsLong(longitude);
         stationDataDTO.setStationStep(stationStep);
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);

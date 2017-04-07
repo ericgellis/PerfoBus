@@ -316,8 +316,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            stationDataDTO.setGpsLat((long) location.getLatitude());
-            stationDataDTO.setGpsLong((long) location.getLongitude());
+            stationDataDTO.setGpsLat(location.getLatitude());
+            stationDataDTO.setGpsLong(location.getLongitude());
 
         }
 

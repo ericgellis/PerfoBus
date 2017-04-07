@@ -241,8 +241,8 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
         event.setVoiceMemo(audioFileName);
         event.setPicture(imageFileName);
-        event.setGpsEndLat((long) latitude);
-        event.setGpsEndLong((long) longitude);
+        event.setGpsEndLat(latitude);
+        event.setGpsEndLong(longitude);
         event.setEndTime(System.currentTimeMillis());
         DatabaseManager.getInstance().updateEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), event);
 

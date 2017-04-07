@@ -59,8 +59,8 @@ public class CrossRoadEventDialogFragment extends DialogFragment implements Loca
                 eventDTO = new EventDTO();
                 eventDTO.setEventName(eventType.get(position));
                 eventDTO.setStartTime(System.currentTimeMillis());
-                eventDTO.setGpsLat((long) latitude);
-                eventDTO.setGpsLong((long) longitude);
+                eventDTO.setGpsLat(latitude);
+                eventDTO.setGpsLong(longitude);
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();
