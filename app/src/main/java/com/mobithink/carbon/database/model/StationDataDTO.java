@@ -18,6 +18,8 @@ public class StationDataDTO implements Serializable {
     private Double gpsLat;
     private Double gpsLong;
 
+    private Double gpsLat;
+    private Double gpsLong;
 
     public StationDataDTO() {
     }
@@ -104,5 +106,20 @@ public class StationDataDTO implements Serializable {
 
     public void setGpsLong(Double gpsLong) {
         this.gpsLong = gpsLong;
+    }
+
+    @Override
+    public String toString() {
+        return "StationDataDTO{" +
+                "id=" + id +
+                ", numberOfComeIn=" + numberOfComeIn +
+                ", numberOfGoOut=" + numberOfGoOut +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", stationStep=" + stationStep +
+                ", stationName='" + stationName + '\'' +
+                ", gpsLat=" + gpsLat +
+                ", gpsLong=" + gpsLong +
+                '}';
     }
 }

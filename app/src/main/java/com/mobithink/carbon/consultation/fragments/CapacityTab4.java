@@ -26,6 +26,7 @@ import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.adapters.MyXAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CapacityTab4 extends GenericTabFragment implements OnChartValueSelectedListener {
@@ -35,11 +36,12 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
     TextView averagePeopleTextView;
     TextView minPeopleTextView;
     TextView capacityLess50TextView;
-    TextView capacityLess50;
 
     private CombinedChart mCombinedChart;
 
     String[] namesTab;
+    List<Integer> busPersonTab;
+
 
     public CapacityTab4() {
 
@@ -50,15 +52,13 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
                              Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreateView");
-
         View rootView = inflater.inflate(R.layout.fragment_capacity_tab4, container, false);
 
         maxCapacityTextView = (TextView) rootView.findViewById(R.id.maxCapacity);
         maxPeopleTextView = (TextView) rootView.findViewById(R.id.maxPeople);
         averagePeopleTextView = (TextView) rootView.findViewById(R.id.averagePeople);
         minPeopleTextView = (TextView) rootView.findViewById(R.id.minPeople);
-        capacityLess50TextView = (TextView) rootView.findViewById(R.id.capacityLess50TextView);
-        capacityLess50 = (TextView) rootView.findViewById(R.id.capacityLess50);
+        capacityLess50TextView = (TextView) rootView.findViewById(R.id.capacityLess50);
         mCombinedChart = (CombinedChart) rootView.findViewById(R.id.combined_chart);
 
         return rootView;
@@ -68,8 +68,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
     public void onResume() {
         super.onResume();
         getTripDTO();
-
-        maxCapacityTextView.setText(String.valueOf(getTripDTO().getVehicleCapacity()));
+        calculateStat();
 
         mCombinedChart.getDescription().setEnabled(false);
         mCombinedChart.setBackgroundColor(Color.WHITE);
@@ -104,9 +103,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
         }
 
         Log.d(TAG, "names size : " + names.size());
-
         namesTab = names.toArray(new String[names.size()]);
-
         XAxis xAxis = mCombinedChart.getXAxis();
 
         //xAxis max and min
@@ -132,18 +129,54 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
         mCombinedChart.invalidate();
     }
 
+    private void calculateStat() {
+
+        int min = 0;
+        int max = 0;
+        int totalPerson = 0;
+        int sum = 0;
+        int capacityLess50Count = 0;
+        int average;
+        int capacityLess50Percent;
+        busPersonTab = new ArrayList<>();
+
+        int count = 0;
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            int comeIn = stationDataDTO.getNumberOfComeIn();
+            int comeOut = stationDataDTO.getNumberOfGoOut();
+            totalPerson = totalPerson + comeIn - comeOut;
+            if (count == 0) {
+                min = totalPerson;
+            } else {
+                min = Math.min(min,totalPerson);
+            }
+            max = Math.max(max,totalPerson);
+            sum = sum + totalPerson;
+            if (totalPerson < getTripDTO().getVehicleCapacity() / 2) {
+                capacityLess50Count++;
+            }
+            busPersonTab.add(totalPerson);
+            count++;
+        }
+
+        average = sum/count;
+        capacityLess50Percent = (capacityLess50Count*100)/(count);
+
+        maxCapacityTextView.setText(String.valueOf(getTripDTO().getVehicleCapacity()));
+        maxPeopleTextView.setText(String.valueOf(max));
+        minPeopleTextView.setText(String.valueOf(min));
+        averagePeopleTextView.setText(String.valueOf(average));
+        capacityLess50TextView.setText(String.format("%s%%", String.valueOf(capacityLess50Percent)));
+    }
+
     private LineData generateLineData() {
         LineData data = new LineData();
 
         ArrayList<Entry> allEntry = new ArrayList<>();
 
         int i = 0;
-        float total = 0f;
-        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            float comeIn = (float) stationDataDTO.getNumberOfComeIn();
-            float comeOut = (float) (-1 * stationDataDTO.getNumberOfGoOut());
-            total = total + comeIn + comeOut;
-            Entry entry = new Entry(i,total);
+        for (int busPerson : busPersonTab) {
+            Entry entry = new Entry(i,busPerson);
             allEntry.add(entry);
             i++;
         }
@@ -200,8 +233,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         if (e != null) {
-            Entry entry = e;
-            Log.i(TAG,"Value Selected : " + Math.abs(entry.getX()));
+            Log.i(TAG,"Value Selected : " + Math.abs(e.getX()));
         } else {
             Log.i(TAG,"null value selected");
         }

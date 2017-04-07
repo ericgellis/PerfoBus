@@ -102,7 +102,7 @@
         android:textColor="@color/red_chart" />
 
     <TextView
-        android:id="@+id/capacityLess50TextView"
+        android:id="@+id/capacityLess50Message"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -118,8 +118,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/capacityLess50TextView"
+        android:layout_below="@+id/capacityLess50Message"
         android:layout_marginEnd="80dp"
+        android:textAlignment="center"
         android:textColor="@color/black" />
 
 

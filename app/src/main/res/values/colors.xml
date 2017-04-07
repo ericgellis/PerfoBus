@@ -31,6 +31,7 @@
 
     <!--fragment_provision_tab1-->
     <color name="grey_provision">#555555</color>
+    <color name="circle">#000000</color>
 
     <!-- fragment_capacity_tab4-->
     <color name="purple_chart">#715696</color>

@@ -274,7 +274,8 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         };
 
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10, locationListener);
+                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
+                this);
 
 
         turnOnGps();
@@ -332,11 +333,17 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         stationDataDTO.setId(stationId);
-        stationDataDTO.setStartTime(System.currentTimeMillis());
         stationDataDTO.setEndTime(System.currentTimeMillis());
-        stationDataDTO.setGpsLat(location.getLatitude());
-        stationDataDTO.setGpsLong(location.getLongitude());
+        stationDataDTO.setEndTime(System.currentTimeMillis());
 
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            stationDataDTO.setGpsLat((long) location.getLatitude());
+            stationDataDTO.setGpsLong((long) location.getLongitude());
+
+        }
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
