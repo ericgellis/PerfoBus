@@ -8,11 +8,11 @@ public class Mathematics {
 
 
 
-    public static Double convertRad(float input){
+    public static Double convertRad(double input){
         return (Math.PI * input)/180;
     }
 
-    public static Double calculateGPSDistance(long lat_a_degre, long lon_a_degre, long lat_b_degre, long lon_b_degre){
+    public static Double calculateGPSDistance(double lat_a_degre, double lon_a_degre, double lat_b_degre, double lon_b_degre){
         Double distance;
         int R = 6378000; //Earth radius in meter
 

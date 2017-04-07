@@ -9,7 +9,6 @@ import com.mobithink.carbon.database.model.TripDTO;
 
 public class PerformanceExplanations {
 
-    //EventDTO eventDTO;
     String eventExplanations;
 
     public String performanceExplanations(EventDTO eventDTO){

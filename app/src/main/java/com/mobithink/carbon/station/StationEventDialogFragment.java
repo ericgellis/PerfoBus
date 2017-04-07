@@ -56,8 +56,8 @@ public class StationEventDialogFragment extends DialogFragment {
                 eventDTO.setEventName(eventType.get(position));
                 eventDTO.setStationName(stationName);
                 eventDTO.setStartTime(System.currentTimeMillis());
-                eventDTO.setGpsLat((long) stationLatitude);
-                eventDTO.setGpsLong((long) stationLongitude);
+                eventDTO.setGpsLat(stationLatitude);
+                eventDTO.setGpsLong(stationLongitude);
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), CarbonApplicationManager.getInstance().getCurrentStationDataName(), eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();

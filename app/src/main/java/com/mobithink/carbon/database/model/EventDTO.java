@@ -13,10 +13,10 @@ public class EventDTO implements Serializable {
     private String eventName;
     private Long startTime;
     private Long endTime;
-    private Long gpsLat;
-    private Long gpsLong;
-    private Long gpsEndLat;
-    private Long gpsEndLong;
+    private Double gpsLat;
+    private Double gpsLong;
+    private Double gpsEndLat;
+    private Double gpsEndLong;
     private String stationName;
     private Long timeSaving;
     private String picture;
@@ -26,7 +26,7 @@ public class EventDTO implements Serializable {
 
     }
 
-    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Long gpsLat, Long gpsLong, Long gpsEndLat, Long gpsEndLong, String stationName, Long timeSaving, String picture, String voiceMemo) {
+    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Double gpsLat, Double gpsLong, Double gpsEndLat, Double gpsEndLong, String stationName, Long timeSaving, String picture, String voiceMemo) {
         this.id = id;
         this.eventName = eventName;
         this.startTime = startTime;
@@ -73,19 +73,19 @@ public class EventDTO implements Serializable {
         this.endTime = endTime;
     }
 
-    public Long getGpsLat() {
+    public Double getGpsLat() {
         return gpsLat;
     }
 
-    public void setGpsLat(Long gpsLat) {
+    public void setGpsLat(Double gpsLat) {
         this.gpsLat = gpsLat;
     }
 
-    public Long getGpsLong() {
+    public Double getGpsLong() {
         return gpsLong;
     }
 
-    public void setGpsLong(Long gpsLong) {
+    public void setGpsLong(Double gpsLong) {
         this.gpsLong = gpsLong;
     }
 
@@ -97,13 +97,13 @@ public class EventDTO implements Serializable {
         this.stationName = stationName;
     }
 
-    public Long getGpsEndLat() {return gpsEndLat;}
+    public Double getGpsEndLat() {return gpsEndLat;}
 
-    public void setGpsEndLat(Long gpsEndLat) {this.gpsEndLat = gpsEndLat;}
+    public void setGpsEndLat(Double gpsEndLat) {this.gpsEndLat = gpsEndLat;}
 
-    public Long getGpsEndLong() {return gpsEndLong;}
+    public Double getGpsEndLong() {return gpsEndLong;}
 
-    public void setGpsEndLong(Long gpsEndLong) {this.gpsEndLong = gpsEndLong;}
+    public void setGpsEndLong(Double gpsEndLong) {this.gpsEndLong = gpsEndLong;}
 
     public Long getTimeSaving() {
         return timeSaving;

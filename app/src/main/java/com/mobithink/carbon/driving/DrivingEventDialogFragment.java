@@ -1,10 +1,15 @@
 package com.mobithink.carbon.driving;
 
+import android.Manifest;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,11 +45,15 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
     double longitude;
     double latitude;
 
+    Context mContext;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.station_event_dialog_fragment, container, false);
+
+        mContext = getContext();
 
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
         final List<String> eventType = stationEventNameList();
@@ -58,8 +67,8 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
                 eventDTO = new EventDTO();
                 eventDTO.setEventName(eventType.get(position));
                 eventDTO.setStartTime(System.currentTimeMillis());
-                eventDTO.setGpsLat((long) latitude);
-                eventDTO.setGpsLong((long) longitude);
+                eventDTO.setGpsLat(latitude);
+                eventDTO.setGpsLong(longitude);
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();
@@ -111,8 +120,12 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
     }
     @Override
     public void onLocationChanged(Location location) {
-        longitude = location.getLongitude();
-        latitude = location.getLatitude();
+        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
 
     }
 }

@@ -15,14 +15,14 @@ public class StationDataDTO implements Serializable {
     private Long endTime;
     private int stationStep;
     private String stationName;
-    private Long gpsLat;
-    private Long gpsLong;
-    private List<Long> pictureIdList;
+    private Double gpsLat;
+    private Double gpsLong;
+
 
     public StationDataDTO() {
     }
 
-    public StationDataDTO(Long id, int numberOfComeIn, int numberOfGoOut, Long startTime, Long endTime, int stationStep, String stationName, Long gpsLat, Long gpsLong) {
+    public StationDataDTO(Long id, int numberOfComeIn, int numberOfGoOut, Long startTime, Long endTime, int stationStep, String stationName, Double gpsLat, Double gpsLong) {
         this.id = id;
         this.numberOfComeIn = numberOfComeIn;
         this.numberOfGoOut = numberOfGoOut;
@@ -32,14 +32,6 @@ public class StationDataDTO implements Serializable {
         this.stationName = stationName;
         this.gpsLat = gpsLat;
         this.gpsLong = gpsLong;
-    }
-
-    public List<Long> getPictureIdList() {
-        return pictureIdList;
-    }
-
-    public void setPictureIdList(List<Long> pictureIdList) {
-        this.pictureIdList = pictureIdList;
     }
 
     public Long getId() {
@@ -98,19 +90,19 @@ public class StationDataDTO implements Serializable {
         this.stationName = stationName;
     }
 
-    public Long getGpsLat() {
+    public Double getGpsLat() {
         return gpsLat;
     }
 
-    public void setGpsLat(Long gpsLat) {
+    public void setGpsLat(Double gpsLat) {
         this.gpsLat = gpsLat;
     }
 
-    public Long getGpsLong() {
+    public Double getGpsLong() {
         return gpsLong;
     }
 
-    public void setGpsLong(Long gpsLong) {
+    public void setGpsLong(Double gpsLong) {
         this.gpsLong = gpsLong;
     }
 }

@@ -120,6 +120,10 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private float currentSpeed = 0.0f;
     private long tripId;
 
+    Location location = null;
+    double longitude;
+    double latitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,10 +252,29 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         weatherService.refreshWeather(mCity.getName() + ", France");
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+        final LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            public void onProviderEnabled(String s) {
+            }
+
+            public void onProviderDisabled(String s) {
+            }
+        };
 
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
-                this);
+                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10, locationListener);
 
 
         turnOnGps();
@@ -309,17 +332,11 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         stationDataDTO.setId(stationId);
+        stationDataDTO.setStartTime(System.currentTimeMillis());
         stationDataDTO.setEndTime(System.currentTimeMillis());
-        stationDataDTO.setEndTime(System.currentTimeMillis());
+        stationDataDTO.setGpsLat(location.getLatitude());
+        stationDataDTO.setGpsLong(location.getLongitude());
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            stationDataDTO.setGpsLat((long) location.getLatitude());
-            stationDataDTO.setGpsLong((long) location.getLongitude());
-
-        }
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
