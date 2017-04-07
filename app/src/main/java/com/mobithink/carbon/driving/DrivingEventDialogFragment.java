@@ -27,6 +27,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
+import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.station.EventListViewAdapter;
 import com.mobithink.carbon.station.IEventSelectedListener;
 
@@ -37,11 +38,12 @@ import java.util.List;
  * Created by mplaton on 15/03/2017.
  */
 
-public class DrivingEventDialogFragment extends DialogFragment implements LocationListener, OnMapReadyCallback {
+public class DrivingEventDialogFragment extends DialogFragment implements OnMapReadyCallback {
     EventDTO eventDTO;
     private ListView mStationEventListView;
     private IEventSelectedListener mListener;
 
+    Location location = null;
     double longitude;
     double latitude;
 
@@ -54,6 +56,30 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
         View rootView = inflater.inflate(R.layout.station_event_dialog_fragment, container, false);
 
         mContext = getContext();
+
+        LocationManager lm = (LocationManager)  mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+        final android.location.LocationListener locationListener = new android.location.LocationListener() {
+            public void onLocationChanged(Location location) {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            public void onProviderEnabled(String s) {
+            }
+
+            public void onProviderDisabled(String s) {
+            }
+        };
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
 
         mStationEventListView = (ListView) rootView.findViewById(R.id.station_event_listview);
         final List<String> eventType = stationEventNameList();
@@ -118,14 +144,5 @@ public class DrivingEventDialogFragment extends DialogFragment implements Locati
     @Override
     public void onMapReady(GoogleMap googleMap) {
     }
-    @Override
-    public void onLocationChanged(Location location) {
-        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-        }
 
-    }
 }
