@@ -1,8 +1,5 @@
 package com.mobithink.carbon.consultation.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +14,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -45,7 +41,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     long totalTimeInStation = 0;
     long averageTimeInStation;
 
-    double tripBetweenStationsDistance = 0;
     long averageDistanceBetweenStations;
     double tripBetweenStationsDistance = 0;
     long tripDistance = 0;
@@ -99,19 +94,19 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         List<LatLng> eventRollinglatLngList = new ArrayList<>();
 
         //true code
-        for(RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()){
-            rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(),rollingPointDTO.getGpsLong()));
+        for (RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
+            rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()));
         }
 
-        for(StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()){
-            stationlatLngList.add(new LatLng(stationDTO.getGpsLat(),stationDTO.getGpsLong()));
+        for (StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()) {
+            stationlatLngList.add(new LatLng(stationDTO.getGpsLat(), stationDTO.getGpsLong()));
         }
 
-        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+        for (EventDTO eventDTO : getTripDTO().getEventDTOList()) {
             if (eventDTO.getStationName() != null && eventDTO.getStationName().length() > 0) {
-                eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(),eventDTO.getGpsLong()));
+                eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
             } else {
-                eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(),eventDTO.getGpsLong()));
+                eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
             }
         }
 
@@ -164,31 +159,26 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
 
         //draw marker and circle and marker
         for (LatLng latLng : stationlatLngList) {
-            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)).anchor(0.5f,0.5f));
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)).anchor(0.5f, 0.5f));
             googleMap.addCircle(new CircleOptions().center(latLng).radius(150d));
         }
 
         LatLng firstStation = stationlatLngList.get(0);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStation,13));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStation, 13));
 
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
-//        prepareBuilder(latLngList);
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
-
-    }
         //draw event
         for (LatLng latLng : eventStationlatLngList) {
             googleMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_blue_red_danger))
-                    .anchor(0.5f,0.5f)
+                    .anchor(0.5f, 0.5f)
             );
         }
 
         for (LatLng latLng : eventRollinglatLngList) {
-            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_yellow_red_danger)).anchor(0.5f,0.5f));
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_yellow_red_danger)).anchor(0.5f, 0.5f));
         }
+    }
 
     public void timeSavingInStation(){
 
