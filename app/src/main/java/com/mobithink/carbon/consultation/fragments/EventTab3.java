@@ -10,8 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.pm.ActivityInfoCompat;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +29,9 @@ import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewA
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.utils.PerformanceExplanations;
-import com.squareup.picasso.Picasso;
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +47,7 @@ public class EventTab3 extends GenericTabFragment {
 
     ListView eventMainListView;
     ArrayList<EventDTO> eventNameMainList;
+    EventMainListViewAdapter adapter;
 
     ListView eventInDrivingListView;
     ArrayList<String> eventInDrivingList;
@@ -73,7 +70,6 @@ public class EventTab3 extends GenericTabFragment {
     ImageView eventAudioView;
     ImageView eventImageView;
 
-    private String selectedEventName;
     public static final int MY_REQUEST_CODE = 0;
 
     public EventTab3() {
@@ -116,8 +112,9 @@ public class EventTab3 extends GenericTabFragment {
 
         eventMainListView = (ListView) rootView.findViewById(R.id.event_list_view);
         eventNameMainList = new ArrayList<>();
-        EventMainListViewAdapter adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
+        adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
         eventMainListView.setAdapter(adapter);
+        eventMainListView.setSelector(R.color.lightBlue);
         eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -176,6 +173,9 @@ public class EventTab3 extends GenericTabFragment {
                 eventInStationTotalDurationTextView.setText(" - " +timeFormat.format(eventInStationTotalDuration) + " - ");
             }
         }
+
+        adapter.notifyDataSetChanged();
+        eventStationExpandableListViewAdapter.notifyDataSetChanged();
     }
     
     public void showGeneralInformations(){
@@ -183,7 +183,7 @@ public class EventTab3 extends GenericTabFragment {
         mainRelativeLayout.setVisibility(View.VISIBLE);
         totalTrip.setBackgroundResource(R.color.lightBlue);
         totalTrip.setTextColor(getResources().getColor(R.color.white));
-        eventMainListView.setBackgroundResource(R.color.white);
+
     }
 
     public void showDetailedInformations(int position){
@@ -197,28 +197,52 @@ public class EventTab3 extends GenericTabFragment {
         } else {
             eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
         }
-        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving());
+        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving()+ " min");
         PerformanceExplanations performanceExplanations = new PerformanceExplanations();
         eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
 
-//                if (eventNameMainList.get(position).getPicture() != null){
-//                    File root = Environment.getExternalStorageDirectory();
-//                    Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
-//                    eventImageView.setImageBitmap(bMap);
-//                }
+        if (eventNameMainList.get(position).getPicture() != null){
+            File root = Environment.getExternalStorageDirectory();
+            Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
+            eventImageView.setImageBitmap(bMap);
+        }
+        final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
+        File imgFile = new  File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
 
-        Picasso.with(getContext()).load(new File (Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +eventNameMainList.get(position).getPicture() + ".jpg")).into(eventImageView);
+        if(imgFile.exists()){
 
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+eventNameMainList.get(position).getVoiceMemo()+".3gp");
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (IOException ioe){
-            ioe.printStackTrace();
+            //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //eventImageView.setImageBitmap(myBitmap);
+            //eventImageView.setImageURI(Uri.fromFile(imgFile));
+            eventImageView.setImageURI(Uri.parse((Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath).toString()));
+
         }
 
+
+        //Picasso.with(getContext()).load(new File (android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath)).into(eventImageView);
+
+        final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
+
+        if (eventNameMainList.get(position).getVoiceMemo() != null){
+
+            eventAudioView.setVisibility(View.VISIBLE);
+            eventAudioView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    try {
+                        mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath);
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                    } catch (IOException ioe){
+                        ioe.printStackTrace();
+                    }
+                }
+            });
+
+
+        }
     }
 
 

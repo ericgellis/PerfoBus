@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -46,7 +47,7 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 15/02/2017.
  */
 
-public class EventCustomListViewAdapter extends BaseAdapter implements LocationListener, OnMapReadyCallback {
+public class EventCustomListViewAdapter extends BaseAdapter implements OnMapReadyCallback {
 
     private static MediaRecorder mediaRecorder;
     private boolean isRecording = true;
@@ -67,6 +68,8 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     String audioFileName;
 
     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+    Location location;
 
     public EventCustomListViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -119,6 +122,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
         viewHolder.stationEventName.setText(getItem(position));
 
+
         viewHolder.stationEventChronometer.start();
         final Chronometer copi = viewHolder.stationEventChronometer;
 
@@ -148,7 +152,6 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
                 }
                 copi.stop();
                 layoutCopi.setVisibility(View.GONE);
-
             }
         });
 
@@ -239,6 +242,30 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
 
     public void stopAndRegisterEvent(EventDTO event) throws Exception {
 
+        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+        final android.location.LocationListener locationListener = new android.location.LocationListener() {
+            public void onLocationChanged(Location location) {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            public void onProviderEnabled(String s) {
+            }
+
+            public void onProviderDisabled(String s) {
+            }
+        };
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
+
         event.setVoiceMemo(audioFileName);
         event.setPicture(imageFileName);
         event.setGpsEndLat(latitude);
@@ -262,14 +289,6 @@ public class EventCustomListViewAdapter extends BaseAdapter implements LocationL
     @Override
     public void onMapReady(GoogleMap googleMap) {
     }
-    @Override
-    public void onLocationChanged(Location location) {
-        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-        }
-    }
+
 
 }

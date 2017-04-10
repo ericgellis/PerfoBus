@@ -32,6 +32,8 @@ import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
+import java.text.DecimalFormat;
+
 import static android.content.ContentValues.TAG;
 
 
@@ -39,7 +41,7 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 02/02/2017.
  */
 
-public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback {
+public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback,  LocationListener {
 
     private static final int UNEXPECTED_STATION_REGISTER_OK = 101;
     FragmentManager fm = getFragmentManager();
@@ -103,23 +105,25 @@ public class StationActivity extends Activity implements IEventSelectedListener,
             location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         }
-        final LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-            }
 
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-            }
-
-            public void onProviderEnabled(String s) {
-            }
-
-            public void onProviderDisabled(String s) {
-            }
-        };
-
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10,this);
+//        final LocationListener locationListener = new LocationListener() {
+//            public void onLocationChanged(Location location) {
+//                longitude = location.getLongitude();
+//                latitude = location.getLatitude();
+//            }
+//
+//            public void onStatusChanged(String s, int i, Bundle bundle) {
+//            }
+//
+//            public void onProviderEnabled(String s) {
+//            }
+//
+//            public void onProviderDisabled(String s) {
+//            }
+//        };
+//
+//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -196,13 +200,34 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     @Override
     protected void onResume() {
         super.onResume();
-
         mTimeCodeChronometer.start();
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 

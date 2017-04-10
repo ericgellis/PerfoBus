@@ -32,6 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
@@ -71,12 +73,11 @@ import retrofit2.Response;
  * Created by mplaton on 01/02/2017.
  */
 
-public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, IEventSelectedListener{
+public class DrivingActivity extends Activity implements WeatherServiceCallback, LocationListener, IEventSelectedListener, OnMapReadyCallback{
 
     private static final String TAG = "DrivingActivity";
 
     private static final int ANALYSE_STATION_ACTION = 7;
-    private static final int SHAKE_THRESHOLD = 10;
 
     public static final int MY_REQUEST_CODE = 0;
 
@@ -115,16 +116,28 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     private BusLineDTO mLine;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
     private LocationManager locationManager;
-    private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
     private float currentSpeed = 0.0f;
     private long tripId;
+
+    Location location = null;
+    double longitude;
+    double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_driving);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10, this);
 
         if (checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_REQUEST_CODE);
@@ -174,7 +187,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mSpeedTextView = (TextView) findViewById(R.id.speedTextView);
 
         //set the speed to 0
-        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.##").format(currentSpeed)));
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.#").format(currentSpeed)));
 
         //Chrono
         mCourseChronometer = (Chronometer) findViewById(R.id.chronometerCourse);
@@ -247,11 +260,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         weatherService = new WeatherService(this);
         weatherService.refreshWeather(mCity.getName() + ", France");
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10,
-                this);
 
 
         turnOnGps();
@@ -292,6 +300,11 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         super.onPause();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
     private void updateNextStationName() {
         if (step < mStationList.size()) {
             mNextStationNameTextView.setText(mStationList.get(step).getStationName());
@@ -303,23 +316,15 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     }
 
     public void skipStation() {
-
-        StationDataDTO stationDataDTO = new StationDataDTO();
-
+        final StationDataDTO stationDataDTO = new StationDataDTO();
         stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         stationDataDTO.setId(stationId);
+        stationDataDTO.setStartTime(System.currentTimeMillis());
         stationDataDTO.setEndTime(System.currentTimeMillis());
-        stationDataDTO.setEndTime(System.currentTimeMillis());
+        stationDataDTO.setGpsLat(latitude);
+        stationDataDTO.setGpsLong(longitude);
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            stationDataDTO.setGpsLat(location.getLatitude());
-            stationDataDTO.setGpsLong(location.getLongitude());
-
-        }
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
@@ -518,7 +523,11 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     @Override
     public void onLocationChanged(Location location) {
         currentSpeed = location.getSpeed() * 3.6f;
-        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.##").format(currentSpeed)));
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.#").format(currentSpeed)));
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
     }
 
     @Override
