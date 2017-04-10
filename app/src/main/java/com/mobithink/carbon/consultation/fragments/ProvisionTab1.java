@@ -1,5 +1,7 @@
 package com.mobithink.carbon.consultation.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +16,14 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.database.model.RollingPointDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.utils.Mathematics;
 
@@ -42,7 +47,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     long averageTimeInStation;
     long tripTotalTime;
 
-    long averageDistanceBetweenStations;
     long tripBetweenStationsDistance = 0;
     long tripDistance = 0;
 
@@ -82,55 +86,102 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
         savingInMinutesTextView.setText(timeFormat.format(timeSavingResult)+ "min");
         savingInEuroTextView.setText("soit euro");
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        List<LatLng> latLngList = new ArrayList<>();
 
+        List<LatLng> rollingPointlatLngList = new ArrayList<>();
+        List<LatLng> stationlatLngList = new ArrayList<>();
+        List<LatLng> eventStationlatLngList = new ArrayList<>();
+        List<LatLng> eventRollinglatLngList = new ArrayList<>();
 
         //true code
-//        for(StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()){
-//            latLngList.add(new LatLng(stationDataDTO.getGpsLat(),stationDataDTO.getGpsLong()));
-//        }
+        for(RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()){
+            rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(),rollingPointDTO.getGpsLong()));
+        }
+
+        for(StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()){
+            stationlatLngList.add(new LatLng(stationDTO.getGpsLat(),stationDTO.getGpsLong()));
+        }
+
+        for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+            if (eventDTO.getStationName() != null && eventDTO.getStationName().length() > 0) {
+                eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(),eventDTO.getGpsLong()));
+            } else {
+                eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(),eventDTO.getGpsLong()));
+            }
+        }
 
         //fake code
-        latLngList.add(new LatLng(43.600000, 1.433333));
-        latLngList.add(new LatLng(43.607232, 1.451205));
-        latLngList.add(new LatLng(43.609942, 1.455105));
-        latLngList.add(new LatLng(43.614354, 1.462143));
-
-        latLngList.add(new LatLng(43.616467, 1.465061));
-        latLngList.add(new LatLng(43.619139, 1.468494));
-        latLngList.add(new LatLng(43.625414, 1.475361));
-        latLngList.add(new LatLng(43.631192, 1.478279));
-
-        latLngList.add(new LatLng(43.640572, 1.475275));
-        latLngList.add(new LatLng(43.646162, 1.470211));
-        latLngList.add(new LatLng(43.654422, 1.475961));
-        latLngList.add(new LatLng(43.6667, 1.4833));
-
+//        rollingPointlatLngList.add(new LatLng(43.600000, 1.433333));
+//        rollingPointlatLngList.add(new LatLng(43.605000, 1.443333));
+//        rollingPointlatLngList.add(new LatLng(43.607232, 1.451205));
+//        rollingPointlatLngList.add(new LatLng(43.609942, 1.455105));
+//        rollingPointlatLngList.add(new LatLng(43.614354, 1.462143));
+//
+//        rollingPointlatLngList.add(new LatLng(43.616467, 1.465061));
+//        rollingPointlatLngList.add(new LatLng(43.619139, 1.468494));
+//        rollingPointlatLngList.add(new LatLng(43.620139, 1.469994));
+//        rollingPointlatLngList.add(new LatLng(43.625414, 1.475361));
+//        rollingPointlatLngList.add(new LatLng(43.631192, 1.478279));
+//
+//        rollingPointlatLngList.add(new LatLng(43.640572, 1.475275));
+//        rollingPointlatLngList.add(new LatLng(43.646162, 1.470211));
+//        rollingPointlatLngList.add(new LatLng(43.654422, 1.475961));
+//        rollingPointlatLngList.add(new LatLng(43.6667, 1.4833));
+//
+//        stationlatLngList.add(new LatLng(43.600000, 1.433333));
+//        stationlatLngList.add(new LatLng(43.607232, 1.451205));
+//        stationlatLngList.add(new LatLng(43.609942, 1.455105));
+//        stationlatLngList.add(new LatLng(43.614354, 1.462143));
+//
+//        stationlatLngList.add(new LatLng(43.616467, 1.465061));
+//        stationlatLngList.add(new LatLng(43.619139, 1.468494));
+//        stationlatLngList.add(new LatLng(43.625414, 1.475361));
+//        stationlatLngList.add(new LatLng(43.631192, 1.478279));
+//
+//        stationlatLngList.add(new LatLng(43.640572, 1.475275));
+//        stationlatLngList.add(new LatLng(43.646162, 1.470211));
+//        stationlatLngList.add(new LatLng(43.654422, 1.475961));
+//        stationlatLngList.add(new LatLng(43.6667, 1.4833));
+//
+//
+//        eventStationlatLngList.add(new LatLng(43.607232, 1.451205));
+//        eventStationlatLngList.add(new LatLng(43.614354, 1.462143));
+//        eventStationlatLngList.add(new LatLng(43.646162, 1.470211));
+//
+//        eventRollinglatLngList.add(new LatLng(43.605000, 1.443333));
+//        eventRollinglatLngList.add(new LatLng(43.620139, 1.469994));
+        
 
         //draw polyline
         PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.addAll(latLngList);
+        polylineOptions.addAll(rollingPointlatLngList);
         googleMap.addPolyline(polylineOptions.color(R.color.mobiThinkBlue).geodesic(true));
 
         //draw marker and circle and marker
-        for (LatLng latLng : latLngList) {
-            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)));
+        for (LatLng latLng : stationlatLngList) {
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)).anchor(0.5f,0.5f));
             googleMap.addCircle(new CircleOptions().center(latLng).radius(150d));
         }
 
-        LatLng firstStation = polylineOptions.getPoints().get(0);
+        LatLng firstStation = stationlatLngList.get(0);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStation,13));
-        //googleMap.animateCamera(CameraUpdateFactory.newLatLng(firstStation));
 
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
-//        prepareBuilder(latLngList);
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 17));
+        //draw event
+        for (LatLng latLng : eventStationlatLngList) {
+            googleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_blue_red_danger))
+                    .anchor(0.5f,0.5f)
+            );
+        }
+
+        for (LatLng latLng : eventRollinglatLngList) {
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_yellow_red_danger)).anchor(0.5f,0.5f));
+        }
+
 
 
         /*ArrayList<Long> distanceTab = new ArrayList<>() ;
