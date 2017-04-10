@@ -91,19 +91,19 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setDrawInside(false);
 
+        ArrayList<String> names = new ArrayList<>();
+        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+            names.add(stationDataDTO.getStationName());
+        }
+        Log.d(TAG, "names size : " + names.size());
+        namesTab = names.toArray(new String[names.size()]);
+
 
         CombinedData data = new CombinedData();
 
         data.setData(generateBarData());
         data.setData(generateLineData());
 
-        ArrayList<String> names = new ArrayList<>();
-        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            names.add(stationDataDTO.getStationName());
-        }
-
-        Log.d(TAG, "names size : " + names.size());
-        namesTab = names.toArray(new String[names.size()]);
         XAxis xAxis = mCombinedChart.getXAxis();
 
         //xAxis max and min
@@ -113,14 +113,17 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
         //xAxis labels
         xAxis.setLabelRotationAngle(-90);
         xAxis.setValueFormatter(new MyXAxisValueFormatter(namesTab));
+        xAxis.setDrawLabels(true);
+        xAxis.setAvoidFirstLastClipping(true);
 
         //xAxis line
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineWidth(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setYOffset(-210.0f);
 
-        mCombinedChart.setVisibleXRangeMaximum(data.getXMax() * 1f);
-        mCombinedChart.setVisibleYRangeMinimum(2f, YAxis.AxisDependency.LEFT);
+        //mCombinedChart.setVisibleXRangeMaximum(data.getXMax());
+        //mCombinedChart.setVisibleYRangeMinimum(15f, YAxis.AxisDependency.LEFT);
         mCombinedChart.setDragEnabled(true);
         mCombinedChart.getXAxis().setDrawGridLines(false);
         mCombinedChart.getAxisRight().setEnabled(false);
@@ -215,8 +218,9 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
 
         BarDataSet set = new BarDataSet(allEntry, "Charge");
         set.setDrawIcons(false);
+        //set.setValueFormatter(new MyXAxisValueFormatter(namesTab));
         set.setDrawValues(false);
-        set.setValueTextSize(7f);
+        set.setValueTextSize(10f);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColors(Color.rgb(250, 110, 112), Color.rgb(167, 224, 165));
         set.setStackLabels(new String[]{

@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 public class StationDataDTO implements Serializable {
+
     private Long id;
     private int numberOfComeIn;
     private int numberOfGoOut;
