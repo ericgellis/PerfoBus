@@ -126,8 +126,6 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
         viewHolder.stationEventChronometer.start();
         final Chronometer copi = viewHolder.stationEventChronometer;
 
-        final RelativeLayout layoutCopi = viewHolder.stationEventRelativeLayout;
-
         viewHolder.photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +149,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
                     Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 copi.stop();
-                layoutCopi.setVisibility(View.GONE);
+
             }
         });
 

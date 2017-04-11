@@ -187,7 +187,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
         mSpeedTextView = (TextView) findViewById(R.id.speedTextView);
 
         //set the speed to 0
-        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.#").format(currentSpeed)));
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#").format(currentSpeed)));
 
         //Chrono
         mCourseChronometer = (Chronometer) findViewById(R.id.chronometerCourse);
@@ -318,13 +318,12 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     public void skipStation() {
         final StationDataDTO stationDataDTO = new StationDataDTO();
         stationDataDTO.setStationName(mNextStationNameTextView.getText().toString());
+        stationDataDTO.setStartTime(System.currentTimeMillis());
         long stationId = DatabaseManager.getInstance().createNewStation(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
         stationDataDTO.setId(stationId);
-        stationDataDTO.setStartTime(System.currentTimeMillis());
         stationDataDTO.setEndTime(System.currentTimeMillis());
         stationDataDTO.setGpsLat(latitude);
         stationDataDTO.setGpsLong(longitude);
-
 
         DatabaseManager.getInstance().updateStationData(CarbonApplicationManager.getInstance().getCurrentTripId(), stationDataDTO);
 
@@ -523,7 +522,7 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
     @Override
     public void onLocationChanged(Location location) {
         currentSpeed = location.getSpeed() * 3.6f;
-        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#.#").format(currentSpeed)));
+        mSpeedTextView.setText(getString(R.string.current_speed,new DecimalFormat("#").format(currentSpeed)));
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();

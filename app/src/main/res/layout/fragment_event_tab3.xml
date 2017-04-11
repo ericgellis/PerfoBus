@@ -121,7 +121,7 @@
         <TextView
             android:id="@+id/eventExplanations"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/eventTimeSaving"
             android:layout_marginStart="@dimen/double_regular_margin"/>
 
@@ -130,7 +130,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_below="@+id/eventExplanations"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/double_regular_margin" />
 
         <ImageView
@@ -139,8 +138,7 @@
             android:layout_height="100dp"
             android:layout_toEndOf="@+id/eventImageView"
             android:layout_alignBottom="@+id/eventImageView"
-            android:background="@mipmap/ic_white_audio"
-            android:visibility="gone"/>
+            android:background="@mipmap/ic_white_audio" />
 
     </RelativeLayout>
 

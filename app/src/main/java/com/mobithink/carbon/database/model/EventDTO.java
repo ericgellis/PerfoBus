@@ -37,8 +37,9 @@ public class EventDTO implements Serializable {
         this.gpsEndLong = gpsEndLong;
         this.stationName = stationName;
         this.timeSaving = timeSaving;
-        this.voiceMemo = voiceMemo;
         this.picture = picture;
+        this.voiceMemo = voiceMemo;
+
     }
 
     public Long getId() {

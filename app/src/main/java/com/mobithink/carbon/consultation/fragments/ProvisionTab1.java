@@ -82,7 +82,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         savingInEuroTextView.setText("soit " +  timeSavingInMinutes*1.15 + " euro");
 
         savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
-        savingInEuroTextView.setText("soit " +  timeSavingInMinutes*1.15 + " euro");
+        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes*1.15)  + " euro");
     }
 
     @Override
@@ -93,7 +93,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         List<LatLng> eventStationlatLngList = new ArrayList<>();
         List<LatLng> eventRollinglatLngList = new ArrayList<>();
 
-        //true code
         for (RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
             rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()));
         }
@@ -109,48 +108,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
                 eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
             }
         }
-
-        //fake code
-//        rollingPointlatLngList.add(new LatLng(43.600000, 1.433333));
-//        rollingPointlatLngList.add(new LatLng(43.605000, 1.443333));
-//        rollingPointlatLngList.add(new LatLng(43.607232, 1.451205));
-//        rollingPointlatLngList.add(new LatLng(43.609942, 1.455105));
-//        rollingPointlatLngList.add(new LatLng(43.614354, 1.462143));
-//
-//        rollingPointlatLngList.add(new LatLng(43.616467, 1.465061));
-//        rollingPointlatLngList.add(new LatLng(43.619139, 1.468494));
-//        rollingPointlatLngList.add(new LatLng(43.620139, 1.469994));
-//        rollingPointlatLngList.add(new LatLng(43.625414, 1.475361));
-//        rollingPointlatLngList.add(new LatLng(43.631192, 1.478279));
-//
-//        rollingPointlatLngList.add(new LatLng(43.640572, 1.475275));
-//        rollingPointlatLngList.add(new LatLng(43.646162, 1.470211));
-//        rollingPointlatLngList.add(new LatLng(43.654422, 1.475961));
-//        rollingPointlatLngList.add(new LatLng(43.6667, 1.4833));
-//
-//        stationlatLngList.add(new LatLng(43.600000, 1.433333));
-//        stationlatLngList.add(new LatLng(43.607232, 1.451205));
-//        stationlatLngList.add(new LatLng(43.609942, 1.455105));
-//        stationlatLngList.add(new LatLng(43.614354, 1.462143));
-//
-//        stationlatLngList.add(new LatLng(43.616467, 1.465061));
-//        stationlatLngList.add(new LatLng(43.619139, 1.468494));
-//        stationlatLngList.add(new LatLng(43.625414, 1.475361));
-//        stationlatLngList.add(new LatLng(43.631192, 1.478279));
-//
-//        stationlatLngList.add(new LatLng(43.640572, 1.475275));
-//        stationlatLngList.add(new LatLng(43.646162, 1.470211));
-//        stationlatLngList.add(new LatLng(43.654422, 1.475961));
-//        stationlatLngList.add(new LatLng(43.6667, 1.4833));
-//
-//
-//        eventStationlatLngList.add(new LatLng(43.607232, 1.451205));
-//        eventStationlatLngList.add(new LatLng(43.614354, 1.462143));
-//        eventStationlatLngList.add(new LatLng(43.646162, 1.470211));
-//
-//        eventRollinglatLngList.add(new LatLng(43.605000, 1.443333));
-//        eventRollinglatLngList.add(new LatLng(43.620139, 1.469994));
-
 
         //draw polyline
         PolylineOptions polylineOptions = new PolylineOptions();
@@ -186,15 +143,16 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         if (getTripDTO().getStationDataDTOList() != null) {
             for (int i = 0; i + 1 < getTripDTO().getStationDataDTOList().size(); i++) {
                 timeInStation = getTripDTO().getStationDataDTOList().get(i).getEndTime() - getTripDTO().getStationDataDTOList().get(i).getStartTime();
-                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
                 totalTimeInStation += timeInStation;
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
                 distanceTab.add(tripBetweenStationsDistance);
                 tripDistance += tripBetweenStationsDistance;
             }
+
         }
 
-        long minVal = (long) distanceTab.indexOf(Collections.min(distanceTab));
-        long maxVal = (long) distanceTab.indexOf(Collections.max(distanceTab));
+        double minVal = Collections.min(distanceTab);
+        double maxVal = Collections.max(distanceTab);
 
         minDistanceBetweenStations.setText(String.valueOf(minVal) + " m");
         maxDistanceBetweenStations.setText(String.valueOf(maxVal)+ " m");
@@ -206,7 +164,8 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
 
         timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
 
-        timeSavingInMinutes = (int) ((timeSavingResult / (1000*60)) % 60);
+        timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
+
 
     }
 }

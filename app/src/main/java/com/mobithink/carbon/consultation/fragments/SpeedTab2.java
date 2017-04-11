@@ -22,6 +22,7 @@ import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.driving.adapters.MyXAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelectedListener {
@@ -104,6 +105,8 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
 
         mMultiLineChart.setData(generateLineChart ());
 
+
+
     }
 
     private LineData generateLineChart (){
@@ -112,15 +115,26 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         ArrayList<Entry> minSpeedEntry = new ArrayList<Entry>();
         ArrayList<Entry> tripSpeedEntry = new ArrayList<>();
 
+        ArrayList<Double> speedTab = new ArrayList<>() ;
+        double speedAdd = 0;
+        double averageSpeed;
         int i = 0;
-        for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
-            Entry entry = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfComeIn()));
-            maxSpeedEntry.add(entry);
-            Entry entry1 = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfGoOut()));
-            tripSpeedEntry.add(entry1);
-            Entry entry2 = new Entry(i, Float.valueOf(stationDataDTO.getNumberOfGoOut()));
-            minSpeedEntry.add(entry2);
-            i++;
+
+        if (getTripDTO().getStationDataDTOList() != null) {
+            for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
+                speedTab.add(stationDataDTO.getSpeed());
+                double maxVal = Collections.max(speedTab);
+                Entry entry = new Entry(i, (float) Math.round(maxVal));
+                maxSpeedEntry.add(entry);
+                Entry entry1 = new Entry(i, (float) Math.round(stationDataDTO.getSpeed()));
+                tripSpeedEntry.add(entry1);
+                double minVal = Collections.min(speedTab);
+                Entry entry2 = new Entry(i, (float) Math.round(minVal));
+                minSpeedEntry.add(entry2);
+                speedAdd += stationDataDTO.getSpeed();
+                i++;
+
+            }
         }
 
         LineDataSet set1 = new LineDataSet(maxSpeedEntry, "Vitesse maximale");
@@ -145,6 +159,15 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         set3.setLineWidth(3f);
 
         LineData ld = new LineData(set1, set2, set3);
+
+        double minSpeed = Collections.min(speedTab);
+        double maxSpeed = Collections.max(speedTab);
+
+        minSpeedValueTextView.setText(String.valueOf(Math.round(minSpeed))+" km/h");
+        maxSpeedValueTextView.setText(String.valueOf(Math.round(maxSpeed))+" km/h");
+
+        averageSpeed = speedAdd/getTripDTO().getStationDataDTOList().size();
+        averageSpeedValueTextView.setText(String.valueOf(Math.round(averageSpeed))+" km/h");
 
         return ld;
     }

@@ -201,31 +201,18 @@ public class EventTab3 extends GenericTabFragment {
         PerformanceExplanations performanceExplanations = new PerformanceExplanations();
         eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
 
-        if (eventNameMainList.get(position).getPicture() != null){
-            File root = Environment.getExternalStorageDirectory();
-            Bitmap bMap = BitmapFactory.decodeFile(root+"/mobithinkPhoto/"+eventNameMainList.get(position).getPicture()+".jpg");
-            eventImageView.setImageBitmap(bMap);
-        }
+
         final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
-        File imgFile = new  File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
-
-        if(imgFile.exists()){
-
-            //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            //eventImageView.setImageBitmap(myBitmap);
-            //eventImageView.setImageURI(Uri.fromFile(imgFile));
-            eventImageView.setImageURI(Uri.parse((Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath).toString()));
+        if(eventNameMainList.get(position).getPicture() != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
+            eventImageView.setImageBitmap(bitmap);
 
         }
 
-
-        //Picasso.with(getContext()).load(new File (android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath)).into(eventImageView);
 
         final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
-
         if (eventNameMainList.get(position).getVoiceMemo() != null){
 
-            eventAudioView.setVisibility(View.VISIBLE);
             eventAudioView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -241,9 +228,7 @@ public class EventTab3 extends GenericTabFragment {
                 }
             });
 
-
         }
     }
-
 
 }

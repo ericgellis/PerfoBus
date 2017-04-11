@@ -73,7 +73,7 @@
             android:layout_below="@+id/actualDate"
             android:layout_marginBottom="@dimen/double_regular_margin"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:text="@string/course" />
 
         <Chronometer
@@ -105,9 +105,10 @@
         <ListView
             android:id="@+id/driving_event_custom_listview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="170dp"
             android:layout_below="@+id/sectiontextView"
-            android:layout_marginBottom="@dimen/regular_margin"></ListView>
+            android:layout_marginBottom="@dimen/regular_margin"
+            android:layout_above="@+id/eventButton"></ListView>
 
         <Button
             android:id="@+id/eventButton"

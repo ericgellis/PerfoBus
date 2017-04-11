@@ -20,7 +20,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_STATION_TRIP_DATA = "stationTripDatas";
     public static final String TABLE_EVENT = "events";
     public static final String TABLE_ROLLING_POINT = "rollingPoints";
-    public static final String TABLE_PICTURE = "picture";
     // Common column names
     public static final String KEY_ID = "_id";
     public static final String KEY_LONGITUDE = "longitude";
@@ -169,7 +168,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATION_TRIP_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLLING_POINT);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PICTURE);
 
             db.execSQL(CREATE_TABLE_CITY);
             db.execSQL(CREATE_TABLE_LINE);
