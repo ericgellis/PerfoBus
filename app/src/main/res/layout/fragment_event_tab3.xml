@@ -138,7 +138,8 @@
             android:layout_height="100dp"
             android:layout_toEndOf="@+id/eventImageView"
             android:layout_alignBottom="@+id/eventImageView"
-            android:background="@mipmap/ic_white_audio" />
+            android:background="@mipmap/ic_white_audio"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

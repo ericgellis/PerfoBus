@@ -177,7 +177,7 @@ public class EventTab3 extends GenericTabFragment {
         adapter.notifyDataSetChanged();
         eventStationExpandableListViewAdapter.notifyDataSetChanged();
     }
-    
+
     public void showGeneralInformations(){
         detailedRelativeLayout.setVisibility(View.GONE);
         mainRelativeLayout.setVisibility(View.VISIBLE);
@@ -209,10 +209,9 @@ public class EventTab3 extends GenericTabFragment {
 
         }
 
-
         final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
         if (eventNameMainList.get(position).getVoiceMemo() != null){
-
+            eventAudioView.setVisibility(View.VISIBLE);
             eventAudioView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
