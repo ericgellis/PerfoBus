@@ -27,12 +27,12 @@ import java.util.Collections;
 
 public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelectedListener {
 
-    TextView maxSpeedValueTextView;
-    TextView averageSpeedValueTextView;
-    TextView minSpeedValueTextView;
+    private TextView maxSpeedValueTextView;
+    private TextView averageSpeedValueTextView;
+    private TextView minSpeedValueTextView;
 
     private LineChart mMultiLineChart;
-    String[] namesTab;
+    private String[] namesTab;
 
     public SpeedTab2() {
     }
@@ -111,8 +111,8 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
 
     private LineData generateLineChart (){
 
-        ArrayList<Entry> maxSpeedEntry = new ArrayList<Entry>();
-        ArrayList<Entry> minSpeedEntry = new ArrayList<Entry>();
+        ArrayList<Entry> maxSpeedEntry = new ArrayList<>();
+        ArrayList<Entry> minSpeedEntry = new ArrayList<>();
         ArrayList<Entry> tripSpeedEntry = new ArrayList<>();
 
         ArrayList<Double> speedTab = new ArrayList<>() ;

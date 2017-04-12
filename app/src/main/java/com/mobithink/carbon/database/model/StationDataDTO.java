@@ -1,7 +1,6 @@
 package com.mobithink.carbon.database.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by jpaput on 07/02/2017.

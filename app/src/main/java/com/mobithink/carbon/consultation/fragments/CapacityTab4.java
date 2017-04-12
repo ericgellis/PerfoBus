@@ -31,16 +31,16 @@ import java.util.List;
 
 public class CapacityTab4 extends GenericTabFragment implements OnChartValueSelectedListener {
 
-    TextView maxCapacityTextView;
-    TextView maxPeopleTextView;
-    TextView averagePeopleTextView;
-    TextView minPeopleTextView;
-    TextView capacityLess50TextView;
+    private TextView maxCapacityTextView;
+    private TextView maxPeopleTextView;
+    private TextView averagePeopleTextView;
+    private TextView minPeopleTextView;
+    private TextView capacityLess50TextView;
 
     private CombinedChart mCombinedChart;
 
-    String[] namesTab;
-    List<Integer> busPersonTab;
+    private String[] namesTab;
+    private List<Integer> busPersonTab;
 
 
     public CapacityTab4() {

@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,10 +28,10 @@ public class ConsultationActivity extends AppCompatActivity {
 
     private static final String TAG = ConsultationActivity.class.getName();
 
-    public TripDTO mTripDTO;
-    public BusLineDTO mBusLineDTO;
-    public CityDTO mCityDTO;
-    public StationDTO mSelectedDirection;
+    private TripDTO mTripDTO;
+    private BusLineDTO mBusLineDTO;
+    private CityDTO mCityDTO;
+    private StationDTO mSelectedDirection;
 
     public static final int MY_REQUEST_CODE = 0;
 

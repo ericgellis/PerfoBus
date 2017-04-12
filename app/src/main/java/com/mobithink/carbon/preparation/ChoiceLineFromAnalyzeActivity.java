@@ -51,30 +51,27 @@ public class ChoiceLineFromAnalyzeActivity extends Activity {
 
     private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 101;
 
-    View mRootView;
-    Button mCreateNewLineButton;
-    Button mStartButton;
+    private View mRootView;
+    private Button mCreateNewLineButton;
+    private Button mStartButton;
 
-    TextInputLayout mCityTextInputLayout;
-    TextInputLayout mLineTextInputLayout;
-    TextInputLayout mDirectionTextInputLayout;
-    TextInputLayout mCapacityTextInputLayout;
+    private TextInputLayout mCityTextInputLayout;
+    private TextInputLayout mLineTextInputLayout;
+    private TextInputLayout mDirectionTextInputLayout;
+    private TextInputLayout mCapacityTextInputLayout;
 
-    AutoCompleteTextView mCityAutocompleteView;
-    TextInputEditText mLineEditText;
-    TextInputEditText mDirectionEditText;
-    TextInputEditText mCapacityEditText;
+    private AutoCompleteTextView mCityAutocompleteView;
+    private TextInputEditText mLineEditText;
+    private TextInputEditText mDirectionEditText;
+    private TextInputEditText mCapacityEditText;
 
-    ArrayAdapter<CityDTO> cityAdapter;
-    ArrayAdapter<BusLineDTO> lineAdapter;
-    ArrayAdapter<StationDTO> directionAdapter;
-    CityDTO mSelectedCityDTO;
-    BusLineDTO mSelectedLineDTO;
+    private ArrayAdapter<CityDTO> cityAdapter;
+    private ArrayAdapter<BusLineDTO> lineAdapter;
+    private ArrayAdapter<StationDTO> directionAdapter;
+    private CityDTO mSelectedCityDTO;
+    private BusLineDTO mSelectedLineDTO;
 
-    CityDTO mCity;
-    BusLineDTO mBusLine;
-
-    Toolbar mAnalyzeLineToolBar;
+    private Toolbar mAnalyzeLineToolBar;
     private StationDTO mSelectedDirection;
     private ArrayList<StationDTO> listStation;
 

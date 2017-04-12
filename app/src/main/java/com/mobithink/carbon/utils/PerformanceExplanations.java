@@ -1,7 +1,6 @@
 package com.mobithink.carbon.utils;
 
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.database.model.TripDTO;
 
 /**
  * Created by mplaton on 22/03/2017.

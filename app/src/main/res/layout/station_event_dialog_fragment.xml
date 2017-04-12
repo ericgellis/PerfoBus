@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/mobiThinkBlue"
-        android:dividerHeight="2px">
+        android:dividerHeight="2dp">
 
     </ListView>
 

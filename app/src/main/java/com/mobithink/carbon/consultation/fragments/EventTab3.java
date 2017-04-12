@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
 import android.util.Log;
@@ -31,7 +29,6 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.utils.PerformanceExplanations;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,33 +39,31 @@ import java.util.Locale;
 
 public class EventTab3 extends GenericTabFragment {
 
-    RelativeLayout mainRelativeLayout;
-    RelativeLayout detailedRelativeLayout;
+    private RelativeLayout mainRelativeLayout;
+    private RelativeLayout detailedRelativeLayout;
 
-    ListView eventMainListView;
-    ArrayList<EventDTO> eventNameMainList;
-    EventMainListViewAdapter adapter;
+    private ListView eventMainListView;
+    private ArrayList<EventDTO> eventNameMainList;
+    private EventMainListViewAdapter adapter;
 
-    ListView eventInDrivingListView;
-    ArrayList<String> eventInDrivingList;
+    private ListView eventInDrivingListView;
+    private ArrayList<String> eventInDrivingList;
 
-    ExpandableListView eventStationListView;
-    EventStationExpandableListViewAdapter eventStationExpandableListViewAdapter;
-    List<String> expandableListTitle;
+    private ExpandableListView eventStationListView;
+    private EventStationExpandableListViewAdapter eventStationExpandableListViewAdapter;
+    private List<String> expandableListTitle;
 
-    HashMap<String, List<String>> expandableListDetailData;
+    private HashMap<String, List<String>> expandableListDetailData;
 
-    TextView totalTrip;
-    TextView eventTotalDurationTextView;
-    TextView lossTimePourcentTextView;
-    TextView eventInStationTotalDurationTextView;
-    TextView stationLossTimePourcenttextView;
+    private TextView totalTrip;
+    private TextView eventTotalDurationTextView;
+    private TextView eventInStationTotalDurationTextView;
 
-    TextView eventName;
-    TextView eventTimeSaving;
-    TextView eventExplanations;
-    ImageView eventAudioView;
-    ImageView eventImageView;
+    private TextView eventName;
+    private TextView eventTimeSaving;
+    private TextView eventExplanations;
+    private ImageView eventAudioView;
+    private ImageView eventImageView;
 
     public static final int MY_REQUEST_CODE = 0;
 
@@ -91,9 +86,7 @@ public class EventTab3 extends GenericTabFragment {
         detailedRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.detailedRelativeLayout);
 
         eventTotalDurationTextView = (TextView) rootView.findViewById(R.id.eventTotalDuration);
-        lossTimePourcentTextView  = (TextView) rootView.findViewById(R.id.lossTimePourcent);
         eventInStationTotalDurationTextView  = (TextView) rootView.findViewById(R.id.eventInStationTotalDuration);
-        stationLossTimePourcenttextView  = (TextView) rootView.findViewById(R.id.stationLossTimePourcent);
 
         eventName = (TextView) rootView.findViewById(R.id.eventName);
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
@@ -124,12 +117,12 @@ public class EventTab3 extends GenericTabFragment {
 
         eventInDrivingListView = (ListView) rootView.findViewById(R.id.eventInDrivingListView);
         eventInDrivingList = new ArrayList<>();
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), R.layout.itemview_event_driving_listview, R.id.eventName, eventInDrivingList);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getContext(), R.layout.itemview_event_driving_listview, R.id.eventName, eventInDrivingList);
         eventInDrivingListView.setAdapter(adapter2);
 
         eventStationListView = (ExpandableListView) rootView.findViewById(R.id.eventStationListView);
         expandableListDetailData = ExpandableEventStationListHelper.getData(getTripDTO());
-        expandableListTitle = new ArrayList<String>(expandableListDetailData.keySet());
+        expandableListTitle = new ArrayList<>(expandableListDetailData.keySet());
         eventStationExpandableListViewAdapter = new EventStationExpandableListViewAdapter(getActivity(), expandableListTitle, expandableListDetailData);
         eventStationListView.setAdapter(eventStationExpandableListViewAdapter);
         eventStationListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

@@ -81,33 +81,33 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
     public static final int MY_REQUEST_CODE = 0;
 
-    View mRootView;
-    ImageView mWeatherImageView;
-    TextView mWeatherTemperatureTextView;
-    TextView mActualTime;
-    TextView mActualDate;
-    TextView mSpeedTextView;
-    TextView mNextStationTextView;
-    TextView mNextStationNameTextView;
-    Toolbar mDrivingToolBar;
-    TextView mDirectionNameTextView;
-    TextView mCityNameTextView;
-    TextView mLineNameTextView;
-    Button mCancelButton;
-    Button mEventInDrivingButton;
-    Button mEventInCrossroadButton;
-    Button mAddUnexpectedStation;
-    Chronometer mCourseChronometer;
-    Chronometer mSectionChronometer;
-    RecyclerView mStationRecyclerView;
-    StationAdapter mStationAdapter;
-    RelativeLayout mNextStationRelativeLayout;
+    private View mRootView;
+    private ImageView mWeatherImageView;
+    private TextView mWeatherTemperatureTextView;
+    private TextView mActualTime;
+    private TextView mActualDate;
+    private TextView mSpeedTextView;
+    private TextView mNextStationTextView;
+    private TextView mNextStationNameTextView;
+    private Toolbar mDrivingToolBar;
+    private TextView mDirectionNameTextView;
+    private TextView mCityNameTextView;
+    private TextView mLineNameTextView;
+    private Button mCancelButton;
+    private Button mEventInDrivingButton;
+    private Button mEventInCrossroadButton;
+    private Button mAddUnexpectedStation;
+    private Chronometer mCourseChronometer;
+    private Chronometer mSectionChronometer;
+    private RecyclerView mStationRecyclerView;
+    private StationAdapter mStationAdapter;
+    private RelativeLayout mNextStationRelativeLayout;
     List<StationDTO> mStationList;
-    StationDTO mDirection;
-    CityDTO mCity;
-    FragmentManager fm = getFragmentManager();
-    int resourceId;
-    int step = 0;
+    private StationDTO mDirection;
+    private CityDTO mCity;
+    private FragmentManager fm = getFragmentManager();
+    private int resourceId;
+    private int step = 0;
     private Button mUnrealizedStopButton;
     private ListView mEventCustomListView;
     private EventCustomListViewAdapter mEventInDrivingCustomListViewAdapter;
@@ -131,13 +131,10 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         }
 
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, PreferenceManager.getInstance().getTimeFrequency() * 1000, 10, this);
 
         if (checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_REQUEST_CODE);
@@ -259,8 +256,6 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         weatherService = new WeatherService(this);
         weatherService.refreshWeather(mCity.getName() + ", France");
-
-
 
         turnOnGps();
 

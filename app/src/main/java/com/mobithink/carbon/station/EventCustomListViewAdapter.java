@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
@@ -55,7 +54,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private final LayoutInflater mInflater;
-    List<EventDTO> eventDTOList = new ArrayList<>();
+    private List<EventDTO> eventDTOList = new ArrayList<>();
 
     private double longitude;
     private double latitude;
@@ -64,10 +63,10 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
     private Context mContext;
     private String mCurrentPhotoPath;
 
-    String imageFileName;
-    String audioFileName;
+    private String imageFileName;
+    private String audioFileName;
 
-    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    private String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
     Location location;
 

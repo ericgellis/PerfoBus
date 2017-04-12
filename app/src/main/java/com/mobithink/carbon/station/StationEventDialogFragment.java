@@ -82,18 +82,18 @@ public class StationEventDialogFragment extends DialogFragment {
     }
 
     public List<String> stationEventNameList(){
-        List<String> eventType = new ArrayList<String>();
-        eventType.add(new String("Trop d'arrêts"));
-        eventType.add(new String("Stationnement illicite"));
-        eventType.add(new String("Attente pour correspondance"));
-        eventType.add(new String("Capacité station"));
-        eventType.add(new String("Foule"));
-        eventType.add(new String("Incivilité"));
-        eventType.add(new String("Demande d'informations à bord"));
-        eventType.add(new String("Vente à bord et échange de monnaie"));
-        eventType.add(new String("Réinsertion dans la circulation"));
-        eventType.add(new String("PMR"));
-        eventType.add(new String("Incident technique"));
+        List<String> eventType = new ArrayList<>();
+        eventType.add("Trop d'arrêts");
+        eventType.add("Stationnement illicite");
+        eventType.add("Attente pour correspondance");
+        eventType.add("Capacité station");
+        eventType.add("Foule");
+        eventType.add("Incivilité");
+        eventType.add("Demande d'informations à bord");
+        eventType.add("Vente à bord et échange de monnaie");
+        eventType.add("Réinsertion dans la circulation");
+        eventType.add("PMR");
+        eventType.add("Incident technique");
         return eventType;
     }
 

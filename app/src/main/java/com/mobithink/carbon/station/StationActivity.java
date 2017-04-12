@@ -32,8 +32,6 @@ import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
-import java.text.DecimalFormat;
-
 import static android.content.ContentValues.TAG;
 
 

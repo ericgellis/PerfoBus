@@ -43,14 +43,6 @@
             android:layout_toEndOf="@+id/inDriving"
             android:layout_marginStart="@dimen/regular_margin" />
 
-        <TextView
-            android:id="@+id/lossTimePourcent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inDriving"
-            android:layout_toEndOf="@+id/eventTotalDuration"
-            android:layout_marginStart="@dimen/regular_margin" />
-
         <ListView
             android:id="@+id/eventInDrivingListView"
             android:layout_width="wrap_content"
@@ -76,14 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/inStation"
             android:layout_toEndOf="@+id/inStation"
-            android:layout_marginStart="@dimen/regular_margin" />
-
-        <TextView
-            android:id="@+id/stationLossTimePourcent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/inStation"
-            android:layout_toEndOf="@+id/eventInStationTotalDuration"
             android:layout_marginStart="@dimen/regular_margin" />
 
         <ExpandableListView

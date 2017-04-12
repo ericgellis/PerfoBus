@@ -18,7 +18,7 @@ import java.util.List;
 
 public class EventStationExpandableListViewAdapter extends BaseExpandableListAdapter {
 
-    public TextView eventTypeName;
+    private TextView eventTypeName;
 
     private Context context;
     private List<String> expandableListTitle;

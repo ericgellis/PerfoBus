@@ -29,24 +29,24 @@ import java.util.List;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback {
 
-    MapView mtripMapView;
-    TextView minDistanceBetweenStations;
-    TextView averageDistanceBetweenStationsTextView;
-    TextView maxDistanceBetweenStations;
-    TextView savingInMinutesTextView;
-    TextView savingInEuroTextView;
+    private MapView mtripMapView;
+    private TextView minDistanceBetweenStations;
+    private TextView averageDistanceBetweenStationsTextView;
+    private TextView maxDistanceBetweenStations;
+    private TextView savingInMinutesTextView;
+    private TextView savingInEuroTextView;
 
-    long interStationObjective = 600;
-    long timeInStation;
-    long totalTimeInStation = 0;
-    long averageTimeInStation;
+    private long interStationObjective = 600;
+    private long timeInStation;
+    private long totalTimeInStation = 0;
+    private long averageTimeInStation;
 
-    long averageDistanceBetweenStations;
-    double tripBetweenStationsDistance = 0;
-    long tripDistance = 0;
+    private long averageDistanceBetweenStations;
+    private double tripBetweenStationsDistance = 0;
+    private long tripDistance = 0;
 
-    long timeSavingResult;
-    int timeSavingInMinutes;
+    private long timeSavingResult;
+    private int timeSavingInMinutes;
 
     public ProvisionTab1() {
     }
@@ -93,19 +93,26 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         List<LatLng> eventStationlatLngList = new ArrayList<>();
         List<LatLng> eventRollinglatLngList = new ArrayList<>();
 
-        for (RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
-            rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()));
+        if (getTripDTO().getRollingPointDTOList()!= null){
+            for (RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
+                rollingPointlatLngList.add(new LatLng(rollingPointDTO.getGpsLat(), rollingPointDTO.getGpsLong()));
+            }
         }
 
-        for (StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()) {
-            stationlatLngList.add(new LatLng(stationDTO.getGpsLat(), stationDTO.getGpsLong()));
+
+        if (getTripDTO().getStationDataDTOList()!= null) {
+            for (StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()) {
+                stationlatLngList.add(new LatLng(stationDTO.getGpsLat(), stationDTO.getGpsLong()));
+            }
         }
 
-        for (EventDTO eventDTO : getTripDTO().getEventDTOList()) {
-            if (eventDTO.getStationName() != null && eventDTO.getStationName().length() > 0) {
-                eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
-            } else {
-                eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
+        if(getTripDTO().getEventDTOList()!=null) {
+            for (EventDTO eventDTO : getTripDTO().getEventDTOList()) {
+                if (eventDTO.getStationName() != null && eventDTO.getStationName().length() > 0) {
+                    eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
+                } else {
+                    eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
+                }
             }
         }
 
@@ -165,7 +172,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
 
         timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
-
 
     }
 }

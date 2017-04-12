@@ -20,14 +20,12 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
-import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.station.EventListViewAdapter;
 import com.mobithink.carbon.station.IEventSelectedListener;
 
@@ -119,20 +117,20 @@ public class DrivingEventDialogFragment extends DialogFragment implements OnMapR
     }
 
     public List<String> stationEventNameList(){
-        List<String> eventType = new ArrayList<String>();
-        eventType.add(new String("Giration difficile"));
-        eventType.add(new String("Voie étroite"));
-        eventType.add(new String("Chicane, écluse"));
-        eventType.add(new String("Dos d'âne, trapézoïdal"));
-        eventType.add(new String("Pavé trop rugueux"));
-        eventType.add(new String("Stationnement latéral"));
-        eventType.add(new String("Stationnement illicite"));
-        eventType.add(new String("Stationnement alterné (effet chicane)"));
-        eventType.add(new String("Passage à niveau"));
-        eventType.add(new String("Itinéraire en tiroir ou boucle"));
-        eventType.add(new String("Itinéraire sinueux"));
-        eventType.add(new String("Trafic"));
-        eventType.add(new String("Panne"));
+        List<String> eventType = new ArrayList<>();
+        eventType.add("Giration difficile");
+        eventType.add("Voie étroite");
+        eventType.add("Chicane, écluse");
+        eventType.add("Dos d'âne, trapézoïdal");
+        eventType.add("Pavé trop rugueux");
+        eventType.add("Stationnement latéral");
+        eventType.add("Stationnement illicite");
+        eventType.add("Stationnement alterné (effet chicane)");
+        eventType.add("Passage à niveau");
+        eventType.add("Itinéraire en tiroir ou boucle");
+        eventType.add("Itinéraire sinueux");
+        eventType.add("Trafic");
+        eventType.add("Panne");
 
         return eventType;
     }

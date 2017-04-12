@@ -28,7 +28,6 @@
     <string name="event">Evènement</string>
     <string name="course">Parcours :</string>
     <string name="section">Tronçon :</string>
-    <string name="atmo">ATMO</string>
     <string name="dir">dir.</string>
     <string name="indriving">En section courante</string>
     <string name="in_crossroad">Au carrefour</string>
@@ -122,13 +121,12 @@
     <string name="max">max :</string>
     <string name="average">moy :</string>
     <string name="min">min :</string>
-    <string name="capacityless50">Part du trajet où la charge est inférieure à  50%</string>
+    <string name="capacityless50">Part du trajet où la charge est inférieure à 50%</string>
 
     <!--summary-tab5-->
     <string name="enteringData">Saisi le</string>
     <string name="commercial_speed">Vitesse commerciale</string>
     <string name="average_loss">Perte moyenne</string>
-    <string name="traffic">Trafic</string>
     <string name="confort_saving">Gain confort</string>
     <string name="security_saving">Gain sécurité</string>
 

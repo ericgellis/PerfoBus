@@ -25,5 +25,4 @@ public class Mathematics {
         return distance;
     }
 
-
 }

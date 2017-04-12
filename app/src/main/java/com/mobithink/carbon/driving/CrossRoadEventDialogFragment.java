@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
@@ -39,7 +38,7 @@ import java.util.List;
 
 public class CrossRoadEventDialogFragment extends DialogFragment implements OnMapReadyCallback {
 
-    EventDTO eventDTO;
+    private EventDTO eventDTO;
     private ListView mStationEventListView;
     private IEventSelectedListener mListener;
 
@@ -47,7 +46,7 @@ public class CrossRoadEventDialogFragment extends DialogFragment implements OnMa
     double latitude;
     Location location;
 
-    Context mContext;
+    private Context mContext;
 
     @Nullable
     @Override
@@ -119,14 +118,14 @@ public class CrossRoadEventDialogFragment extends DialogFragment implements OnMa
     }
 
     public List<String> stationEventNameList(){
-        List<String> eventType = new ArrayList<String>();
-        eventType.add(new String("Giratoire : remontée des files d'attente"));
-        eventType.add(new String("Giratoire : attente"));
-        eventType.add(new String("Giratoire : giration trop importante"));
-        eventType.add(new String("Carrefour à feux : remontée des files d'attente"));
-        eventType.add(new String("Carrefour à feux : attente"));
-        eventType.add(new String("Carrefour à feux : étroit car îlot refuge"));
-        eventType.add(new String("Carrefour à feux : ligne de feu trop avancée"));
+        List<String> eventType = new ArrayList<>();
+        eventType.add("Giratoire : remontée des files d'attente");
+        eventType.add("Giratoire : attente");
+        eventType.add("Giratoire : giration trop importante");
+        eventType.add("Carrefour à feux : remontée des files d'attente");
+        eventType.add("Carrefour à feux : attente");
+        eventType.add("Carrefour à feux : étroit car îlot refuge");
+        eventType.add("Carrefour à feux : ligne de feu trop avancée");
 
         return eventType;
     }

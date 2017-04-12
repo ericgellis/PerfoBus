@@ -43,24 +43,24 @@ public class ChoiceLineFromConsultActivity extends Activity {
 
     private static final String TAG = ChoiceLineFromConsultActivity.class.getName();
 
-    TextInputLayout mWriteCityNameTextInputLayout;
-    TextInputLayout mWriteLineTextInputLayout;
-    TextInputLayout mWriteDirectionTextInputLayout;
+    private TextInputLayout mWriteCityNameTextInputLayout;
+    private TextInputLayout mWriteLineTextInputLayout;
+    private TextInputLayout mWriteDirectionTextInputLayout;
 
-    AutoCompleteTextView mWriteCityNameAutoCompleteTextView;
-    TextInputEditText mWriteLineTextInputEditText;
-    TextInputEditText mWriteDirectionTextInputEditText;
+    private AutoCompleteTextView mWriteCityNameAutoCompleteTextView;
+    private TextInputEditText mWriteLineTextInputEditText;
+    private TextInputEditText mWriteDirectionTextInputEditText;
 
-    ArrayAdapter<CityDTO> cityAdapter;
-    ArrayAdapter<BusLineDTO> lineAdapter;
-    ArrayAdapter<StationDTO> directionAdapter;
-    CityDTO mSelectedCityDTO;
-    BusLineDTO mSelectedLineDTO;
-    Toolbar mConsultLineToolBar;
-    ListView tripResultListView;
-    TripResultListViewAdapter tripResultListViewAdapter;
-    ArrayList<TripDTO> mTripList;
-    Button mConsultButton;
+    private ArrayAdapter<CityDTO> cityAdapter;
+    private ArrayAdapter<BusLineDTO> lineAdapter;
+    private ArrayAdapter<StationDTO> directionAdapter;
+    private CityDTO mSelectedCityDTO;
+    private BusLineDTO mSelectedLineDTO;
+    private Toolbar mConsultLineToolBar;
+    private ListView tripResultListView;
+    private TripResultListViewAdapter tripResultListViewAdapter;
+    private ArrayList<TripDTO> mTripList;
+    private Button mConsultButton;
     private StationDTO mSelectedDirection;
     private ArrayList<StationDTO> listStation;
 

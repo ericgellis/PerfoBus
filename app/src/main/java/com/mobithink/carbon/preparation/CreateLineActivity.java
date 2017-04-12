@@ -51,10 +51,10 @@ public class CreateLineActivity extends Activity {
 
     private static final String TAG = "CreateLineActivity";
 
-    AutoCompleteTextView mCityAutocompleteView;
-    ArrayAdapter<CityDTO> cityAdapter;
-    CityDTO mSelectedCityDTO;
-    CityDTO mChosenCity;
+    private AutoCompleteTextView mCityAutocompleteView;
+    private ArrayAdapter<CityDTO> cityAdapter;
+    private CityDTO mSelectedCityDTO;
+    private CityDTO mChosenCity;
     private TextInputLayout mWriteLineTextInputLayout;
     private TextInputLayout mWriteCityNameTextInputLayout;
     private LinearLayout mStationEditTextContainer;

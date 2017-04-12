@@ -28,18 +28,18 @@ import java.util.Locale;
 
 public class SummaryTab5 extends GenericTabFragment {
 
-    ImageView mWeatherImageView;
+    private ImageView mWeatherImageView;
 
-    TextView mWeatherTemperatureTextView;
-    TextView mCityNameTextView;
-    TextView mLineNameTextView;
-    TextView mDirectionNameTextView;
-    TextView mEnteredTimeTextView;
-    TextView mEnteredDateTextView;
+    private TextView mWeatherTemperatureTextView;
+    private TextView mCityNameTextView;
+    private TextView mLineNameTextView;
+    private TextView mDirectionNameTextView;
+    private TextView mEnteredTimeTextView;
+    private TextView mEnteredDateTextView;
 
-    RadarChart mRadarChart;
+    private RadarChart mRadarChart;
 
-    Button mPDFButton;
+    private Button mPDFButton;
 
     public SummaryTab5() {
     }
