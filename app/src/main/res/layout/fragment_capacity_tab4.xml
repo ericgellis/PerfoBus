@@ -6,9 +6,9 @@
 
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/combined_chart"
-        android:layout_width="480dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/double_regular_margin" />
+        android:layout_margin="@dimen/regular_margin" />
 
     <TextView
         android:id="@+id/capacityTextView"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginTop="50dp"
         android:text="@string/capacity"
         android:textColor="@color/grey_capacity" />
@@ -28,7 +28,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/capacityTextView"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="75dp"
         android:text="@string/capacities"
         android:textColor="@color/purple_chart"/>
 
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/maxCapacityTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="55dp"
         android:textColor="@color/purple_chart" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/maxCapacityTextView"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="75dp"
         android:text="@string/max"
         android:textColor="@color/green_chart" />
 
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/maxPeopleTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="55dp"
         android:textColor="@color/green_chart" />
 
     <TextView
@@ -68,7 +68,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/maxPeopleTextView"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="75dp"
         android:text="@string/average"
         android:textColor="@color/black" />
 
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/averagePeopleTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="55dp"
         android:textColor="@color/black" />
 
     <TextView
@@ -88,7 +88,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/averagePeopleTextView"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="75dp"
         android:text="@string/min"
         android:textColor="@color/red_chart"/>
 
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/minPeopleTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="55dp"
         android:textColor="@color/red_chart" />
 
     <TextView
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/capacityLess50Message"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="70dp"
         android:textAlignment="center"
         android:textColor="@color/black" />
 

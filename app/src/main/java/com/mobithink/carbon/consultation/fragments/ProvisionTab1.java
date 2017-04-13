@@ -70,7 +70,6 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         savingInMinutesTextView = (TextView) rootView.findViewById(R.id.savingInMinutesTextView);
         savingInEuroTextView = (TextView) rootView.findViewById(R.id.savingInEuroTextView);
 
-        timeSavingInStation();
         return rootView;
     }
 
@@ -78,11 +77,8 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         getTripDTO();
-        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
-        savingInEuroTextView.setText("soit " +  timeSavingInMinutes*1.15 + " euro");
+        timeSavingInStation();
 
-        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
-        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes*1.15)  + " euro");
     }
 
     @Override
@@ -172,6 +168,12 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
 
         timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
+
+        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
+        savingInEuroTextView.setText("soit " +  timeSavingInMinutes*1.15 + " euro");
+
+        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
+        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes*1.15)  + " euro");
 
     }
 }

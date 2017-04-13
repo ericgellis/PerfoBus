@@ -88,7 +88,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
         legend.setWordWrapEnabled(true);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setDrawInside(false);
 
         ArrayList<String> names = new ArrayList<>();
@@ -184,7 +184,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
             i++;
         }
 
-        LineDataSet set = new LineDataSet(allEntry, "nombre de personnes dans le véhicule");
+        LineDataSet set = new LineDataSet(allEntry, "Nombre de personnes dans le véhicule");
         set.setColor(Color.rgb(255, 127, 39));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(255, 127, 39));
@@ -216,7 +216,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
             i++;
         }
 
-        BarDataSet set = new BarDataSet(allEntry, "Charge");
+        BarDataSet set = new BarDataSet(allEntry, "");
         set.setDrawIcons(false);
         //set.setValueFormatter(new MyXAxisValueFormatter(namesTab));
         set.setDrawValues(false);

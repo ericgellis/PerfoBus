@@ -19,7 +19,6 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.mobithink.carbon.R;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,7 +91,10 @@ public class SummaryTab5 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-        Picasso.with(getContext()).load(getTripDTO().getWeather()).into(mWeatherImageView);
+        if (getTripDTO().getWeather() != null) {
+            int resID = getResources().getIdentifier("drawable/icon_" + getTripDTO().getWeather(), "drawable", getContext().getPackageName());
+            mWeatherImageView.setImageResource(resID);
+        }
 
         mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
         mCityNameTextView.setText(getTripDTO().getCityName());

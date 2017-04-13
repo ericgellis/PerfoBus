@@ -14,6 +14,7 @@ public class PreferenceManager {
 
     public static final String STATION_RADIUS = "STATION_RADIUS";
     public static final String TIME_INTERVAL = "TIME_INTERVAL";
+    public static final String COST_PRODUCTION = "COST_PRODUCTION";
 
     private static PreferenceManager mInstance;
 
@@ -61,6 +62,16 @@ public class PreferenceManager {
 
     public int getTimeFrequency(){
         return mGeneralPreference.getInt(TIME_INTERVAL, 20);
+    }
+
+    public void setCostOfProductionByMinute(float value){
+        SharedPreferences.Editor editor = mGeneralPreference.edit();
+        editor.putFloat(COST_PRODUCTION, value);
+        editor.apply();
+    }
+
+    public float getCostOfProductionByMinute(){
+        return mGeneralPreference.getInt(COST_PRODUCTION, 0);
     }
 
     public void clear(){

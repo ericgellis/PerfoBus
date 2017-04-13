@@ -61,7 +61,6 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
 
     private Uri imageUri;
     private Context mContext;
-    private String mCurrentPhotoPath;
 
     private String imageFileName;
     private String audioFileName;
@@ -180,12 +179,9 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
+
         imageFileName = "JPEG_" + timeStamp;
-        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +imageFileName + ".jpg" );
-        // Save a file: path for use with ACTION_VIEW intents
-        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return storageDir;
+        return new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +imageFileName + ".jpg" );
     }
 
 
@@ -208,10 +204,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
                     audioFileName = "audio_" + timeStamp;
                     mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioFileName+".3gp");
                     mediaRecorder.prepare();
-                } catch (IllegalStateException e) {
-                    Log.e("RECORDING :: ",e.getMessage());
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (IllegalStateException | IOException e) {
                     Log.e("RECORDING :: ",e.getMessage());
                     e.printStackTrace();
                 }

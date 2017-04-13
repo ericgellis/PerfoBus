@@ -61,7 +61,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/enteringDataTextView"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginEnd="34dp"
+        android:layout_marginEnd="40dp"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18sp"/>
