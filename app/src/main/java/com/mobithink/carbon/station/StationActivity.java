@@ -39,7 +39,7 @@ import static android.content.ContentValues.TAG;
  * Created by mplaton on 02/02/2017.
  */
 
-public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback,  LocationListener {
+public class StationActivity extends Activity implements IEventSelectedListener, OnMapReadyCallback, LocationListener {
 
     private static final int UNEXPECTED_STATION_REGISTER_OK = 101;
     FragmentManager fm = getFragmentManager();
@@ -105,23 +105,6 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         }
 
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10,this);
-//        final LocationListener locationListener = new LocationListener() {
-//            public void onLocationChanged(Location location) {
-//                longitude = location.getLongitude();
-//                latitude = location.getLatitude();
-//            }
-//
-//            public void onStatusChanged(String s, int i, Bundle bundle) {
-//            }
-//
-//            public void onProviderEnabled(String s) {
-//            }
-//
-//            public void onProviderDisabled(String s) {
-//            }
-//        };
-//
-//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 10, locationListener);
 
         mDecreaseNumberOfAddedPeopleButton = (Button) findViewById(R.id.decreaseNumberOfAddedPeopleButton);
         mDecreaseNumberOfAddedPeopleButton.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +182,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     protected void onResume() {
         super.onResume();
         mTimeCodeChronometer.start();
+        mStationEventCustomListViewAdapter.notifyDataSetChanged();
 
     }
 
@@ -233,7 +217,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(this);
         alertDialog.setTitle("Ce n'est pas " + mStationNameTextView.getText().toString() + "?");
-        alertDialog.setMessage("Entrer le nouveau nom de la activity_station");
+        alertDialog.setMessage("Entrer le nouveau nom de la station");
         alertDialog.setView(edittext);
 
         alertDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
@@ -258,8 +242,6 @@ public class StationActivity extends Activity implements IEventSelectedListener,
         setResult(resultCode, toDrivingPage);
         finish();
     }
-
-
 
     public void registerStationData() {
 
@@ -315,7 +297,6 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     }
 
     public void goTochooseStationEvent(){
-
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("stationLongitude", longitude);

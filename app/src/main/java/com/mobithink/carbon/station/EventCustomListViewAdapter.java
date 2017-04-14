@@ -120,7 +120,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
 
         viewHolder.stationEventName.setText(getItem(position));
 
-
+        viewHolder.stationEventChronometer.setBase(SystemClock.elapsedRealtime());
         viewHolder.stationEventChronometer.start();
         final Chronometer copi = viewHolder.stationEventChronometer;
 
@@ -141,19 +141,20 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
             @Override
             public void onClick(View v) {
                 try {
+                    copi.stop();
                     stopAndRegisterEvent(event);
+                    eventDTOList.remove(position);
                 } catch (Exception e) {
                     Log.e(TAG, "updateEvent: error on SQLLiteDataBase: ", e);
                     Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-                copi.stop();
+
 
             }
         });
 
         return convertView;
     }
-
 
     public void addData(EventDTO event) {
         eventDTOList.add(event);

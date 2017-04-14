@@ -55,6 +55,8 @@ public class ConsultationActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Charge"));
         tabLayout.addTab(tabLayout.newTab().setText("Synthèse"));
 
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.mobiThinkBlue));
+
         final ViewPager viewPager =(ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setOnTouchListener(new View.OnTouchListener() {

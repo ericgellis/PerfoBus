@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/totalTrip"
         android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@color/lightBlue"
         android:text="@string/total_trip"
         android:textAlignment="center"

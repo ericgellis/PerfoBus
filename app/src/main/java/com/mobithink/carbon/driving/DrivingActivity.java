@@ -288,6 +288,9 @@ public class DrivingActivity extends Activity implements WeatherServiceCallback,
 
         mCourseChronometer.start();
         mSectionChronometer.start();
+
+        mEventInDrivingCustomListViewAdapter.notifyDataSetChanged();
+        mEventInCrossRoadCustomListViewAdapter.notifyDataSetChanged();
     }
 
     @Override

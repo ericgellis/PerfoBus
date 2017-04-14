@@ -27,7 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginTop="@dimen/double_regular_margin" />
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:textColor="@color/black"
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/lineNameTextView"
@@ -35,14 +37,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/cityNameTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/regular_margin" />
+        android:layout_marginBottom="@dimen/regular_margin"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/directionNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lineNameTextView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/enteringDataTextView"

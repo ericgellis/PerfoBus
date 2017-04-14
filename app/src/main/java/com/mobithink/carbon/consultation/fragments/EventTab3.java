@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.utils.PerformanceExplanations;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,12 +111,6 @@ public class EventTab3 extends GenericTabFragment {
         adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
         eventMainListView.setAdapter(adapter);
         eventMainListView.setSelector(R.color.lightBlue);
-        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showDetailedInformations(position);
-            }
-        });
 
         eventInDrivingListView = (ListView) rootView.findViewById(R.id.eventInDrivingListView);
         eventInDrivingList = new ArrayList<>();
@@ -167,6 +164,13 @@ public class EventTab3 extends GenericTabFragment {
             }
         }
 
+        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showDetailedInformations(position);
+            }
+        });
+
         adapter.notifyDataSetChanged();
         eventStationExpandableListViewAdapter.notifyDataSetChanged();
     }
@@ -175,15 +179,19 @@ public class EventTab3 extends GenericTabFragment {
         detailedRelativeLayout.setVisibility(View.GONE);
         mainRelativeLayout.setVisibility(View.VISIBLE);
         totalTrip.setBackgroundResource(R.color.lightBlue);
-        totalTrip.setTextColor(getResources().getColor(R.color.white));
+        totalTrip.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+        eventMainListView.setSelector(R.color.white);
 
     }
 
     public void showDetailedInformations(int position){
         mainRelativeLayout.setVisibility(View.GONE);
         totalTrip.setBackgroundResource(R.color.white);
-        totalTrip.setTextColor(getResources().getColor(R.color.black));
+        totalTrip.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        eventMainListView.setSelector(R.color.lightBlue);
         detailedRelativeLayout.setVisibility(View.VISIBLE);
+
+
 
         if (eventNameMainList.get(position).getStationName() != null){
             eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
@@ -196,14 +204,17 @@ public class EventTab3 extends GenericTabFragment {
 
 
         final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
-        if(eventNameMainList.get(position).getPicture() != null){
+        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();
+        if(eventNameMainList.get(position).getPicture() != null && existsImage){
             Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
             eventImageView.setImageBitmap(bitmap);
 
         }
 
+
         final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
-        if (eventNameMainList.get(position).getVoiceMemo() != null){
+        boolean existsAudio = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath)).exists();
+        if (eventNameMainList.get(position).getVoiceMemo() != null && existsAudio){
             eventAudioView.setVisibility(View.VISIBLE);
             eventAudioView.setOnClickListener(new View.OnClickListener() {
                 @Override

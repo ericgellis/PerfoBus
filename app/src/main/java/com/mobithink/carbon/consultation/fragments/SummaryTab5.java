@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +100,7 @@ public class SummaryTab5 extends GenericTabFragment {
         mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
         mCityNameTextView.setText(getTripDTO().getCityName());
         mLineNameTextView.setText(getTripDTO().getLineName());
-        mDirectionNameTextView.setText(getTripDTO().getDirection());
+        mDirectionNameTextView.setText("dir. " + getTripDTO().getDirection());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         mEnteredTimeTextView.setText(timeFormat.format(getTripDTO().getStartTime()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
