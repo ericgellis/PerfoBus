@@ -28,9 +28,8 @@ import java.util.Locale;
 
 public class SummaryTab5 extends GenericTabFragment {
 
-    private ImageView mWeatherImageView;
-
-    private TextView mWeatherTemperatureTextView;
+    //private ImageView mWeatherImageView;
+    //private TextView mWeatherTemperatureTextView;
     private TextView mCityNameTextView;
     private TextView mLineNameTextView;
     private TextView mDirectionNameTextView;
@@ -52,9 +51,9 @@ public class SummaryTab5 extends GenericTabFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_summary_tab5, container, false);
 
-        mWeatherImageView = (ImageView) rootView.findViewById(R.id.weatherImageView);
+        //mWeatherImageView = (ImageView) rootView.findViewById(R.id.weatherImageView);
 
-        mWeatherTemperatureTextView = (TextView) rootView.findViewById(R.id.weatherTemperatureTextView);
+        //mWeatherTemperatureTextView = (TextView) rootView.findViewById(R.id.weatherTemperatureTextView);
         mCityNameTextView = (TextView) rootView.findViewById(R.id.cityNameTextView);
         mLineNameTextView = (TextView) rootView.findViewById(R.id.lineNameTextView);
         mDirectionNameTextView = (TextView) rootView.findViewById(R.id.directionNameTextView);
@@ -92,12 +91,12 @@ public class SummaryTab5 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-        if (getTripDTO().getWeather() != null) {
-            int resID = getResources().getIdentifier("drawable/icon_" + getTripDTO().getWeather(), "drawable", getContext().getPackageName());
-            mWeatherImageView.setImageResource(resID);
-        }
-
-        mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
+//        if (getTripDTO().getWeather() != null) {
+//            int resID = getResources().getIdentifier("drawable/icon_" + getTripDTO().getWeather(), "drawable", getContext().getPackageName());
+//            mWeatherImageView.setImageResource(resID);
+//        }
+//
+//        mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
         mCityNameTextView.setText(getTripDTO().getCityName());
         mLineNameTextView.setText(getTripDTO().getLineName());
         mDirectionNameTextView.setText("dir. " + getTripDTO().getDirection());

@@ -86,6 +86,9 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineWidth(1f);
 
+        YAxis yAxis =  mMultiLineChart.getAxisLeft();
+        yAxis.setAxisMaximum(90);
+        
 
         // enable touch gestures
         //mMultiLineChart.setTouchEnabled(true);
@@ -97,15 +100,13 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         // if disabled, scaling can be done on x- and y-axis separately
         //mMultiLineChart.setPinchZoom(false);
 
-        Legend l = mMultiLineChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
+//        Legend l = mMultiLineChart.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+//        l.setDrawInside(false);
 
         mMultiLineChart.setData(generateLineChart ());
-
-
 
     }
 
@@ -137,14 +138,14 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
             }
         }
 
-        LineDataSet set1 = new LineDataSet(maxSpeedEntry, "Vitesse maximale");
-        set1.setColor(Color.rgb(167, 224, 165));
-        set1.setDrawValues(false);
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set1.setDrawCircles(false);
-        set1.setLineWidth(3f);
+//        LineDataSet set1 = new LineDataSet(maxSpeedEntry, "Vitesse maximale");
+//        set1.setColor(Color.rgb(167, 224, 165));
+//        set1.setDrawValues(false);
+//        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+//        set1.setDrawCircles(false);
+//        set1.setLineWidth(3f);
 
-        LineDataSet set2 = new LineDataSet(tripSpeedEntry, "Vitesse pendant le trajet");
+        LineDataSet set2 = new LineDataSet(tripSpeedEntry, "");
         set2.setColor(Color.rgb(0, 0, 0));
         set2.setDrawValues(false);
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -152,14 +153,16 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         set2.setLineWidth(3f);
         set2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 
-        LineDataSet set3 = new LineDataSet(minSpeedEntry, "Vitesse minimale");
-        set3.setColor(Color.rgb(250, 110, 112));
-        set3.setDrawValues(false);
-        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set3.setDrawCircles(false);
-        set3.setLineWidth(3f);
+//        LineDataSet set3 = new LineDataSet(minSpeedEntry, "Vitesse minimale");
+//        set3.setColor(Color.rgb(250, 110, 112));
+//        set3.setDrawValues(false);
+//        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+//        set3.setDrawCircles(false);
+//        set3.setLineWidth(3f);
 
-        LineData ld = new LineData(set1, set2, set3);
+        //LineData ld = new LineData(set1, set2, set3);
+
+        LineData ld = new LineData( set2);
 
         double minSpeed = Collections.min(speedTab);
         double maxSpeed = Collections.max(speedTab);
