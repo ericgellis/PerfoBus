@@ -96,6 +96,7 @@
     <string name="parameters">Paramètres</string>
     <string name="frequency">Fréquence relevée en roulage (en sec) : </string>
     <string name="radius">Rayon de couverture des stations (en m) : </string>
+    <string name="cost_production_by_minut"> Coût de production à la minute (en euro/min) : </string>
     <string name="register">Enregistrer</string>
 
     <!--choice_line_from_consult-->

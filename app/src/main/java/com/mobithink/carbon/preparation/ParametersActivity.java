@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.managers.PreferenceManager;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by mplaton on 31/01/2017.
  */
@@ -19,26 +21,32 @@ import com.mobithink.carbon.managers.PreferenceManager;
 public class ParametersActivity extends Activity {
 
 
-    private static final int MINIMUM_FREQUENCY_VALUE = 20;
+    private static final int MINIMUM_FREQUENCY_VALUE = 1;
     private static final int FREQUENCY_STEP = 10;
 
     private static final int MINIMUM_RADIUS_VALUE = 50;
     private static final int RADIUS_STEP = 50;
 
+    private static final int MINIMUM_COST_VALUE = 0;
+
     SeekBar mFrequencySeekBar;
     SeekBar mRadiusSeekBar;
+    SeekBar mCostSeekBar;
 
     TextView mFrequencyNumberTextView;
     TextView mRadiusNumberTextView;
+    TextView mCostNumberTextView;
 
     Button mValidationButton;
     Toolbar mParametersToolBar;
 
     private int mRadiusValue;
     private int mFrequencyValue;
+    private int mCostValue;
 
     private boolean hasFrequencyChanged = false;
     private boolean hasRadiusChanged = false;
+    private boolean hasCostChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +65,16 @@ public class ParametersActivity extends Activity {
 
         mFrequencyValue = (PreferenceManager.getInstance().getTimeFrequency() - MINIMUM_FREQUENCY_VALUE);
         mRadiusValue = (PreferenceManager.getInstance().getStationRadius() - MINIMUM_RADIUS_VALUE);
+        mCostValue = (PreferenceManager.getInstance().getCostOfProductionByMinute() - MINIMUM_COST_VALUE);
 
         mFrequencySeekBar = (SeekBar) findViewById(R.id.frequency_seekbar);
         mFrequencySeekBar.setProgress(mFrequencyValue);
 
         mRadiusSeekBar = (SeekBar) findViewById(R.id.radius_seekbar);
         mRadiusSeekBar.setProgress(mRadiusValue);
+
+        mCostSeekBar = (SeekBar) findViewById(R.id.cost_seekbar);
+        mCostSeekBar.setMax(30);
 
         mFrequencyNumberTextView = (TextView) findViewById(R.id.frequencyNumber);
         mFrequencyNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getTimeFrequency()));
@@ -71,6 +83,8 @@ public class ParametersActivity extends Activity {
         mRadiusNumberTextView = (TextView) findViewById(R.id.radiusNumber);
         mRadiusNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getStationRadius()));
 
+        mCostNumberTextView = (TextView) findViewById(R.id.costNumber);
+        mCostNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getCostOfProductionByMinute()));
 
         mFrequencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -110,6 +124,23 @@ public class ParametersActivity extends Activity {
             }
         });
 
+        mCostSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hasCostChanged = true;
+
+                double mCostValue = progress*0.1f;
+                DecimalFormat df = new DecimalFormat("#.##");
+                mCostNumberTextView.setText(String.valueOf(df.format(mCostValue)));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
         mValidationButton = (Button) findViewById(R.id.register_parameter_button);
         mValidationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +148,6 @@ public class ParametersActivity extends Activity {
                 registerPreference();
             }
         });
-
 
     }
 
@@ -129,7 +159,11 @@ public class ParametersActivity extends Activity {
             PreferenceManager.getInstance().setStationRadius(mRadiusValue);
         }
 
-        if (hasRadiusChanged || hasFrequencyChanged) {
+        if (hasCostChanged){
+            PreferenceManager.getInstance().setCostOfProductionByMinute(mCostValue);
+        }
+
+        if (hasRadiusChanged || hasFrequencyChanged || hasCostChanged) {
             setResult(RESULT_OK);
 
         }

@@ -61,16 +61,16 @@ public class PreferenceManager {
     }
 
     public int getTimeFrequency(){
-        return mGeneralPreference.getInt(TIME_INTERVAL, 20);
+        return mGeneralPreference.getInt(TIME_INTERVAL, 1);
     }
 
-    public void setCostOfProductionByMinute(float value){
+    public void setCostOfProductionByMinute(int value){
         SharedPreferences.Editor editor = mGeneralPreference.edit();
-        editor.putFloat(COST_PRODUCTION, value);
+        editor.putInt(COST_PRODUCTION, value);
         editor.apply();
     }
 
-    public float getCostOfProductionByMinute(){
+    public int getCostOfProductionByMinute(){
         return mGeneralPreference.getInt(COST_PRODUCTION, 0);
     }
 

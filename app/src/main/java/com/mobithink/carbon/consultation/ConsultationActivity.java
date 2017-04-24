@@ -49,7 +49,7 @@ public class ConsultationActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Couverture"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tracé"));
         tabLayout.addTab(tabLayout.newTab().setText("Vitesse"));
         tabLayout.addTab(tabLayout.newTab().setText("Evènement"));
         tabLayout.addTab(tabLayout.newTab().setText("Charge"));

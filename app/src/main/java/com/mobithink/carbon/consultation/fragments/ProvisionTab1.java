@@ -21,6 +21,7 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.RollingPointDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
+import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.utils.Mathematics;
 
 import java.util.ArrayList;
@@ -170,10 +171,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
 
         savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
-        savingInEuroTextView.setText("soit " +  timeSavingInMinutes*1.15 + " euro");
-
-        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
-        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes*1.15)  + " euro");
+        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
 
     }
 }
