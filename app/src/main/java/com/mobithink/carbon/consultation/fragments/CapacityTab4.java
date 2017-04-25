@@ -245,7 +245,7 @@ public class CapacityTab4 extends GenericTabFragment implements OnChartValueSele
 
     @Override
     public void onNothingSelected() {
-        Log.i(TAG, "NOTING SELECTED");
+        Log.i(TAG, "NOTHING SELECTED");
     }
 }
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -23,11 +24,23 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.EventMainListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.EventStationExpandableListViewAdapter;
 import com.mobithink.carbon.consultation.adapter.ExpandableEventStationListHelper;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.managers.PreferenceManager;
+import com.mobithink.carbon.utils.Mathematics;
 import com.mobithink.carbon.utils.PerformanceExplanations;
 
 
@@ -40,27 +53,23 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class EventTab3 extends GenericTabFragment {
+public class EventTab3 extends GenericTabFragment implements OnChartValueSelectedListener {
 
     private RelativeLayout mainRelativeLayout;
     private RelativeLayout detailedRelativeLayout;
 
-    private ListView eventMainListView;
-    private ArrayList<EventDTO> eventNameMainList;
-    private EventMainListViewAdapter adapter;
-
-    private ListView eventInDrivingListView;
-    private ArrayList<String> eventInDrivingList;
-
-    private ExpandableListView eventStationListView;
-    private EventStationExpandableListViewAdapter eventStationExpandableListViewAdapter;
-    private List<String> expandableListTitle;
-
-    private HashMap<String, List<String>> expandableListDetailData;
-
     private TextView totalTrip;
-    private TextView eventTotalDurationTextView;
-    private TextView eventInStationTotalDurationTextView;
+    private TextView eventInActualSectionTextView;
+    private TextView eventInCrossroadTextView;
+    private TextView eventInStationTextView;
+
+    private TextView mTotalTripTimeTextView;
+    private TextView mAverageSpeedTextView;
+    private TextView mLossOfTotalTimeTextView;
+    private TextView mSavingOfPossibleTimeTextView;
+    private TextView mSavingInEuroTextView;
+
+    private PieChart mDecompositionPieChart;
 
     private TextView eventName;
     private TextView eventTimeSaving;
@@ -69,6 +78,17 @@ public class EventTab3 extends GenericTabFragment {
     private ImageView eventImageView;
 
     public static final int MY_REQUEST_CODE = 0;
+
+    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss", Locale.FRANCE);
+    Mathematics mathematics = new Mathematics();
+
+    private long interStationObjective = 600;
+    private long timeInStation;
+    private long totalTimeInStation = 0;
+    private long averageTimeInStation;
+
+    private double tripBetweenStationsDistance = 0;
+    private long tripDistance = 0;
 
     public EventTab3() {
     }
@@ -88,8 +108,17 @@ public class EventTab3 extends GenericTabFragment {
         mainRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.mainRelativeLayout);
         detailedRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.detailedRelativeLayout);
 
-        eventTotalDurationTextView = (TextView) rootView.findViewById(R.id.eventTotalDuration);
-        eventInStationTotalDurationTextView  = (TextView) rootView.findViewById(R.id.eventInStationTotalDuration);
+        eventInActualSectionTextView = (TextView) rootView.findViewById(R.id.eventInActualSection);
+        eventInCrossroadTextView = (TextView) rootView.findViewById(R.id.eventInCrossroads);
+        eventInStationTextView = (TextView) rootView.findViewById(R.id.eventInStations);
+
+        mTotalTripTimeTextView = (TextView) rootView.findViewById(R.id.totalTripTimeTextView);
+        mAverageSpeedTextView = (TextView) rootView.findViewById(R.id.averageSpeedTextView);
+        mLossOfTotalTimeTextView = (TextView) rootView.findViewById(R.id.lossOfTotalTimeTextView);
+        mSavingOfPossibleTimeTextView = (TextView) rootView.findViewById(R.id.savingOfPossibleTimeTextView);
+        mSavingInEuroTextView = (TextView) rootView.findViewById(R.id.savingInEuroTextView);
+
+        mDecompositionPieChart = (PieChart) rootView.findViewById(R.id.decompositionPieChart);
 
         eventName = (TextView) rootView.findViewById(R.id.eventName);
         eventTimeSaving = (TextView) rootView.findViewById(R.id.eventTimeSaving);
@@ -106,33 +135,6 @@ public class EventTab3 extends GenericTabFragment {
             }
         });
 
-        eventMainListView = (ListView) rootView.findViewById(R.id.event_list_view);
-        eventNameMainList = new ArrayList<>();
-        adapter = new EventMainListViewAdapter(getContext(), eventNameMainList);
-        eventMainListView.setAdapter(adapter);
-        eventMainListView.setSelector(R.color.lightBlue);
-
-        eventInDrivingListView = (ListView) rootView.findViewById(R.id.eventInDrivingListView);
-        eventInDrivingList = new ArrayList<>();
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getContext(), R.layout.itemview_event_driving_listview, R.id.eventName, eventInDrivingList);
-        eventInDrivingListView.setAdapter(adapter2);
-
-        eventStationListView = (ExpandableListView) rootView.findViewById(R.id.eventStationListView);
-        expandableListDetailData = ExpandableEventStationListHelper.getData(getTripDTO());
-        expandableListTitle = new ArrayList<>(expandableListDetailData.keySet());
-        eventStationExpandableListViewAdapter = new EventStationExpandableListViewAdapter(getActivity(), expandableListTitle, expandableListDetailData);
-        eventStationListView.setAdapter(eventStationExpandableListViewAdapter);
-        eventStationListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-            }
-        });
-        eventStationListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
-        });
-
         return rootView;
     }
 
@@ -140,39 +142,40 @@ public class EventTab3 extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
-        if (getTripDTO().getEventDTOList() != null) {
-            long eventTotalDuration = 0;
-            long eventInStationTotalDuration = 0;
+        showGeneralInformations();
 
-            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-                eventNameMainList.add(eventDTO);
+////        if (getTripDTO().getEventDTOList() != null) {
+////            long eventTotalDuration = 0;
+////            long eventInStationTotalDuration = 0;
+////
+////            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+////                eventNameMainList.add(eventDTO);
+////
+////                if (eventDTO.getStationName() == null) {
+////                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+////                    String timeString = timeFormat.format(eventDuration);
+////                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
+////                    eventTotalDuration+=eventDuration;
+////
+////                } else {
+////                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
+////                    eventInStationTotalDuration+=eventDuration;
+////                }
+////                eventTotalDurationTextView.setText(" - " +timeFormat.format(eventTotalDuration) + " - ");
+////                eventInStationTotalDurationTextView.setText(" - " +timeFormat.format(eventInStationTotalDuration) + " - ");
+////            }
+////        }
+//
+//        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                showDetailedInformations(position);
+//            }
+//        });
+//
+//        adapter.notifyDataSetChanged();
 
-                if (eventDTO.getStationName() == null) {
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    String timeString = timeFormat.format(eventDuration);
-                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
-                    eventTotalDuration+=eventDuration;
-
-                } else {
-                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-                    eventInStationTotalDuration+=eventDuration;
-                }
-                eventTotalDurationTextView.setText(" - " +timeFormat.format(eventTotalDuration) + " - ");
-                eventInStationTotalDurationTextView.setText(" - " +timeFormat.format(eventInStationTotalDuration) + " - ");
-            }
-        }
-
-        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showDetailedInformations(position);
-            }
-        });
-
-        adapter.notifyDataSetChanged();
-        eventStationExpandableListViewAdapter.notifyDataSetChanged();
     }
 
     public void showGeneralInformations(){
@@ -180,58 +183,130 @@ public class EventTab3 extends GenericTabFragment {
         mainRelativeLayout.setVisibility(View.VISIBLE);
         totalTrip.setBackgroundResource(R.color.lightBlue);
         totalTrip.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-        eventMainListView.setSelector(R.color.white);
 
+        long tripTime = getTripDTO().getEndTime() - getTripDTO().getStartTime();
+        mTotalTripTimeTextView.setText(timeFormat.format(tripTime));
+
+        ArrayList<Double> distanceTab = new ArrayList<>() ;
+        if (getTripDTO().getStationDataDTOList() != null) {
+            for (int i = 0; i + 1 < getTripDTO().getStationDataDTOList().size(); i++) {
+                timeInStation = getTripDTO().getStationDataDTOList().get(i).getEndTime() - getTripDTO().getStationDataDTOList().get(i).getStartTime();
+                totalTimeInStation += timeInStation;
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
+                distanceTab.add(tripBetweenStationsDistance);
+                tripDistance += tripBetweenStationsDistance;
+            }
+        }
+        double averageTripSpeed = (tripDistance*0.001)/(tripTime*0.00000027778);
+        mAverageSpeedTextView.setText(String.valueOf(averageTripSpeed)+ " km/h");
+
+        averageTimeInStation = totalTimeInStation/getTripDTO().getStationDataDTOList().size();
+        long timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
+
+        int timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
+
+        mSavingOfPossibleTimeTextView.setText(timeSavingInMinutes+ " min");
+        mSavingInEuroTextView.setText(Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
+
+        mDecompositionPieChart.setUsePercentValues(true);
+        ArrayList<PieEntry> yvalues = new ArrayList<>();
+        yvalues.add(new PieEntry(8f, 0));
+        yvalues.add(new PieEntry(15f, 1));
+        yvalues.add(new PieEntry(12f, 2));
+        yvalues.add(new PieEntry(25f, 3));
+
+        PieDataSet dataSet = new PieDataSet(yvalues, "Décomposition");
+
+        ArrayList<String> xVals = new ArrayList<>();
+        xVals.add("Trajet");
+        xVals.add("Evènement section courante");
+        xVals.add("Evènement carrefours");
+        xVals.add("Evènement station");
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+
+        mDecompositionPieChart.setHoleRadius(58f);
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+
+        data.setValueTextSize(13f);
+        data.setValueTextColor(Color.DKGRAY);
+
+        Legend l = mDecompositionPieChart.getLegend();
+        l.setEnabled(true);
+
+        mDecompositionPieChart.setData(data);
+        mDecompositionPieChart.setDrawHoleEnabled(true);
+        mDecompositionPieChart.setTransparentCircleRadius(58f);
+        mDecompositionPieChart.setEntryLabelColor(Color.WHITE);
+        mDecompositionPieChart.setEntryLabelTextSize(12f);
+        mDecompositionPieChart.setRotationEnabled(false);
+        mDecompositionPieChart.setHighlightPerTapEnabled(false);
+
+        mDecompositionPieChart.setOnChartValueSelectedListener(this);
+
+    }
+
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if (e == null)
+            return;
+        Log.i("VAL SELECTED",
+                "Value: " + e.getY() + ", index: " + h.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i("PieChart", "nothing selected");
     }
 
     public void showDetailedInformations(int position){
         mainRelativeLayout.setVisibility(View.GONE);
         totalTrip.setBackgroundResource(R.color.white);
         totalTrip.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-        eventMainListView.setSelector(R.color.lightBlue);
         detailedRelativeLayout.setVisibility(View.VISIBLE);
 
-
-
-        if (eventNameMainList.get(position).getStationName() != null){
-            eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
-        } else {
-            eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
-        }
-        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving()+ " min");
-        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
-        eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
-
-
-        final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
-        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();
-        if(eventNameMainList.get(position).getPicture() != null && existsImage){
-            Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
-            eventImageView.setImageBitmap(bitmap);
-
-        }
-
-
-        final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
-        boolean existsAudio = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath)).exists();
-        if (eventNameMainList.get(position).getVoiceMemo() != null && existsAudio){
-            eventAudioView.setVisibility(View.VISIBLE);
-            eventAudioView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MediaPlayer mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    try {
-                        mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath);
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-                    } catch (IOException ioe){
-                        ioe.printStackTrace();
-                    }
-                }
-            });
-
-        }
+//        if (eventNameMainList.get(position).getStationName() != null){
+//            eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
+//        } else {
+//            eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
+//        }
+//        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving()+ " min");
+//        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
+//        eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
+//
+//
+//        final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
+//        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();
+//        if(eventNameMainList.get(position).getPicture() != null && existsImage){
+//            Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
+//            eventImageView.setImageBitmap(bitmap);
+//
+//        }
+//
+//
+//        final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
+//        boolean existsAudio = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath)).exists();
+//        if (eventNameMainList.get(position).getVoiceMemo() != null && existsAudio){
+//            eventAudioView.setVisibility(View.VISIBLE);
+//            eventAudioView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    MediaPlayer mediaPlayer = new MediaPlayer();
+//                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                    try {
+//                        mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath);
+//                        mediaPlayer.prepare();
+//                        mediaPlayer.start();
+//                    } catch (IOException ioe){
+//                        ioe.printStackTrace();
+//                    }
+//                }
+//            });
+//
+//        }
     }
 
 }

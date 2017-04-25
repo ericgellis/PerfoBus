@@ -211,14 +211,4 @@
         android:layout_marginStart="400dp"
         android:text="@string/security_saving" />
 
-    <Button
-        android:id="@+id/pdfButton"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@mipmap/ic_blue_pdf"/>
-
 </RelativeLayout>

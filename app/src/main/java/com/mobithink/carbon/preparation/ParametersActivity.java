@@ -31,18 +31,21 @@ public class ParametersActivity extends Activity {
 
     SeekBar mFrequencySeekBar;
     SeekBar mRadiusSeekBar;
-    SeekBar mCostSeekBar;
+    SeekBar mCostbyMinutSeekBar;
+    SeekBar mCostbyKilometerSeekBar;
 
     TextView mFrequencyNumberTextView;
     TextView mRadiusNumberTextView;
-    TextView mCostNumberTextView;
+    TextView mCostByMinutNumberTextView;
+    TextView mCostByKilometerNumberTextView;
 
     Button mValidationButton;
     Toolbar mParametersToolBar;
 
     private int mRadiusValue;
     private int mFrequencyValue;
-    private int mCostValue;
+    private int mCostByMinutValue;
+    private int mCostByKilometerValue;
 
     private boolean hasFrequencyChanged = false;
     private boolean hasRadiusChanged = false;
@@ -65,7 +68,8 @@ public class ParametersActivity extends Activity {
 
         mFrequencyValue = (PreferenceManager.getInstance().getTimeFrequency() - MINIMUM_FREQUENCY_VALUE);
         mRadiusValue = (PreferenceManager.getInstance().getStationRadius() - MINIMUM_RADIUS_VALUE);
-        mCostValue = (PreferenceManager.getInstance().getCostOfProductionByMinute() - MINIMUM_COST_VALUE);
+        mCostByMinutValue = (PreferenceManager.getInstance().getCostOfProductionByMinute() - MINIMUM_COST_VALUE);
+        mCostByKilometerValue = (PreferenceManager.getInstance().getCostOfProductionByKilometer() - MINIMUM_COST_VALUE);
 
         mFrequencySeekBar = (SeekBar) findViewById(R.id.frequency_seekbar);
         mFrequencySeekBar.setProgress(mFrequencyValue);
@@ -73,8 +77,11 @@ public class ParametersActivity extends Activity {
         mRadiusSeekBar = (SeekBar) findViewById(R.id.radius_seekbar);
         mRadiusSeekBar.setProgress(mRadiusValue);
 
-        mCostSeekBar = (SeekBar) findViewById(R.id.cost_seekbar);
-        mCostSeekBar.setMax(30);
+        mCostbyMinutSeekBar = (SeekBar) findViewById(R.id.cost_seekbar);
+        mCostbyMinutSeekBar.setMax(100);
+
+        mCostbyKilometerSeekBar = (SeekBar) findViewById(R.id.kilometer_cost_seekbar);
+        mCostbyKilometerSeekBar.setMax(100);
 
         mFrequencyNumberTextView = (TextView) findViewById(R.id.frequencyNumber);
         mFrequencyNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getTimeFrequency()));
@@ -83,8 +90,11 @@ public class ParametersActivity extends Activity {
         mRadiusNumberTextView = (TextView) findViewById(R.id.radiusNumber);
         mRadiusNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getStationRadius()));
 
-        mCostNumberTextView = (TextView) findViewById(R.id.costNumber);
-        mCostNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getCostOfProductionByMinute()));
+        mCostByMinutNumberTextView = (TextView) findViewById(R.id.costNumber);
+        mCostByMinutNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getCostOfProductionByMinute()));
+
+        mCostByKilometerNumberTextView = (TextView) findViewById(R.id.kilometerCostNumber);
+        mCostByKilometerNumberTextView.setText(String.valueOf(PreferenceManager.getInstance().getCostOfProductionByKilometer()));
 
         mFrequencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -124,14 +134,31 @@ public class ParametersActivity extends Activity {
             }
         });
 
-        mCostSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mCostbyMinutSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 hasCostChanged = true;
 
                 double mCostValue = progress*0.1f;
                 DecimalFormat df = new DecimalFormat("#.##");
-                mCostNumberTextView.setText(String.valueOf(df.format(mCostValue)));
+                mCostByMinutNumberTextView.setText(String.valueOf(df.format(mCostValue)));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        mCostbyKilometerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hasCostChanged = true;
+
+                double mCostValue = progress*0.1f;
+                DecimalFormat df = new DecimalFormat("#.##");
+                mCostByKilometerNumberTextView.setText(String.valueOf(df.format(mCostValue)));
 
             }
 
@@ -160,12 +187,12 @@ public class ParametersActivity extends Activity {
         }
 
         if (hasCostChanged){
-            PreferenceManager.getInstance().setCostOfProductionByMinute(mCostValue);
+            PreferenceManager.getInstance().setCostOfProductionByMinute(mCostByMinutValue);
+            PreferenceManager.getInstance().setCostOfProductionByKilometer(mCostByKilometerValue);
         }
 
         if (hasRadiusChanged || hasFrequencyChanged || hasCostChanged) {
             setResult(RESULT_OK);
-
         }
         this.finish();
 

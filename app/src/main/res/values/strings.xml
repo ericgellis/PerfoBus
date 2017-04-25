@@ -97,6 +97,7 @@
     <string name="frequency">Fréquence relevée en roulage (en sec) : </string>
     <string name="radius">Rayon de couverture des stations (en m) : </string>
     <string name="cost_production_by_minut"> Coût de production à la minute (en euro/min) : </string>
+    <string name="cost_production_by_kilometer">Coût de production au kilomètre (en euro/km) : </string>
     <string name="register">Enregistrer</string>
 
     <!--choice_line_from_consult-->
@@ -113,6 +114,22 @@
 
     <!--event_tab3-->
     <string name="total_trip">Parcours total</string>
+    <string name="event_in_actual_section">Evènement section courante</string>
+    <string name="event_crossroad">Evènement carrefours</string>
+    <string name="event_in_station">Evènement stations</string>
+    <string name="total_trip_time">Temps de parcours total :</string>
+    <string name="average_speed">Vitesse moyenne :</string>
+    <string name="decomposition">Décomposition</string>
+    <string name="loss_total_time">Perte de temps total : </string>
+    <string name="saving_possible_time">Gain de temps envisageable :</string>
+    <string name="saving_in_euro">Gain en euro : </string>
+    <string name="number_of_events">Nombre d\'évènements :</string>
+    <string name="load">Poids(% par rapport au temps réel du parcours) :</string>
+    <string name="type_event">Type d\'évènements:</string>
+    <string name="time">Temps :</string>
+    <string name="retranscription_voice_memo">Retranscription mémo vocal : </string>
+    <string name="impact_bus_performance">Impacts sur les performances du bus :</string>
+    <string name="layout_to_favor">Aménagements à privilégier :</string>
     <string name="in_driving">En roulage </string>
     <string name="in_station">En station </string>
 

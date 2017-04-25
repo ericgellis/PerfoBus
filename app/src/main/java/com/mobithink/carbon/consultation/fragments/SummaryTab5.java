@@ -38,8 +38,6 @@ public class SummaryTab5 extends GenericTabFragment {
 
     private RadarChart mRadarChart;
 
-    private Button mPDFButton;
-
     public SummaryTab5() {
     }
 
@@ -75,14 +73,6 @@ public class SummaryTab5 extends GenericTabFragment {
 
         setData();
 
-        mPDFButton = (Button) rootView.findViewById(R.id.pdfButton);
-        mPDFButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendPDFByEmail();
-            }
-        });
-
         return rootView;
     }
 
@@ -104,27 +94,6 @@ public class SummaryTab5 extends GenericTabFragment {
         mEnteredTimeTextView.setText(timeFormat.format(getTripDTO().getStartTime()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM", Locale.FRANCE);
         mEnteredDateTextView.setText(dateFormat.format(getTripDTO().getStartTime()));
-    }
-
-    public void sendPDFByEmail() {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setCancelable(true);
-        final EditText edittext = new EditText(getContext());
-        alertDialog.setTitle("Générer un rapport PDF ?");
-        alertDialog.setView(edittext);
-        alertDialog.setPositiveButton("Envoyer", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-
-        alertDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-
-        alertDialog.show();
     }
 
     public void setData(){
