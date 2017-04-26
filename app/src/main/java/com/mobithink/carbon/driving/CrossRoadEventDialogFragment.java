@@ -94,6 +94,7 @@ public class CrossRoadEventDialogFragment extends DialogFragment implements OnMa
                 eventDTO.setStartTime(System.currentTimeMillis());
                 eventDTO.setGpsLat(latitude);
                 eventDTO.setGpsLong(longitude);
+                eventDTO.setEventType("Evènement en carrefour");
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();

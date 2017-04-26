@@ -93,6 +93,7 @@ public class DrivingEventDialogFragment extends DialogFragment implements OnMapR
                 eventDTO.setStartTime(System.currentTimeMillis());
                 eventDTO.setGpsLat(latitude);
                 eventDTO.setGpsLong(longitude);
+                eventDTO.setEventType("Evènement en section courante");
                 eventDTO.setId(DatabaseManager.getInstance().createNewEvent(CarbonApplicationManager.getInstance().getCurrentTripId(), null, eventDTO));
                 mListener.onEventSelected(eventDTO);
                 dismiss();

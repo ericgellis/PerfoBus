@@ -214,6 +214,7 @@ public class DatabaseManager {
                 ev.setVoiceMemo(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_VOICE_MEMO)));
                 ev.setPicture(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_PICTURE)));
                 ev.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_STATION_DATA_NAME)));
+                ev.setEventType(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.KEY_EVENT_TYPE)));
 
                 eventDTOList.add(ev);
                 cursor.moveToNext();
@@ -289,6 +290,7 @@ public class DatabaseManager {
         values.put(DatabaseOpenHelper.KEY_STATION_DATA_NAME, StationDataDTOName);
         values.put(DatabaseOpenHelper.KEY_LATITUDE, eventDTO.getGpsLat());
         values.put(DatabaseOpenHelper.KEY_LONGITUDE, eventDTO.getGpsLong());
+        values.put(DatabaseOpenHelper.KEY_EVENT_TYPE, eventDTO.getEventType());
 
         long eventId = getOpenedDatabase().insert(DatabaseOpenHelper.TABLE_EVENT, null, values);
         CarbonApplicationManager.getInstance().setCurrentStationDataName(StationDataDTOName);

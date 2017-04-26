@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/eventsNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_regular_margin"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/number_of_events"/>
+
+    <TextView
+        android:id="@+id/eventsNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/eventsNumber"
+        android:layout_toEndOf="@+id/eventsNumber"
+        android:layout_marginStart="@dimen/regular_margin"/>
+
+    <TextView
+        android:id="@+id/eventsTotalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventsNumber"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/total_time_events"/>
+
+    <TextView
+        android:id="@+id/eventsTotalTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/eventsTotalTime"
+        android:layout_toEndOf="@+id/eventsTotalTime"
+        android:layout_marginStart="@dimen/regular_margin"/>
+
+    <TextView
+        android:id="@+id/load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventsTotalTime"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/load"/>
+
+    <TextView
+        android:id="@+id/loadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/load"
+        android:layout_toEndOf="@+id/load"
+        android:layout_marginStart="@dimen/regular_margin"/>
+
+    <TextView
+        android:id="@+id/possibleTimeSaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/load"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/saving_possible_time"/>
+
+    <TextView
+        android:id="@+id/possibleTimeSavingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/possibleTimeSaving"
+        android:layout_toEndOf="@+id/possibleTimeSaving"
+        android:layout_marginStart="@dimen/regular_margin"/>
+
+    <TextView
+        android:id="@+id/savingInEuro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/possibleTimeSaving"
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"
+        android:text="@string/saving_in_euro"/>
+
+    <TextView
+        android:id="@+id/savingInEuroTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/savingInEuro"
+        android:layout_toEndOf="@+id/savingInEuro"
+        android:layout_marginStart="@dimen/regular_margin"/>
+
+    <ListView
+        android:id="@+id/eventListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/savingInEuroTextView"></ListView>
+
+</RelativeLayout>

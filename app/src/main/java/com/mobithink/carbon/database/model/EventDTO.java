@@ -20,12 +20,13 @@ public class EventDTO implements Serializable {
     private Long timeSaving;
     private String picture;
     private String voiceMemo;
+    private String eventType;
 
     public EventDTO() {
 
     }
 
-    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Double gpsLat, Double gpsLong, Double gpsEndLat, Double gpsEndLong, String stationName, Long timeSaving, String picture, String voiceMemo) {
+    public EventDTO(Long id, String eventName, Long startTime, Long endTime, Double gpsLat, Double gpsLong, Double gpsEndLat, Double gpsEndLong, String stationName, Long timeSaving, String picture, String voiceMemo, String eventType) {
         this.id = id;
         this.eventName = eventName;
         this.startTime = startTime;
@@ -38,6 +39,7 @@ public class EventDTO implements Serializable {
         this.timeSaving = timeSaving;
         this.picture = picture;
         this.voiceMemo = voiceMemo;
+        this.eventType = eventType;
 
     }
 
@@ -127,5 +129,13 @@ public class EventDTO implements Serializable {
 
     public void setVoiceMemo(String voiceMemo) {
         this.voiceMemo = voiceMemo;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 }

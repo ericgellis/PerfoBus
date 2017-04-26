@@ -119,12 +119,13 @@
     <string name="event_in_station">Evènement stations</string>
     <string name="total_trip_time">Temps de parcours total :</string>
     <string name="average_speed">Vitesse moyenne :</string>
-    <string name="decomposition">Décomposition</string>
+    <string name="decomposition">Décomposition :</string>
     <string name="loss_total_time">Perte de temps total : </string>
     <string name="saving_possible_time">Gain de temps envisageable :</string>
     <string name="saving_in_euro">Gain en euro : </string>
     <string name="number_of_events">Nombre d\'évènements :</string>
-    <string name="load">Poids(% par rapport au temps réel du parcours) :</string>
+    <string name="total_time_events">Temps cumulé des évènements :</string>
+    <string name="load">Poids (% par rapport au temps réel du parcours) :</string>
     <string name="type_event">Type d\'évènements:</string>
     <string name="time">Temps :</string>
     <string name="retranscription_voice_memo">Retranscription mémo vocal : </string>

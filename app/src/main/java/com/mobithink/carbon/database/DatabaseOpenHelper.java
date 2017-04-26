@@ -57,6 +57,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_STATION_DATA_NAME = "stationData_name";
     public static final String KEY_VOICE_MEMO = "voice_memo";
     public static final String KEY_PICTURE = "picture";
+    public static final String KEY_EVENT_TYPE = "eventType";
 
     // Create table CITY
     private static final String CREATE_TABLE_CITY =
@@ -129,6 +130,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     + KEY_END_LONGITUDE + " DOUBLE PRECISION,"
                     + KEY_VOICE_MEMO + " TEXT,"
                     + KEY_PICTURE + " TEXT,"
+                    + KEY_EVENT_TYPE + " TEXT,"
                     + KEY_TRIP_ID + " INTEGER,"
                     + KEY_STATION_DATA_NAME + " TEXT" + ")";
 

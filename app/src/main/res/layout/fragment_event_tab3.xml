@@ -6,47 +6,18 @@
 
     <TextView
         android:id="@+id/totalTrip"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="35dp"
-        android:background="@color/lightBlue"
         android:text="@string/total_trip"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/eventInActualSection"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/totalTrip"
-        android:background="@color/white"
-        android:text="@string/event_in_actual_section"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/eventInCrossroads"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/eventInActualSection"
-        android:background="@color/white"
-        android:text="@string/event_crossroad"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/eventInStations"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/eventInCrossroads"
-        android:background="@color/white"
-        android:text="@string/event_in_station"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"/>
-
+    <ListView
+        android:id="@+id/generalListView"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/totalTrip"></ListView>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -161,52 +132,5 @@
 
         </RelativeLayout>
     </ScrollView>
-
-    <RelativeLayout
-        android:id="@+id/detailedRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/eventName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginBottom="@dimen/double_regular_margin" />
-
-        <TextView
-            android:id="@+id/eventTimeSaving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/eventName"
-            android:layout_marginStart="@dimen/double_regular_margin"
-            android:layout_marginBottom="@dimen/double_regular_margin"/>
-
-        <TextView
-            android:id="@+id/eventExplanations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/eventTimeSaving"
-            android:layout_marginStart="@dimen/double_regular_margin"/>
-
-        <ImageView
-            android:id="@+id/eventImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_below="@+id/eventExplanations"
-            android:layout_marginStart="@dimen/double_regular_margin" />
-
-        <ImageView
-            android:id="@+id/eventAudioView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_toEndOf="@+id/eventImageView"
-            android:layout_alignBottom="@+id/eventImageView"
-            android:background="@mipmap/ic_white_audio"
-            android:visibility="gone"/>
-
-    </RelativeLayout>
 
 </RelativeLayout>
