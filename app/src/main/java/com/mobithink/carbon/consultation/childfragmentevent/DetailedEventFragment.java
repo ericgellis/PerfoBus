@@ -2,6 +2,8 @@ package com.mobithink.carbon.consultation.childfragmentevent;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -13,7 +15,10 @@ import android.widget.TextView;
 
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
+import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.utils.PerformanceExplanations;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -21,9 +26,11 @@ import java.util.Locale;
  * Created by mplaton on 26/04/2017.
  */
 
-public class DetailedEvent extends GenericTabFragment {
+public class DetailedEventFragment extends GenericTabFragment {
 
     public static final int MY_REQUEST_CODE = 0;
+
+    EventDTO mEventDTO;
 
     private TextView mEventNameTextView;
     private TextView mEventTypeTextView;
@@ -35,7 +42,7 @@ public class DetailedEvent extends GenericTabFragment {
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
-    public DetailedEvent() {
+    public DetailedEventFragment() {
     }
 
     @Nullable
@@ -55,6 +62,9 @@ public class DetailedEvent extends GenericTabFragment {
 
         mEventPhoto = (ImageView) rootView.findViewById(R.id.eventPhoto);
 
+        Bundle extras = getArguments();
+        mEventDTO = (EventDTO) extras.getSerializable("eventDTO");
+
         return rootView;
     }
 
@@ -62,6 +72,21 @@ public class DetailedEvent extends GenericTabFragment {
     public void onResume() {
         super.onResume();
         getTripDTO();
+
+        mEventNameTextView.setText(mEventDTO.getEventName());
+        mEventTypeTextView.setText(mEventDTO.getEventType());
+        double eventTime = mEventDTO.getEndTime()-mEventDTO.getStartTime();
+        mTimeTextView.setText(timeFormat.format(eventTime));
+        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
+        mEventExplanations.setText(performanceExplanations.performanceExplanations(mEventDTO));
+
+        final String picturePath = mEventDTO.getPicture() + ".jpg" ;
+        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();
+        if(mEventDTO.getPicture() != null && existsImage){
+            Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
+            mEventPhoto.setImageBitmap(bitmap);
+
+        }
 
     }
 }

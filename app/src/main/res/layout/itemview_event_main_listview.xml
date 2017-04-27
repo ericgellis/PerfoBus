@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/eventName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/regular_margin"/>
 
     <TextView
         android:id="@+id/eventStationName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventName"
+        android:layout_marginBottom="@dimen/regular_margin"/>
 
     <TextView
         android:id="@+id/eventTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/eventStationName"
+        android:layout_alignBaseline="@+id/eventStationName"
+        android:layout_marginStart="@dimen/regular_margin"/>
 
-
-</LinearLayout>
+</RelativeLayout>

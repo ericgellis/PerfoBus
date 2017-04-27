@@ -14,7 +14,8 @@
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/double_regular_margin"
             android:layout_marginBottom="@dimen/regular_margin"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/eventType"
@@ -29,9 +30,10 @@
             android:id="@+id/eventTypeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/eventType"
+            android:layout_alignBaseline="@+id/eventType"
             android:layout_marginStart="@dimen/regular_margin"
-            android:layout_marginBottom="@dimen/regular_margin"
-            android:layout_below="@+id/eventType"/>
+            android:layout_marginBottom="@dimen/regular_margin"/>
 
         <TextView
             android:id="@+id/time"
@@ -74,15 +76,14 @@
             android:layout_alignBaseline="@+id/audioRetranscription"
             android:layout_toEndOf="@+id/audioRetranscription"
             android:layout_marginStart="@dimen/regular_margin"
-            android:layout_marginBottom="@dimen/regular_margin"
-            android:text="@string/retranscription_voice_memo"/>
+            android:layout_marginBottom="@dimen/regular_margin" />
 
         <TextView
             android:id="@+id/eventExplanations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/audioRetranscriptionTextView"
-            android:layout_marginStart="@dimen/double_regular_margin"/>
+            android:layout_marginStart="@dimen/regular_margin"/>
 
 
 

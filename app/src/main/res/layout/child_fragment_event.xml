@@ -86,7 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/savingInEuro"
         android:layout_toEndOf="@+id/savingInEuro"
-        android:layout_marginStart="@dimen/regular_margin"/>
+        android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/double_regular_margin"/>
 
     <ListView
         android:id="@+id/eventListView"

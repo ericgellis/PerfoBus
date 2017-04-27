@@ -18,6 +18,7 @@ import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +26,7 @@ import java.util.Locale;
  * Created by mplaton on 26/04/2017.
  */
 
-public class GeneralEvent extends GenericTabFragment {
+public class GeneralEventFragment extends GenericTabFragment {
 
     public static final int MY_REQUEST_CODE = 0;
 
@@ -41,7 +42,7 @@ public class GeneralEvent extends GenericTabFragment {
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
-    public GeneralEvent() {
+    public GeneralEventFragment() {
     }
 
     @Nullable
@@ -60,6 +61,7 @@ public class GeneralEvent extends GenericTabFragment {
         mSavingInEuroTextView = (TextView) rootView.findViewById(R.id.savingInEuroTextView);
 
         mEventListView = (ListView) rootView.findViewById(R.id.eventListView);
+        eventsList = new ArrayList<>();
         mEventMainListViewAdapter = new EventMainListViewAdapter(getContext(), eventsList);
         mEventListView.setAdapter(mEventMainListViewAdapter);
         mEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,19 +75,37 @@ public class GeneralEvent extends GenericTabFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getTripDTO();
 
         if (getTripDTO().getEventDTOList() != null){
+
             for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
                 mEventsNumberTextView.setText(String.valueOf(getTripDTO().getEventDTOList().size()));
+                eventsList.add(eventDTO);
+
             }
         }
+
+        mEventMainListViewAdapter.notifyDataSetChanged();
 
     }
 
     public void showDetailedInformations (int position){
+        final EventDTO eventDTO;
+        eventDTO = eventsList.get(position);
+        DetailedEventFragment goToDetailedEvent = new DetailedEventFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("eventDTO", eventDTO);
+        goToDetailedEvent.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.your_placeholder,goToDetailedEvent).addToBackStack(null).commit();
 
     }
+
 }

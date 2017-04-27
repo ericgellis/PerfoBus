@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/regular_margin"
-    android:layout_marginLeft="@dimen/regular_margin"
     app:errorTextAppearance="@style/MyErrorText"
     app:errorEnabled="true"
     android:hint="@string/addStation">

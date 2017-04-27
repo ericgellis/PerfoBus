@@ -51,9 +51,9 @@ public class EventMainListViewAdapter extends ArrayAdapter<EventDTO>{
         viewHolder.eventName.setText(eventDTO.getEventName());
 
         if(eventDTO.getStationName() != null){
-            viewHolder.eventStationName.setText(eventDTO.getStationName());
+            viewHolder.eventStationName.setText(eventDTO.getStationName()+" -");
          } else {
-            viewHolder.eventStationName.setText("En roulage");
+            viewHolder.eventStationName.setText("En roulage -");
         }
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
