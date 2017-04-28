@@ -144,10 +144,12 @@
 
     <!--summary-tab5-->
     <string name="enteringData">Saisi le</string>
-    <string name="commercial_speed">Vitesse commerciale</string>
-    <string name="average_loss">Perte moyenne</string>
-    <string name="confort_saving">Gain confort</string>
-    <string name="security_saving">Gain sécurité</string>
+    <string name="speed_in_driving">Vitesse moyenne en section courante</string>
+    <string name="time_in_crossroad">Temps passé aux carrefours</string>
+    <string name="time_in_station">Temps passé en stations</string>
+    <string name="indicator_adaptation_capacity">Indicateur d\'adaptation de la capacité</string>
+    <string name="indicator_performance_time">Indicateur de performance de temps</string>
+    <string name="indicator_performance_confort_security">Indicateur de performance "confort et sécurité"</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>

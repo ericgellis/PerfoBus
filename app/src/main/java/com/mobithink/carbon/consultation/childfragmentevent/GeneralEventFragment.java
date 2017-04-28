@@ -40,6 +40,10 @@ public class GeneralEventFragment extends GenericTabFragment {
     private EventMainListViewAdapter mEventMainListViewAdapter;
     private List<EventDTO> eventsList;
 
+    ArrayList<EventDTO> eventInDrivingTab = new ArrayList<>();
+    ArrayList<EventDTO> eventInCrossroadTab = new ArrayList<>();
+    ArrayList<EventDTO> eventInStationTab = new ArrayList<>();
+
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
     public GeneralEventFragment() {
@@ -70,6 +74,11 @@ public class GeneralEventFragment extends GenericTabFragment {
                 showDetailedInformations(position);
             }
         });
+
+        Bundle extras = getArguments();
+        eventInDrivingTab = (ArrayList<EventDTO>) extras.getSerializable("eventInDrivingList");
+        eventInCrossroadTab = (ArrayList<EventDTO>) extras.getSerializable("eventInCrossroadList");
+        eventInStationTab = (ArrayList<EventDTO>) extras.getSerializable("eventInStationList");
 
         return rootView;
     }

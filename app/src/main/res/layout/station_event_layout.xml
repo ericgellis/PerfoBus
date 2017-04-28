@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/station_event_layout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:background="@drawable/layout_circle_design"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/station_event_name"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/regular_margin"
@@ -26,8 +26,8 @@
 
     <Button
         android:id="@+id/micro_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/regular_margin"
         android:layout_toStartOf="@+id/photo_button"
@@ -35,8 +35,8 @@
 
     <Button
         android:id="@+id/photo_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/regular_margin"
         android:layout_toStartOf="@+id/station_event_stop_button"
@@ -44,8 +44,8 @@
 
     <Button
         android:id="@+id/station_event_stop_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"

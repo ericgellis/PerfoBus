@@ -85,130 +85,130 @@
 
     <com.github.mikephil.charting.charts.RadarChart
         android:id="@+id/radarChart"
-        android:layout_width="220dp"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/double_regular_margin">
+        android:layout_marginStart="@dimen/regular_margin">
     </com.github.mikephil.charting.charts.RadarChart>
 
     <TextView
-        android:id="@+id/interstationNumber"
+        android:id="@+id/averageSpeedInDrivingNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/interstation"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/averageSpeedInDriving"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="1"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/interstation"
+        android:id="@+id/averageSpeedInDriving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
+        android:layout_marginStart="300dp"
         android:layout_marginTop="110dp"
-        android:text="@string/interstation" />
+        android:text="@string/speed_in_driving" />
 
     <TextView
-        android:id="@+id/commercialSpeedNumber"
+        android:id="@+id/timeInCrossroadNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/commercialSpeed"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/timeInCrossroad"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="2"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/commercialSpeed"
+        android:id="@+id/timeInCrossroad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/interstation"
+        android:layout_below="@+id/averageSpeedInDriving"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
-        android:text="@string/commercial_speed" />
+        android:layout_marginStart="300dp"
+        android:text="@string/time_in_crossroad" />
 
     <TextView
-        android:id="@+id/averageLossNumber"
+        android:id="@+id/timeInStationsNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/averageLoss"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/timeInStations"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="3"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/averageLoss"
+        android:id="@+id/timeInStations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/commercialSpeed"
+        android:layout_below="@+id/timeInCrossroad"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
-        android:text="@string/average_loss" />
+        android:layout_marginStart="300dp"
+        android:text="@string/time_in_station" />
 
     <TextView
-        android:id="@+id/capacityNumber"
+        android:id="@+id/indicatorAdaptationCapacityNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/capacity"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/indicatorAdaptationCapacity"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="4"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/capacity"
+        android:id="@+id/indicatorAdaptationCapacity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/averageLoss"
+        android:layout_below="@+id/timeInStations"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
-        android:text="@string/capacity" />
+        android:layout_marginStart="300dp"
+        android:text="@string/indicator_adaptation_capacity" />
 
     <TextView
-        android:id="@+id/confortSavingNumber"
+        android:id="@+id/indicatorPerformanceTimeNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/confortSaving"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/indicatorPerformanceTime"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="5"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/confortSaving"
+        android:id="@+id/indicatorPerformanceTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/capacity"
+        android:layout_below="@+id/indicatorAdaptationCapacity"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
-        android:text="@string/confort_saving" />
+        android:layout_marginStart="300dp"
+        android:text="@string/indicator_performance_time" />
 
     <TextView
-        android:id="@+id/securitySavingNumber"
+        android:id="@+id/indicatorPerformanceConfortSecurityNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/securitySaving"
-        android:layout_marginStart="360dp"
+        android:layout_alignBaseline="@+id/indicatorPerformanceConfortSecurity"
+        android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="6"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/securitySaving"
+        android:id="@+id/indicatorPerformanceConfortSecurity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/confortSaving"
+        android:layout_below="@+id/indicatorPerformanceTime"
         android:layout_marginBottom="@dimen/double_regular_margin"
-        android:layout_marginStart="400dp"
-        android:text="@string/security_saving" />
+        android:layout_marginStart="300dp"
+        android:text="@string/indicator_performance_confort_security" />
 
 </RelativeLayout>

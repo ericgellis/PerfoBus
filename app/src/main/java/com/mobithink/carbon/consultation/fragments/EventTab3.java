@@ -19,6 +19,9 @@ import android.widget.TextView;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.childfragmentevent.GeneralEventFragment;
 import com.mobithink.carbon.consultation.childfragmentevent.GeneralTripFragment;
+import com.mobithink.carbon.database.model.EventDTO;
+
+import java.util.ArrayList;
 
 
 public class EventTab3 extends GenericTabFragment {
@@ -60,7 +63,7 @@ public class EventTab3 extends GenericTabFragment {
         mGeneralListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                eventGenerality();
+                eventGenerality(position);
             }
         });
 
@@ -117,13 +120,55 @@ public class EventTab3 extends GenericTabFragment {
 
     }
 
-    public void eventGenerality(){
+    public void eventGenerality(int position){
+
+        ArrayList<EventDTO> eventInDrivingTab = new ArrayList<>();
+        ArrayList<EventDTO> eventInCrossroadTab = new ArrayList<>();
+        ArrayList<EventDTO> eventInStationTab = new ArrayList<>();
+
+        Bundle bundle = new Bundle();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         GeneralEventFragment generalEventFragment = new GeneralEventFragment();
-        fragmentTransaction.replace(R.id.your_placeholder, generalEventFragment);
-        fragmentTransaction.commit();
+
+       if (position ==1 ){
+           if(getTripDTO().getEventDTOList() != null){
+               for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                   if (eventDTO.getEventType().equals("Evènement en section courante")){
+
+                       eventInDrivingTab.add(eventDTO);
+                   }
+               }
+           }
+           bundle.putSerializable("eventInDrivingList", eventInDrivingTab );
+       }else if (position == 2){
+           if(getTripDTO().getEventDTOList() != null){
+               for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                   if (eventDTO.getEventType().equals("Evènement en carrefour")){
+
+                       eventInCrossroadTab.add(eventDTO);
+                   }
+               }
+           }
+           bundle.putSerializable("eventInCrossroadList", eventInCrossroadTab);
+
+       }else if (position == 3){
+
+           if(getTripDTO().getEventDTOList() != null){
+               for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                   if (eventDTO.getEventType().equals("Evènement en station")){
+
+                       eventInStationTab.add(eventDTO);
+                   }
+               }
+           }
+           bundle.putSerializable("eventInStationList", eventInStationTab);
+       }
+
+        generalEventFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.your_placeholder, generalEventFragment).addToBackStack(null).commit();
     }
 
     public void showDetailedInformations(int position){
