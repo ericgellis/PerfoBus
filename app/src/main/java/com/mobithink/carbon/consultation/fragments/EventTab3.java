@@ -132,7 +132,7 @@ public class EventTab3 extends GenericTabFragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         GeneralEventFragment generalEventFragment = new GeneralEventFragment();
 
-       if (position ==1 ){
+       if (position ==0 ){
            if(getTripDTO().getEventDTOList() != null){
                for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
                    if (eventDTO.getEventType().equals("Evènement en section courante")){
@@ -142,7 +142,7 @@ public class EventTab3 extends GenericTabFragment {
                }
            }
            bundle.putSerializable("eventInDrivingList", eventInDrivingTab );
-       }else if (position == 2){
+       }else if (position == 1){
            if(getTripDTO().getEventDTOList() != null){
                for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
                    if (eventDTO.getEventType().equals("Evènement en carrefour")){
@@ -153,7 +153,7 @@ public class EventTab3 extends GenericTabFragment {
            }
            bundle.putSerializable("eventInCrossroadList", eventInCrossroadTab);
 
-       }else if (position == 3){
+       }else if (position == 2){
 
            if(getTripDTO().getEventDTOList() != null){
                for(EventDTO eventDTO : getTripDTO().getEventDTOList()){

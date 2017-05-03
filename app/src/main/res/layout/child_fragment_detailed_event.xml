@@ -58,7 +58,16 @@
             android:layout_height="200dp"
             android:layout_below="@+id/time"
             android:layout_marginStart="@dimen/regular_margin"
-            android:layout_marginBottom="@dimen/regular_margin"/>
+            android:layout_marginBottom="@dimen/regular_margin"
+            android:src="@mipmap/ic_blue_wrong_circle"/>*
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/eventMap"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_toEndOf="@+id/eventPhoto"
+            android:layout_alignBottom="@+id/eventPhoto"
+            android:layout_marginStart="@dimen/double_regular_margin"/>
 
         <TextView
             android:id="@+id/audioRetranscription"

@@ -7,7 +7,8 @@
         android:id="@+id/eventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/regular_margin"/>
+        android:layout_marginBottom="@dimen/regular_margin"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/eventStationName"

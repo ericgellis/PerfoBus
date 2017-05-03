@@ -116,7 +116,7 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
         int timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
 
-        mSavingOfPossibleTimeTextView.setText(timeSavingInMinutes+ " min");
+        mSavingOfPossibleTimeTextView.setText(timeFormat.format(timeSavingInMinutes)+ " min");
         mSavingInEuroTextView.setText(Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
 
 
@@ -146,12 +146,12 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
             }
         }
 
-        long onlyTripTime = tripTime-totalTimeInStation-eventInDrivingTotalTime-eventInCrossroadTotalTime-eventInStationTotalTime;
+        long onlyTripTime = tripTime-totalTimeInStation-eventInDrivingTotalTime-eventInCrossroadTotalTime;
 
         mDecompositionPieChart.setUsePercentValues(true);
         ArrayList<PieEntry> yvalues = new ArrayList<>();
         yvalues.add(new PieEntry(onlyTripTime, 0));
-        yvalues.add(new PieEntry(totalTimeInStation, 1));
+        yvalues.add(new PieEntry(totalTimeInStation-eventInStationTotalTime, 1));
         yvalues.add(new PieEntry(eventInDrivingTotalTime, 2));
         yvalues.add(new PieEntry(eventInCrossroadTotalTime, 3));
         yvalues.add(new PieEntry(eventInStationTotalTime, 4));
@@ -197,7 +197,7 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
                 eventTotalTime += eventTimeCalculation;
             }
         }
-        mLossOfTotalTimeTextView.setText(timeFormat.format(eventTotalTime));
+        mLossOfTotalTimeTextView.setText(timeFormat.format(eventTotalTime) + " min");
 
     }
 

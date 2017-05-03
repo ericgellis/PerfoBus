@@ -24,9 +24,11 @@ import com.mobithink.carbon.database.model.StationDataDTO;
 import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.utils.Mathematics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallback {
 
@@ -47,7 +49,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     private long tripDistance = 0;
 
     private long timeSavingResult;
-    private int timeSavingInMinutes;
+    private long timeSavingInMinutes;
+
+    SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
     public ProvisionTab1() {
     }
@@ -168,9 +172,9 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
 
         timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
 
-        timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
+        timeSavingInMinutes = (((timeSavingResult / 1000)/60) % 60);
 
-        savingInMinutesTextView.setText(timeSavingInMinutes+ " min");
+        savingInMinutesTextView.setText(timeFormat.format(timeSavingResult)+ " min");
         savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
 
     }

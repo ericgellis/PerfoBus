@@ -1,24 +1,39 @@
 package com.mobithink.carbon.consultation.childfragmentevent;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.utils.PerformanceExplanations;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -39,8 +54,12 @@ public class DetailedEventFragment extends GenericTabFragment {
     private TextView mEventExplanations;
 
     private ImageView mEventPhoto;
+    private MapView mEventMap;
+    private GoogleMap mEventGoogleMap;
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
+
+    private String STATIC_MAP_API_ENDPOINT = "http://maps.googleapis.com/maps/api/staticmap?size=230x200&path=";
 
     public DetailedEventFragment() {
     }
@@ -61,6 +80,19 @@ public class DetailedEventFragment extends GenericTabFragment {
         mEventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
 
         mEventPhoto = (ImageView) rootView.findViewById(R.id.eventPhoto);
+        mEventMap = (MapView) rootView.findViewById(R.id.eventMap);
+
+//        mEventMap.getMapAsync(new OnMapReadyCallback() {
+//            @Override
+//            public void onMapReady(GoogleMap mMap) {
+//
+//                mEventGoogleMap = mMap;
+//                mEventGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+//                mEventGoogleMap.setBuildingsEnabled(false);
+//
+//            }
+//        });
+
 
         Bundle extras = getArguments();
         mEventDTO = (EventDTO) extras.getSerializable("eventDTO");
@@ -88,5 +120,25 @@ public class DetailedEventFragment extends GenericTabFragment {
 
         }
 
+//        if (mEventDTO.getGpsLat() != null || mEventDTO.getGpsLong() != null) {
+//            mEventGoogleMap.addMarker(new MarkerOptions().position(
+//                    new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong())).icon(
+//                    BitmapDescriptorFactory.defaultMarker()));
+//        }
+//        try {
+//            String marker_dest = "color:orange|label:1|San Francisco,USA";
+//            marker_dest = URLEncoder.encode(marker_dest, "UTF-8");
+//
+//            STATIC_MAP_API_ENDPOINT = STATIC_MAP_API_ENDPOINT + "&markers=" + marker_dest;
+//
+//            Log.d("STATICMAPS", STATIC_MAP_API_ENDPOINT);
+//            Picasso.with(getContext()).load(STATIC_MAP_API_ENDPOINT).resize(200, 200).centerCrop().into(mEventMap);
+//
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
     }
+
+
 }

@@ -16,7 +16,9 @@ import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.adapter.EventMainListViewAdapter;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.managers.PreferenceManager;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,13 @@ public class GeneralEventFragment extends GenericTabFragment {
     ArrayList<EventDTO> eventInDrivingTab = new ArrayList<>();
     ArrayList<EventDTO> eventInCrossroadTab = new ArrayList<>();
     ArrayList<EventDTO> eventInStationTab = new ArrayList<>();
+
+    ArrayList<Double> eventTimeTab = new ArrayList<>();
+    double eventTime;
+    Double eventTimeSum = 0.0;
+
+    ArrayList<Long> eventTimeSaving = new ArrayList<>();
+    long eventTimeSavingSum = 0;
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
@@ -93,14 +102,58 @@ public class GeneralEventFragment extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-        if (getTripDTO().getEventDTOList() != null){
+        double tripTotalTime = getTripDTO().getEndTime() - getTripDTO().getStartTime();
 
-            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-                mEventsNumberTextView.setText(String.valueOf(getTripDTO().getEventDTOList().size()));
+        if (eventInDrivingTab != null){
+            for (EventDTO eventDTO : eventInDrivingTab){
+                mEventsNumberTextView.setText(String.valueOf(eventInDrivingTab.size()));
                 eventsList.add(eventDTO);
 
+                eventTime = eventDTO.getEndTime() - eventDTO.getStartTime();
+                eventTimeTab.add(eventTime);
+                eventTimeSum +=eventTime;
+
+                eventTimeSaving.add(eventDTO.getTimeSaving());
+                eventTimeSavingSum += eventDTO.getTimeSaving();
             }
         }
+
+        if (eventInCrossroadTab != null) {
+            for (EventDTO eventDTO : eventInCrossroadTab) {
+                mEventsNumberTextView.setText(String.valueOf(eventInCrossroadTab.size()));
+                eventsList.add(eventDTO);
+
+                eventTime = eventDTO.getEndTime() - eventDTO.getStartTime();
+                eventTimeTab.add(eventTime);
+                eventTimeSum +=eventTime;
+
+                eventTimeSaving.add(eventDTO.getTimeSaving());
+                eventTimeSavingSum += eventDTO.getTimeSaving();
+            }
+        }
+
+        if (eventInStationTab != null) {
+            for (EventDTO eventDTO : eventInStationTab) {
+                mEventsNumberTextView.setText(String.valueOf(eventInStationTab.size()));
+                eventsList.add(eventDTO);
+
+                eventTime = eventDTO.getEndTime() - eventDTO.getStartTime();
+                eventTimeTab.add(eventTime);
+                eventTimeSum +=eventTime;
+
+                eventTimeSaving.add(eventDTO.getTimeSaving());
+                eventTimeSavingSum += eventDTO.getTimeSaving();
+            }
+        }
+
+        mEventsTotalTimeTextView.setText(timeFormat.format(eventTimeSum));
+
+        double eventTimeLoad =(eventTimeSum/tripTotalTime)*100;
+        mLoadTextView.setText(String.valueOf(new DecimalFormat("#.#").format(eventTimeLoad)) + " %");
+
+        mPossibleTimeSavingTextView.setText(timeFormat.format(eventTimeSavingSum));
+        int timeSavingInMinutes = (int) (((eventTimeSavingSum / 1000)/60) % 60);
+        mSavingInEuroTextView.setText(Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
 
         mEventMainListViewAdapter.notifyDataSetChanged();
 
