@@ -7,6 +7,8 @@ import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +28,11 @@ import java.util.ArrayList;
 
 public class EventTab3 extends GenericTabFragment {
 
-
     private TextView mTotalTrip;
     private ListView mGeneralListView;
     String[] generalities = new String[]{"Evènement section courante", "Evènement carrefours", "Evènement stations" };
 
     public static final int MY_REQUEST_CODE = 0;
-
 
     public EventTab3() {
     }
@@ -50,9 +50,12 @@ public class EventTab3 extends GenericTabFragment {
         }
 
         mTotalTrip = (TextView) rootView.findViewById(R.id.totalTrip);
+        mTotalTrip.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.lightBlue));
         mTotalTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTotalTrip.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.lightBlue));
+                mGeneralListView.setSelector(R.color.white);
                 showTotalTripInformations();
             }
         });
@@ -63,6 +66,8 @@ public class EventTab3 extends GenericTabFragment {
         mGeneralListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mTotalTrip.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                mGeneralListView.setSelector(R.color.lightBlue);
                 eventGenerality(position);
             }
         });
@@ -76,37 +81,6 @@ public class EventTab3 extends GenericTabFragment {
         getTripDTO();
 
         showTotalTripInformations();
-
-////        if (getTripDTO().getEventDTOList() != null) {
-////            long eventTotalDuration = 0;
-////            long eventInStationTotalDuration = 0;
-////
-////            for(EventDTO eventDTO : getTripDTO().getEventDTOList()){
-////                eventNameMainList.add(eventDTO);
-////
-////                if (eventDTO.getStationName() == null) {
-////                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-////                    String timeString = timeFormat.format(eventDuration);
-////                    eventInDrivingList.add(eventDTO.getEventName() + " - " + timeString) ;
-////                    eventTotalDuration+=eventDuration;
-////
-////                } else {
-////                    long eventDuration = eventDTO.getEndTime()- eventDTO.getStartTime();
-////                    eventInStationTotalDuration+=eventDuration;
-////                }
-////                eventTotalDurationTextView.setText(" - " +timeFormat.format(eventTotalDuration) + " - ");
-////                eventInStationTotalDurationTextView.setText(" - " +timeFormat.format(eventInStationTotalDuration) + " - ");
-////            }
-////        }
-//
-//        eventMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                showDetailedInformations(position);
-//            }
-//        });
-//
-//        adapter.notifyDataSetChanged();
 
     }
 
@@ -169,49 +143,6 @@ public class EventTab3 extends GenericTabFragment {
         generalEventFragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.your_placeholder, generalEventFragment).addToBackStack(null).commit();
-    }
-
-    public void showDetailedInformations(int position){
-
-//        if (eventNameMainList.get(position).getStationName() != null){
-//            eventName.setText(eventNameMainList.get(position).getEventName()+ " - " + eventNameMainList.get(position).getStationName());
-//        } else {
-//            eventName.setText(eventNameMainList.get(position).getEventName()+ " - En roulage");
-//        }
-//        eventTimeSaving.setText("Gain de temps : " + eventNameMainList.get(position).getTimeSaving()+ " min");
-//        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
-//        eventExplanations.setText(performanceExplanations.performanceExplanations(eventNameMainList.get(position)));
-//
-//
-//        final String picturePath = eventNameMainList.get(position).getPicture() + ".jpg" ;
-//        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();
-//        if(eventNameMainList.get(position).getPicture() != null && existsImage){
-//            Bitmap bitmap = BitmapFactory.decodeFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +picturePath);
-//            eventImageView.setImageBitmap(bitmap);
-//
-//        }
-//
-//
-//        final String audioPath = eventNameMainList.get(position).getVoiceMemo()+".3gp";
-//        boolean existsAudio = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath)).exists();
-//        if (eventNameMainList.get(position).getVoiceMemo() != null && existsAudio){
-//            eventAudioView.setVisibility(View.VISIBLE);
-//            eventAudioView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    MediaPlayer mediaPlayer = new MediaPlayer();
-//                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//                    try {
-//                        mediaPlayer.setDataSource(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioPath);
-//                        mediaPlayer.prepare();
-//                        mediaPlayer.start();
-//                    } catch (IOException ioe){
-//                        ioe.printStackTrace();
-//                    }
-//                }
-//            });
-//
-//        }
     }
 
 }

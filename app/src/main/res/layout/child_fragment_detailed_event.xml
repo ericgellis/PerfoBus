@@ -61,7 +61,7 @@
             android:layout_marginBottom="@dimen/regular_margin"
             android:src="@mipmap/ic_blue_wrong_circle"/>*
 
-        <com.google.android.gms.maps.MapView
+        <ImageView
             android:id="@+id/eventMap"
             android:layout_width="200dp"
             android:layout_height="200dp"

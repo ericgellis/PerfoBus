@@ -13,15 +13,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
@@ -92,9 +97,6 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
     public void showTotalTripInformations(){
 
-        //totalTrip.setBackgroundResource(R.color.lightBlue);
-        //totalTrip.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-
         long tripTime = getTripDTO().getEndTime() - getTripDTO().getStartTime();
         mTotalTripTimeTextView.setText(timeFormat.format(tripTime));
 
@@ -158,7 +160,7 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
         PieDataSet dataSet = new PieDataSet(yvalues, "Décomposition");
 
-        ArrayList<String> xVals = new ArrayList<>();
+        final ArrayList<String> xVals = new ArrayList<>();
         xVals.add("Trajet");
         xVals.add("Station");
         xVals.add("Evènement section courante");
@@ -167,6 +169,13 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
+//        data.setValueFormatter(new IValueFormatter() {
+//            private String[] mActivities = new String[]{"Trajet", "Station", "Evènement section courante", "Evènement carrefours", "Evènement station"};
+//            @Override
+//            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+//                return mActivities[(int) value % mActivities.length];
+//            }
+//        });
 
         mDecompositionPieChart.setHoleRadius(58f);
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
@@ -175,7 +184,14 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
         data.setValueTextColor(Color.DKGRAY);
 
         Legend l = mDecompositionPieChart.getLegend();
-        l.setEnabled(false);
+        l.setEnabled(true);
+        l.setWordWrapEnabled(true);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
 
         mDecompositionPieChart.setData(data);
         mDecompositionPieChart.setDrawHoleEnabled(true);

@@ -17,7 +17,8 @@
         android:id="@+id/generalListView"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/totalTrip"></ListView>
+        android:layout_below="@+id/totalTrip"
+        android:background="@color/white"></ListView>
 
     <FrameLayout
         android:id="@+id/your_placeholder"

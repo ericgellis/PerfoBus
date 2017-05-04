@@ -93,6 +93,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         List<LatLng> stationlatLngList = new ArrayList<>();
         List<LatLng> eventStationlatLngList = new ArrayList<>();
         List<LatLng> eventRollinglatLngList = new ArrayList<>();
+        List<LatLng> eventCrossroadRollinglatLngList = new ArrayList<>();
 
         if (getTripDTO().getRollingPointDTOList()!= null){
             for (RollingPointDTO rollingPointDTO : getTripDTO().getRollingPointDTOList()) {
@@ -111,8 +112,10 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
             for (EventDTO eventDTO : getTripDTO().getEventDTOList()) {
                 if (eventDTO.getStationName() != null && eventDTO.getStationName().length() > 0) {
                     eventStationlatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
-                } else {
+                } else if (eventDTO.getStationName() == null && eventDTO.getEventType().equals("Evènement en section courante")) {
                     eventRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
+                } else if (eventDTO.getStationName() == null && eventDTO.getEventType().equals("Evènement en carrefour")){
+                    eventCrossroadRollinglatLngList.add(new LatLng(eventDTO.getGpsLat(), eventDTO.getGpsLong()));
                 }
             }
         }
@@ -135,13 +138,17 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         for (LatLng latLng : eventStationlatLngList) {
             googleMap.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_blue_red_danger))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_event_station))
                     .anchor(0.5f, 0.5f)
             );
         }
 
         for (LatLng latLng : eventRollinglatLngList) {
-            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_yellow_red_danger)).anchor(0.5f, 0.5f));
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_event_driving)).anchor(0.5f, 0.5f));
+        }
+
+        for (LatLng latLng : eventCrossroadRollinglatLngList){
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_event_crossroad)).anchor(0.5f, 0.5f));
         }
     }
 

@@ -127,7 +127,7 @@
             android:layout_toEndOf="@+id/eventButton"
             android:layout_alignBottom="@+id/eventButton"
             android:text="@string/in_crossroad"
-            android:background="@color/orange_button_atmo"
+            android:background="@color/color_event_crossroad"
             android:textColor="@color/white"/>
 
     </RelativeLayout>

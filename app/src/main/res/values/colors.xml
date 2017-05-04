@@ -17,6 +17,7 @@
     <!--Driving-->
     <color name="orange_button_event">#F57C00</color>
     <color name="orange_button_atmo">#FF9800</color>
+    <color name="color_event_crossroad">#926d27</color>
     <color name="white">#FFFFFF</color>
     <color name="lightBlue">#2196F3</color>
     <color name="black">#000000</color>

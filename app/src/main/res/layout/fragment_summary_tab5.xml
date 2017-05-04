@@ -4,23 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.mobithink.carbon.consultation.fragments.SummaryTab5">
 
-    <!--<ImageView
-        android:id="@+id/weatherImageView"
-        android:layout_width="@dimen/regular_size_rounded_button"
-        android:layout_height="@dimen/regular_size_rounded_button"
-        android:layout_marginEnd="@dimen/double_regular_margin"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="@dimen/double_regular_margin" />
-
-    <TextView
-        android:id="@+id/weatherTemperatureTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/weatherImageView"
-        android:layout_marginBottom="@dimen/regular_margin"
-        android:layout_marginStart="40dp"
-        android:textColor="@color/black" />-->
-
     <TextView
         android:id="@+id/cityNameTextView"
         android:layout_width="wrap_content"

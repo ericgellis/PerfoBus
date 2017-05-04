@@ -54,8 +54,8 @@ public class DetailedEventFragment extends GenericTabFragment {
     private TextView mEventExplanations;
 
     private ImageView mEventPhoto;
-    private MapView mEventMap;
-    private GoogleMap mEventGoogleMap;
+    private ImageView mEventMap;
+
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
@@ -80,19 +80,7 @@ public class DetailedEventFragment extends GenericTabFragment {
         mEventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
 
         mEventPhoto = (ImageView) rootView.findViewById(R.id.eventPhoto);
-        mEventMap = (MapView) rootView.findViewById(R.id.eventMap);
-
-//        mEventMap.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(GoogleMap mMap) {
-//
-//                mEventGoogleMap = mMap;
-//                mEventGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-//                mEventGoogleMap.setBuildingsEnabled(false);
-//
-//            }
-//        });
-
+        mEventMap = (ImageView) rootView.findViewById(R.id.eventMap);
 
         Bundle extras = getArguments();
         mEventDTO = (EventDTO) extras.getSerializable("eventDTO");
@@ -120,23 +108,19 @@ public class DetailedEventFragment extends GenericTabFragment {
 
         }
 
-//        if (mEventDTO.getGpsLat() != null || mEventDTO.getGpsLong() != null) {
-//            mEventGoogleMap.addMarker(new MarkerOptions().position(
-//                    new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong())).icon(
-//                    BitmapDescriptorFactory.defaultMarker()));
-//        }
-//        try {
-//            String marker_dest = "color:orange|label:1|San Francisco,USA";
-//            marker_dest = URLEncoder.encode(marker_dest, "UTF-8");
-//
-//            STATIC_MAP_API_ENDPOINT = STATIC_MAP_API_ENDPOINT + "&markers=" + marker_dest;
-//
-//            Log.d("STATICMAPS", STATIC_MAP_API_ENDPOINT);
-//            Picasso.with(getContext()).load(STATIC_MAP_API_ENDPOINT).resize(200, 200).centerCrop().into(mEventMap);
-//
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        LatLng eventCoor = new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong());
+        try {
+            String marker_dest = "color:orange|label:1|eventCoord";
+            marker_dest = URLEncoder.encode(marker_dest, "UTF-8");
+
+            STATIC_MAP_API_ENDPOINT = STATIC_MAP_API_ENDPOINT + "&markers=" + marker_dest;
+
+            Log.d("STATICMAPS", STATIC_MAP_API_ENDPOINT);
+            Picasso.with(getContext()).load(STATIC_MAP_API_ENDPOINT).resize(200, 200).centerCrop().into(mEventMap);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 

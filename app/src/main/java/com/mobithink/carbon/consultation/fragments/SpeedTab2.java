@@ -90,24 +90,12 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         yAxis.setAxisMaximum(90f);
         yAxis.setAxisMinimum(0f);
 
-        
-
-        // enable touch gestures
-        //mMultiLineChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
         mMultiLineChart.setDragEnabled(true);
-//        mMultiLineChart.setScaleEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        //mMultiLineChart.setPinchZoom(false);
 
         Legend l = mMultiLineChart.getLegend();
         l.setEnabled(false);
 
         mMultiLineChart.setData(generateLineChart ());
-//        mMultiLineChart.notifyDataSetChanged();
-//        mMultiLineChart.invalidate();
 
     }
 

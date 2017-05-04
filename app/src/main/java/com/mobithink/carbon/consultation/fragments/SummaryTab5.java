@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
@@ -45,9 +47,6 @@ public class SummaryTab5 extends GenericTabFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_summary_tab5, container, false);
 
-        //mWeatherImageView = (ImageView) rootView.findViewById(R.id.weatherImageView);
-
-        //mWeatherTemperatureTextView = (TextView) rootView.findViewById(R.id.weatherTemperatureTextView);
         mCityNameTextView = (TextView) rootView.findViewById(R.id.cityNameTextView);
         mLineNameTextView = (TextView) rootView.findViewById(R.id.lineNameTextView);
         mDirectionNameTextView = (TextView) rootView.findViewById(R.id.directionNameTextView);
@@ -62,8 +61,17 @@ public class SummaryTab5 extends GenericTabFragment {
         mRadarChart.setWebLineWidthInner(1f);
         mRadarChart.setWebColorInner(Color.LTGRAY);
         mRadarChart.setWebAlpha(100);
+        mRadarChart.setTouchEnabled(false);
+        mRadarChart.getXAxis().setTextSize(14f);
+        mRadarChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
 
-        mRadarChart.getXAxis().setTextSize(15f);
+            private String[] mActivities = new String[]{"1", "2", "3", "4", "5", "6"};
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mActivities[(int) value % mActivities.length];
+            }
+        });
 
         mRadarChart.getYAxis().setDrawLabels(false);
         mRadarChart.getYAxis().setAxisMinimum(0f);
@@ -79,12 +87,6 @@ public class SummaryTab5 extends GenericTabFragment {
         super.onResume();
         getTripDTO();
 
-//        if (getTripDTO().getWeather() != null) {
-//            int resID = getResources().getIdentifier("drawable/icon_" + getTripDTO().getWeather(), "drawable", getContext().getPackageName());
-//            mWeatherImageView.setImageResource(resID);
-//        }
-//
-//        mWeatherTemperatureTextView.setText(getTripDTO().getTemperature());
         mCityNameTextView.setText(getTripDTO().getCityName());
         mLineNameTextView.setText(getTripDTO().getLineName());
         mDirectionNameTextView.setText("dir. " + getTripDTO().getDirection());
@@ -156,25 +158,51 @@ public class SummaryTab5 extends GenericTabFragment {
 
         capacityMore33Percent = (capacityMore33Count*10)/(count);
 
+        int confortRating = 0;
+        int securityRating = 0;
+
+        double confortWeightedRating = 0;
+        double securityWeightedRating = 0;
+
+        double confortSecurityRating = 0;
+
+        if (getTripDTO().getEventDTOList() != null){
+            for (EventDTO eventDTO : getTripDTO().getEventDTOList()){
+                if (eventDTO.getEventName().equals("Giration difficile") || eventDTO.getEventName().equals("Chicane, écluse") ||  eventDTO.getEventName().equals("Dos d'âne, trapézoïdal")
+                        || eventDTO.getEventName().equals("Pavé trop rugueux") || eventDTO.getEventName().equals("Stationnement illicite") || eventDTO.getEventName().equals("Stationnement alterné (effet chicane)")
+                        || eventDTO.getEventName().equals("Itinéraire en tiroir ou boucle") || eventDTO.getEventName().equals("Itinéraire sinueux") || eventDTO.getEventName().equals("Trafic")
+                        || eventDTO.getEventName().equals("Panne") || eventDTO.getEventName().equals("Giratoire : giration trop importante") || eventDTO.getEventName().equals("Trop d'arrêts")
+                        || eventDTO.getEventName().equals("Attente pour correspondance") || eventDTO.getEventName().equals("Capacité station") || eventDTO.getEventName().equals("Foule")
+                        || eventDTO.getEventName().equals("Incivilité") || eventDTO.getEventName().equals("Réinsertion dans la circulation")){
+
+                    confortRating += 1;
+                }
+
+                if (eventDTO.getEventName().equals("Voie étroite") || eventDTO.getEventName().equals("Stationnement latéral") ||  eventDTO.getEventName().equals("Passage à niveau")
+                        || eventDTO.getEventName().equals("Panne") || eventDTO.getEventName().equals("Carrefour à feux : ligne de feu trop avancée") || eventDTO.getEventName().equals("Stationnement illicite")
+                        || eventDTO.getEventName().equals("Capacité station") || eventDTO.getEventName().equals("Foule") || eventDTO.getEventName().equals("Incivilité") || eventDTO.getEventName().equals("Incident technique")){
+
+                    securityRating += 1;
+                }
+            }
+            confortWeightedRating = confortRating * 0.27777778;
+            securityWeightedRating = securityRating * 0.5;
+        }
+
+        confortSecurityRating = confortWeightedRating + securityWeightedRating;
+
+
         ArrayList<RadarEntry> entries = new ArrayList<>();
         entries.add(new RadarEntry((long) averageSpeed, 1));
         entries.add(new RadarEntry((long) timeInCrossRoad, 2));
         entries.add(new RadarEntry((long) timeInStations, 3));
         entries.add(new RadarEntry(capacityMore33Percent, 4));
         entries.add(new RadarEntry((long) timePerformance, 5));
-        entries.add(new RadarEntry(5f, 6));
+        entries.add(new RadarEntry((float) confortSecurityRating, 6));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Trip");
         dataSet.setColor(Color.rgb(0, 102, 128));
         dataSet.setDrawFilled(false);
-
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("1");
-        labels.add("2");
-        labels.add("3");
-        labels.add("4");
-        labels.add("5");
-        labels.add("6");
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(dataSet);
@@ -183,10 +211,7 @@ public class SummaryTab5 extends GenericTabFragment {
         mRadarChart.setData(radarData);
         radarData.setValueTextSize(5f);
         radarData.setDrawValues(false);
-        radarData.setLabels(labels);
-        mRadarChart.animate();
         mRadarChart.getLegend().setEnabled(false);
-
 
         mRadarChart.setData(radarData);
         mRadarChart.invalidate();
