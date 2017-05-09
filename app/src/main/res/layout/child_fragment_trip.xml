@@ -55,8 +55,8 @@
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/decompositionPieChart"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_toEndOf="@+id/decomposition"
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="70dp"

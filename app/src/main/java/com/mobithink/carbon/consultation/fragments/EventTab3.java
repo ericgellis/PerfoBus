@@ -90,7 +90,7 @@ public class EventTab3 extends GenericTabFragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         GeneralTripFragment generalTripFragment = new GeneralTripFragment();
         fragmentTransaction.replace(R.id.your_placeholder, generalTripFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack(null).commit();
 
     }
 

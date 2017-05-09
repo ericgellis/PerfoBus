@@ -157,6 +157,8 @@
     <string name="five">5</string>
     <string name="six">6</string>
 
-
+    <!-- Detailed Event Fragment-->
+    <string name="speech_prompt">Mémo vocal envoyé</string>
+    <string name="speech_not_supported">Mémo vocal non supporté</string>
 
 </resources>

@@ -35,6 +35,7 @@ import com.mobithink.carbon.utils.Mathematics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -169,13 +170,6 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
-//        data.setValueFormatter(new IValueFormatter() {
-//            private String[] mActivities = new String[]{"Trajet", "Station", "Evènement section courante", "Evènement carrefours", "Evènement station"};
-//            @Override
-//            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-//                return mActivities[(int) value % mActivities.length];
-//            }
-//        });
 
         mDecompositionPieChart.setHoleRadius(58f);
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
@@ -183,12 +177,26 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
         data.setValueTextSize(13f);
         data.setValueTextColor(Color.DKGRAY);
 
+        List<LegendEntry> entries = new ArrayList<>();
+        List<Integer> colorList = new ArrayList<>();
+        for (int i = 0; i<ColorTemplate.VORDIPLOM_COLORS.length; i++){
+            colorList.add(ColorTemplate.VORDIPLOM_COLORS[i]);
+        }
+
+        for (int i = 0; i < xVals.size(); i++) {
+            LegendEntry entry = new LegendEntry();
+            entry.formColor = colorList.get(i);
+            entry.label = xVals.get(i);
+            entries.add(entry);
+        }
+
         Legend l = mDecompositionPieChart.getLegend();
         l.setEnabled(true);
         l.setWordWrapEnabled(true);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
+        l.setCustom(entries);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
