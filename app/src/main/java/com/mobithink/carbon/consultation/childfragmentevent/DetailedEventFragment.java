@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
@@ -37,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okio.ByteString;
+
 
 import static android.app.Activity.RESULT_OK;
 
@@ -187,40 +188,42 @@ public class DetailedEventFragment extends GenericTabFragment {
 //        }
 //    }
 
-//    public void speechtranscreiption(){
-//        SpeechClient speechClient = SpeechClient.create();
+//    public void speechRetranscription() {
 //
-//        //  The path of the audio file to exploit
+//            SpeechClient speechClient = SpeechClient.create();
 //
-//        String audioFileName = mEventDTO.getVoiceMemo() + ".3gp";
-//        boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkAudio/"+audioFileName)).exists();
-//        byte[] dataRead = MediaStore.Files.readAllBytes(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkAudio/"+audioFileName);
-//        ByteString speecBytes = ByteString.copyFrom(dataRead);
+//            //  The path of the audio file to exploit
 //
-//        // Requesting for the sync regnonitizer
-//        RecognitionConfig recognitionConfig = RecognitionConfig.newBuilder()
-//                .setEncoding(AudioEncoding.LINEAR16)
-//                .setLanguageCode("en-US")
-//                .setSampleRateHertz(16000)
-//                .build();
+//            String audioFileName = mEventDTO.getVoiceMemo() + ".3gp";
+//            //boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkAudio/"+audioFileName)).exists();
+//            Path path = Paths.get(new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/mobithinkAudio/" + audioFileName));
+//            byte[] dataRead = MediaStore.Files.readAllBytes(path);
+//            ByteString speechBytes = ByteString.copyFrom(dataRead);
 //
-//        //Recognition Audio builder
-//        RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder()
-//                .setContent(speecBytes)
-//                .build();
+//            // Requesting for the sync regnonitizer
+//            RecognitionConfig recognitionConfig = RecognitionConfig.newBuilder()
+//                    .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
+//                    .setLanguageCode("en-US")
+//                    .setSampleRateHertz(16000)
+//                    .build();
 //
-//        // Translates the speech from the input file
-//        RecognizeResponse recognizeResponse = speechClient.recognize(recognitionConfig, recognitionAudio);
-//        List<SpeechRecognitionResult> outputLists = recognizeResponse.getResultsList();
+//            //Recognition Audio builder
+//            RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder()
+//                    .setContent(speechBytes)
+//                    .build();
 //
-//        for (SpeechRecognitionResult result: outputLists) {
-//            List<SpeechRecognitionAlternative> alternativesLists = result.getAlternativesList();
-//            for (SpeechRecognitionAlternative alternativesList: alternativesLists) {
-//                System.out.printf("Transcription: %s%n", alternativesList.getTranscript());
+//            // Translates the speech from the input file
+//            RecognizeResponse recognizeResponse = speechClient.recognize(recognitionConfig, recognitionAudio);
+//            List<SpeechRecognitionResult> outputLists = recognizeResponse.getResultsList();
+//
+//            for (SpeechRecognitionResult result : outputLists) {
+//                List<SpeechRecognitionAlternative> alternativesLists = result.getAlternativesList();
+//                for (SpeechRecognitionAlternative alternativesList : alternativesLists) {
+//                    System.out.printf("Transcription: %s%n", alternativesList.getTranscript());
+//                }
 //            }
+//            //Ending the Speech Client
+//            speechClient.close();
 //        }
-//        //Ending the Speech Client
-//        speechClient.close();
-//    }
 
 }
