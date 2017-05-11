@@ -127,13 +127,13 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
         viewHolder.photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePhoto();
+                takePhoto(position);
             }
         });
         viewHolder.microButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerVoice();
+                registerVoice(position);
             }
         });
 
@@ -161,7 +161,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
     }
 
 
-    public void takePhoto() {
+    public void takePhoto(final int position) {
 
         boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto")).exists();
         if (!exists) {
@@ -170,7 +170,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
-            imageUri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ ".provider", createImageFile());
+            imageUri = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ ".provider", createImageFile(position));
         } catch (IOException ex) {
             Log.e("No photo", "No photo");
         }
@@ -179,15 +179,15 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
 
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile(final int position) throws IOException {
 
-        imageFileName = "JPEG_" + timeStamp;
+        imageFileName = "JPEG_" + timeStamp +"_" + getItem(position);
         return new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkPhoto/" +imageFileName + ".jpg" );
     }
 
 
 
-    public void registerVoice(){
+    public void registerVoice(final int position){
 
         boolean exists = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio")).exists();
         if (!exists) {
@@ -202,7 +202,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
                     mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                     mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                    audioFileName = "audio_" + timeStamp;
+                    audioFileName = "audio_" + timeStamp +"_" + getItem(position);
                     mediaRecorder.setOutputFile(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/mobithinkAudio/"+audioFileName+".3gp");
                     mediaRecorder.prepare();
                 } catch (IllegalStateException | IOException e) {

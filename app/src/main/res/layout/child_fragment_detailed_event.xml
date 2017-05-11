@@ -69,30 +69,24 @@
             android:layout_alignBottom="@+id/eventPhoto"
             android:layout_marginStart="@dimen/double_regular_margin"/>
 
-        <TextView
-            android:id="@+id/audioRetranscription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/eventPhoto"
-            android:layout_marginStart="@dimen/regular_margin"
+        <ImageView
+            android:id="@+id/eventAudio"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/eventPhoto"
+            android:layout_marginStart="25dp"
             android:layout_marginBottom="@dimen/regular_margin"
-            android:text="@string/retranscription_voice_memo"/>
-
-        <TextView
-            android:id="@+id/audioRetranscriptionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/audioRetranscription"
-            android:layout_toEndOf="@+id/audioRetranscription"
-            android:layout_marginStart="@dimen/regular_margin"
-            android:layout_marginBottom="@dimen/regular_margin" />
+            android:src="@mipmap/ic_audio"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/eventExplanations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/audioRetranscriptionTextView"
-            android:layout_marginStart="@dimen/regular_margin"/>
+            android:layout_below="@+id/eventAudio"
+            android:layout_marginStart="@dimen/regular_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginBottom="@dimen/double_regular_margin"/>
 
 
 

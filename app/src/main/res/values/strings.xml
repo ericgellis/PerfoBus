@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Mobithink</string>
 
     <!-- API Key -->
@@ -18,14 +18,14 @@
     <string name="start">Démarrer</string>
 
     <!--new_line-->
-    <string name="departureStation">Station de départ</string>
+    <string name="departureStation" tools:ignore="UnusedResources">Station de départ</string>
     <string name="addStation">Ajouter une station</string>
     <string name="interurban">Interurbain</string>
     <string name="create">Créer</string>
 
     <!--Driving-->
     <string name="nextStation">Prochaine station</string>
-    <string name="event">Evènement</string>
+    <string name="event" tools:ignore="UnusedResources">Evènement</string>
     <string name="course">Parcours :</string>
     <string name="section">Tronçon :</string>
     <string name="dir">dir.</string>
@@ -90,7 +90,7 @@
     <string name="boarding">Montée</string>
     <string name="exit">Descente</string>
     <string name="cancellation">Annulation</string>
-    <string name="running">en cours</string>
+    <string name="running" tools:ignore="UnusedResources">en cours</string>
 
     <!--parameters-->
     <string name="parameters">Paramètres</string>
@@ -104,7 +104,7 @@
     <string name="recorded">Saisie du</string>
 
     <!-- provision_tab1-->
-    <string name="interstation">Interstations</string>
+    <string name="interstation" tools:ignore="UnusedResources">Interstations</string>
     <string name="current_performance">Performance actuelle</string>
     <string name="marge_performance">Marge de performance</string>
     <string name="saving">Gain :</string>
@@ -156,9 +156,5 @@
     <string name="four">4</string>
     <string name="five">5</string>
     <string name="six">6</string>
-
-    <!-- Detailed Event Fragment-->
-    <string name="speech_prompt">Mémo vocal envoyé</string>
-    <string name="speech_not_supported">Mémo vocal non supporté</string>
 
 </resources>

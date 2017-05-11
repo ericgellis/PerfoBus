@@ -170,8 +170,6 @@ public class ChoiceLineFromConsultActivity extends Activity {
             }
         });
 
-
-
         mConsultButton = (Button) findViewById(R.id.consultButton);
         mConsultButton.setOnClickListener(new View.OnClickListener() {
             @Override
