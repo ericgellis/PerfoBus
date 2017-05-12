@@ -59,15 +59,15 @@
             android:layout_below="@+id/time"
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginBottom="@dimen/regular_margin"
-            android:src="@mipmap/ic_blue_wrong_circle"/>*
+            android:src="@mipmap/ic_blue_wrong_circle"/>
 
-        <ImageView
-            android:id="@+id/eventMap"
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_toEndOf="@+id/eventPhoto"
             android:layout_alignBottom="@+id/eventPhoto"
-            android:layout_marginStart="@dimen/double_regular_margin"/>
+            android:layout_marginStart="@dimen/double_regular_margin" />
 
         <ImageView
             android:id="@+id/eventAudio"
@@ -87,10 +87,6 @@
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
             android:layout_marginBottom="@dimen/double_regular_margin"/>
-
-
-
-
 
     </RelativeLayout>
 </ScrollView>

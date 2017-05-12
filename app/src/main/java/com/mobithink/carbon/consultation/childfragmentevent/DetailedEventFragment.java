@@ -16,8 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
@@ -36,7 +43,7 @@ import java.util.Locale;
  * Created by mplaton on 26/04/2017.
  */
 
-public class DetailedEventFragment extends GenericTabFragment {
+public class DetailedEventFragment extends GenericTabFragment implements OnMapReadyCallback {
 
     public static final int MY_REQUEST_CODE = 0;
 
@@ -48,15 +55,14 @@ public class DetailedEventFragment extends GenericTabFragment {
     private TextView mEventExplanations;
 
     private ImageView mEventPhoto;
-    private ImageView mEventMap;
     private ImageView mEventAudio;
+
+    MapView mapView;
+    private CameraPosition cameraposition;
 
     MediaPlayer mediaPlayer;
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
-
-    private String STATIC_MAP_API_ENDPOINT = "http://maps.googleapis.com/maps/api/staticmap?size=230x200&path=";
-
 
     public DetailedEventFragment() {
     }
@@ -76,11 +82,17 @@ public class DetailedEventFragment extends GenericTabFragment {
         mEventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
 
         mEventPhoto = (ImageView) rootView.findViewById(R.id.eventPhoto);
-        mEventMap = (ImageView) rootView.findViewById(R.id.eventMap);
         mEventAudio = (ImageView) rootView.findViewById(R.id.eventAudio);
+        mapView = (MapView) rootView.findViewById(R.id.map);
 
         Bundle extras = getArguments();
         mEventDTO = (EventDTO) extras.getSerializable("eventDTO");
+
+        if(mapView != null){
+            mapView.onCreate(savedInstanceState);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
 
         return rootView;
     }
@@ -105,21 +117,6 @@ public class DetailedEventFragment extends GenericTabFragment {
 
         }
 
-        LatLng eventCoor = new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong());
-        try {
-            String marker_dest = "color:orange|label:1|eventCoord";
-            marker_dest = URLEncoder.encode(marker_dest, "UTF-8");
-
-            STATIC_MAP_API_ENDPOINT = STATIC_MAP_API_ENDPOINT + "&markers=" + marker_dest;
-
-            Log.d("STATICMAPS", STATIC_MAP_API_ENDPOINT);
-            Picasso.with(getContext()).load(STATIC_MAP_API_ENDPOINT).resize(200, 200).centerCrop().into(mEventMap);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-
         final String audioPath = mEventDTO.getVoiceMemo() + ".3gp" ;
         final boolean existsAudio = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkAudio/"+audioPath)).exists();
         if (mEventDTO.getVoiceMemo() != null && existsAudio){
@@ -141,8 +138,16 @@ public class DetailedEventFragment extends GenericTabFragment {
             });
         }
 
-
-
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+
+        if (mEventDTO.getGpsLat()!= null && mEventDTO.getGpsLong() != null){
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong())));
+         cameraposition = CameraPosition.builder().target(new LatLng(mEventDTO.getGpsLat(), mEventDTO.getGpsLong())).zoom(16).bearing(0).build();
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraposition));
+    }
 }

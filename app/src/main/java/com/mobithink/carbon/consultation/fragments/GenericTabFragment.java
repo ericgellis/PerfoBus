@@ -14,7 +14,11 @@ public abstract class GenericTabFragment extends Fragment {
     protected final String TAG = getClass().getName();
 
     protected TripDTO getTripDTO() {
+        if (((ConsultationActivity) getActivity()).getmTripDTO() != null){
         return ((ConsultationActivity) getActivity()).getmTripDTO();
+        } else {
+            return null;
+        }
     }
 
 }
