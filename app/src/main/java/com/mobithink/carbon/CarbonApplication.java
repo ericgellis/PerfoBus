@@ -3,6 +3,8 @@ package com.mobithink.carbon;
 import android.app.Application;
 
 import com.mobithink.carbon.managers.CarbonApplicationManager;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by jpaput on 06/02/2017.
@@ -17,6 +19,7 @@ public class CarbonApplication extends Application {
     public void onCreate()
     {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         mInstance = this;
 
         CarbonApplicationManager.getInstance().init();
