@@ -51,7 +51,7 @@ public class RetrofitManager {
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
                 builder.addInterceptor(interceptor);
                 //Change this if you want to try an other server in integration or developement need
-                baseURL = BASE_URL_MELANIE;
+                baseURL = BASE_URL;
             } else {
                 baseURL = BASE_URL;
             }

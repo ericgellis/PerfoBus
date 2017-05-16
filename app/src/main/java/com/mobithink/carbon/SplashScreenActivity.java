@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.mobithink.carbon.managers.RetrofitManager;
 import com.mobithink.carbon.preparation.ChoiceLineFromAnalyzeActivity;
 import com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity;
 import com.mobithink.carbon.preparation.ParametersActivity;
 import com.mobithink.carbon.webservices.TechnicalService;
 
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +52,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //Remove title bar
