@@ -26,8 +26,6 @@ import java.util.Locale;
 
 public class SummaryTab5 extends GenericTabFragment {
 
-    //private ImageView mWeatherImageView;
-    //private TextView mWeatherTemperatureTextView;
     private TextView mCityNameTextView;
     private TextView mLineNameTextView;
     private TextView mDirectionNameTextView;
@@ -75,7 +73,7 @@ public class SummaryTab5 extends GenericTabFragment {
 
         mRadarChart.getYAxis().setDrawLabels(false);
         mRadarChart.getYAxis().setAxisMinimum(0f);
-        mRadarChart.getYAxis().setAxisMaximum(10f);
+        mRadarChart.getYAxis().setAxisMaximum(5f);
 
         setData();
 
@@ -110,6 +108,7 @@ public class SummaryTab5 extends GenericTabFragment {
         if (getTripDTO().getStationDataDTOList() != null) {
             for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
                 speedTab.add(stationDataDTO.getSpeed());
+                speedAdd += stationDataDTO.getSpeed();
                 double timeInStation = stationDataDTO.getEndTime()-stationDataDTO.getStartTime();
                 timeinStationTab.add(timeInStation);
                 totalTimeInstation += timeInStation;

@@ -87,7 +87,7 @@ public class SpeedTab2 extends GenericTabFragment implements OnChartValueSelecte
         xAxis.setAxisLineWidth(1f);
 
         YAxis yAxis =  mMultiLineChart.getAxisLeft();
-        yAxis.setAxisMaximum(90f);
+        yAxis.setAxisMaximum(120f);
         yAxis.setAxisMinimum(0f);
 
         mMultiLineChart.setDragEnabled(true);

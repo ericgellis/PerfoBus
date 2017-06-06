@@ -101,6 +101,38 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
             }
         }
 
+//        rollingPointlatLngList.add(new LatLng(45.195701543, 0.782943293));
+//        rollingPointlatLngList.add(new LatLng(45.1963594, 0.7833852));
+//        rollingPointlatLngList.add(new LatLng(45.195751717, 0.782835663));
+//        rollingPointlatLngList.add(new LatLng(45.1955591, 0.7822232));
+//        rollingPointlatLngList.add(new LatLng(45.195746682, 0.782477209));
+//        rollingPointlatLngList.add(new LatLng(45.195575454, 0.782040012));
+//        rollingPointlatLngList.add(new LatLng(45.195392733, 0.781652409));
+//        rollingPointlatLngList.add(new LatLng(45.195287794, 0.781416649));
+//        rollingPointlatLngList.add(new LatLng(45.1952357, 0.7813538));
+//        rollingPointlatLngList.add(new LatLng(45.195218047, 0.781236282));
+//        rollingPointlatLngList.add(new LatLng(45.195128286, 0.781093408));
+//        rollingPointlatLngList.add(new LatLng(45.194863961, 0.781108025));
+//        rollingPointlatLngList.add(new LatLng(45.194453169, 0.781198874));
+//        rollingPointlatLngList.add(new LatLng(45.1946248, 0.7812517));
+//        rollingPointlatLngList.add(new LatLng(45.194006988, 0.781285444));
+//
+//        rollingPointlatLngList.add(new LatLng(45.19353171, 0.781382732));
+//        rollingPointlatLngList.add(new LatLng(45.193128734, 0.78146905));
+//        rollingPointlatLngList.add(new LatLng(45.192898301, 0.781531688));
+//        rollingPointlatLngList.add(new LatLng(45.1948919, 0.7834772));
+//        rollingPointlatLngList.add(new LatLng(45.192588889, 0.78160908));
+//        rollingPointlatLngList.add(new LatLng(45.192165519, 0.781703175));
+//        rollingPointlatLngList.add(new LatLng(45.191737765, 0.781790631));
+//        rollingPointlatLngList.add(new LatLng(45.191357149, 0.781883524));
+//        rollingPointlatLngList.add(new LatLng(45.190855283, 0.781995812));
+//        rollingPointlatLngList.add(new LatLng(45.190280857, 0.782087904));
+//        rollingPointlatLngList.add(new LatLng(45.189694298, 0.782089085));
+//        rollingPointlatLngList.add(new LatLng(45.189058048, 0.782112188));
+//        rollingPointlatLngList.add(new LatLng(45.1759385, 0.7736862));
+//        rollingPointlatLngList.add(new LatLng(45.188320617, 0.782130377));
+//        rollingPointlatLngList.add(new LatLng(45.187519889, 0.782147456));
+
 
         if (getTripDTO().getStationDataDTOList()!= null) {
             for (StationDataDTO stationDTO : getTripDTO().getStationDataDTOList()) {
@@ -128,7 +160,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         //draw marker and circle and marker
         for (LatLng latLng : stationlatLngList) {
             googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_grey_point)).anchor(0.5f, 0.5f));
-            googleMap.addCircle(new CircleOptions().center(latLng).radius(150d));
+            googleMap.addCircle(new CircleOptions().center(latLng).radius(PreferenceManager.getInstance().getStationRadius()));
         }
 
         LatLng firstStation = stationlatLngList.get(0);

@@ -50,7 +50,7 @@ public class StationActivity extends Activity implements IEventSelectedListener,
     int stationStep;
     long stationStartTime;
     int nStartingPersonNumber = 0;
-    int nEndingPersonNumber = 50;
+    int nEndingPersonNumber = 500;
     int numberOfPeopleIn = 0;
     int numberOfPeopleOut = 0;
     Location location = null;

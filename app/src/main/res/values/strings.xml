@@ -126,13 +126,14 @@
     <string name="number_of_events">Nombre d\'évènements :</string>
     <string name="total_time_events">Temps cumulé des évènements :</string>
     <string name="load">Poids (% par rapport au temps réel du parcours) :</string>
-    <string name="type_event">Type d\'évènements:</string>
+    <string name="type_event">Type d\'évènements :</string>
     <string name="time">Temps :</string>
     <string name="retranscription_voice_memo">Retranscription mémo vocal : </string>
     <string name="impact_bus_performance">Impacts sur les performances du bus :</string>
     <string name="layout_to_favor">Aménagements à privilégier :</string>
     <string name="in_driving">En roulage </string>
     <string name="in_station">En station </string>
+    <string name="impact">Impact :</string>
 
     <!--capacity_tab4-->
     <string name="capacity">Charge</string>
@@ -156,5 +157,7 @@
     <string name="four">4</string>
     <string name="five">5</string>
     <string name="six">6</string>
+
+
 
 </resources>

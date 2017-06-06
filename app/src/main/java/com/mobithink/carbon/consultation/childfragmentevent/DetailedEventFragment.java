@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +27,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.consultation.fragments.GenericTabFragment;
 import com.mobithink.carbon.database.model.EventDTO;
-import com.mobithink.carbon.utils.PerformanceExplanations;
-import com.squareup.picasso.Picasso;
+import com.mobithink.carbon.utils.EventLayoutToFavor;
+import com.mobithink.carbon.utils.Impact;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -52,7 +49,8 @@ public class DetailedEventFragment extends GenericTabFragment implements OnMapRe
     private TextView mEventNameTextView;
     private TextView mEventTypeTextView;
     private TextView mTimeTextView;
-    private TextView mEventExplanations;
+    private TextView mEventImpactTextView;
+    private TextView mEventLayoutToFavorTextView;
 
     private ImageView mEventPhoto;
     private ImageView mEventAudio;
@@ -79,7 +77,8 @@ public class DetailedEventFragment extends GenericTabFragment implements OnMapRe
         mEventNameTextView = (TextView) rootView.findViewById(R.id.eventNameTextView);
         mEventTypeTextView = (TextView) rootView.findViewById(R.id.eventTypeTextView);
         mTimeTextView = (TextView) rootView.findViewById(R.id.timeTextView);
-        mEventExplanations = (TextView) rootView.findViewById(R.id.eventExplanations);
+        mEventImpactTextView = (TextView) rootView.findViewById(R.id.impactTextView);
+        mEventLayoutToFavorTextView = (TextView) rootView.findViewById(R.id.layoutToFavorTextView);
 
         mEventPhoto = (ImageView) rootView.findViewById(R.id.eventPhoto);
         mEventAudio = (ImageView) rootView.findViewById(R.id.eventAudio);
@@ -106,8 +105,10 @@ public class DetailedEventFragment extends GenericTabFragment implements OnMapRe
         mEventTypeTextView.setText(mEventDTO.getEventType());
         double eventTime = mEventDTO.getEndTime()-mEventDTO.getStartTime();
         mTimeTextView.setText(timeFormat.format(eventTime));
-        PerformanceExplanations performanceExplanations = new PerformanceExplanations();
-        mEventExplanations.setText(performanceExplanations.performanceExplanations(mEventDTO));
+        Impact impact = new Impact();
+        mEventImpactTextView.setText(impact.impactExplanations(mEventDTO));
+        EventLayoutToFavor eventLayoutToFavor = new EventLayoutToFavor();
+        mEventLayoutToFavorTextView.setText(eventLayoutToFavor.eventLayoutToFavor(mEventDTO));
 
         final String picturePath = mEventDTO.getPicture() + ".jpg" ;
         boolean existsImage = (new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mobithinkPhoto/"+picturePath)).exists();

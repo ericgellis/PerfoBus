@@ -29,6 +29,7 @@ import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.managers.PreferenceManager;
 import com.mobithink.carbon.utils.Mathematics;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +109,7 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
             }
         }
         double averageTripSpeed = (tripDistance*0.001)/(tripTime*0.00000027778);
-        mAverageSpeedTextView.setText(String.valueOf(averageTripSpeed)+ " km/h");
+        mAverageSpeedTextView.setText(String.valueOf(new DecimalFormat("#.##").format(averageTripSpeed))+ " km/h");
 
         averageTimeInStation = totalTimeInStation/getTripDTO().getStationDataDTOList().size();
         long timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);

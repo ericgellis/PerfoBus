@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -144,6 +145,7 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
                     copi.stop();
                     stopAndRegisterEvent(event);
                     eventDTOList.remove(position);
+
                 } catch (Exception e) {
                     Log.e(TAG, "updateEvent: error on SQLLiteDataBase: ", e);
                     Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
