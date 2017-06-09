@@ -73,7 +73,7 @@ public class SummaryTab5 extends GenericTabFragment {
 
         mRadarChart.getYAxis().setDrawLabels(false);
         mRadarChart.getYAxis().setAxisMinimum(0f);
-        mRadarChart.getYAxis().setAxisMaximum(5f);
+        mRadarChart.getYAxis().setAxisMaximum(7f);
 
         setData();
 
@@ -192,16 +192,20 @@ public class SummaryTab5 extends GenericTabFragment {
 
 
         ArrayList<RadarEntry> entries = new ArrayList<>();
-        entries.add(new RadarEntry((long) averageSpeed, 1));
-        entries.add(new RadarEntry((long) timeInCrossRoad, 2));
-        entries.add(new RadarEntry((long) timeInStations, 3));
-        entries.add(new RadarEntry(capacityMore33Percent, 4));
-        entries.add(new RadarEntry((long) timePerformance, 5));
+        entries.add(new RadarEntry((float) averageSpeed, 1));
+        entries.add(new RadarEntry((float) timeInCrossRoad, 2));
+        entries.add(new RadarEntry((float) timeInStations, 3));
+        entries.add(new RadarEntry((float) capacityMore33Percent, 4));
+        entries.add(new RadarEntry((float) timePerformance, 5));
         entries.add(new RadarEntry((float) confortSecurityRating, 6));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Trip");
         dataSet.setColor(Color.rgb(0, 102, 128));
-        dataSet.setDrawFilled(false);
+        dataSet.setDrawFilled(true);
+        dataSet.setLineWidth(2f);
+        dataSet.setDrawHighlightCircleEnabled(true);
+        dataSet.setDrawHighlightIndicators(false);
+
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(dataSet);

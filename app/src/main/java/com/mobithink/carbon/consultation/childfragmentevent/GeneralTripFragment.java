@@ -116,7 +116,7 @@ public class GeneralTripFragment extends GenericTabFragment implements OnChartVa
 
         int timeSavingInMinutes = (int) (((timeSavingResult / 1000)/60) % 60);
 
-        mSavingOfPossibleTimeTextView.setText(timeFormat.format(timeSavingInMinutes)+ " min");
+        mSavingOfPossibleTimeTextView.setText(timeFormat.format(timeSavingResult)+ " min");
         mSavingInEuroTextView.setText(Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
 
 

@@ -2,6 +2,7 @@ package com.mobithink.carbon.consultation;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
 import com.mobithink.carbon.database.model.TripDTO;
+import com.mobithink.carbon.preparation.ChoiceLineFromConsultActivity;
 
 
 /**
@@ -35,6 +37,7 @@ public class ConsultationActivity extends AppCompatActivity {
     private StationDTO mSelectedDirection;
 
     public static final int MY_REQUEST_CODE = 0;
+    public static final int CONSULT_LINE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,5 +102,10 @@ public class ConsultationActivity extends AppCompatActivity {
         this.mTripDTO = mTripDTO;
     }
 
+    @Override
+    public void onBackPressed() {
 
+        Intent toConsultPage = new Intent (this, ChoiceLineFromConsultActivity.class);
+        this.startActivityForResult(toConsultPage, CONSULT_LINE);
+    }
 }

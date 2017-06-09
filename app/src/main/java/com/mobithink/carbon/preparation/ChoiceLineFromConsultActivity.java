@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.mobithink.carbon.R;
+import com.mobithink.carbon.SplashScreenActivity;
 import com.mobithink.carbon.database.model.BusLineDTO;
 import com.mobithink.carbon.database.model.CityDTO;
 import com.mobithink.carbon.database.model.StationDTO;
@@ -42,6 +44,8 @@ import retrofit2.Response;
 public class ChoiceLineFromConsultActivity extends Activity {
 
     private static final String TAG = ChoiceLineFromConsultActivity.class.getName();
+
+    public static final int SPLASH_SCREEN = 1;
 
     private TextInputLayout mWriteCityNameTextInputLayout;
     private TextInputLayout mWriteLineTextInputLayout;
@@ -342,4 +346,10 @@ public class ChoiceLineFromConsultActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Intent toSplashScreenPage = new Intent (this,SplashScreenActivity.class);
+        this.startActivityForResult(toSplashScreenPage, SPLASH_SCREEN);
+    }
 }
