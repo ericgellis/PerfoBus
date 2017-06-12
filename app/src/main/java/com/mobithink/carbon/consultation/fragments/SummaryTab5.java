@@ -60,6 +60,9 @@ public class SummaryTab5 extends GenericTabFragment {
         mRadarChart.setWebColorInner(Color.LTGRAY);
         mRadarChart.setWebAlpha(100);
         mRadarChart.setTouchEnabled(false);
+
+        setData();
+
         mRadarChart.getXAxis().setTextSize(14f);
         mRadarChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
 
@@ -71,11 +74,13 @@ public class SummaryTab5 extends GenericTabFragment {
             }
         });
 
-        mRadarChart.getYAxis().setDrawLabels(false);
+        mRadarChart.getYAxis().setDrawLabels(true);
+        mRadarChart.getYAxis().setSpaceTop(10f);
         mRadarChart.getYAxis().setAxisMinimum(0f);
-        mRadarChart.getYAxis().setAxisMaximum(7f);
+        mRadarChart.getYAxis().setAxisMaximum(9f);
 
-        setData();
+
+
 
         return rootView;
     }
@@ -116,6 +121,12 @@ public class SummaryTab5 extends GenericTabFragment {
         }
         averageSpeed = speedAdd/(getTripDTO().getStationDataDTOList().size()*10);
         double timeInStations = (totalTimeInstation*10)/tripTotalTime;
+        //This condition is used to obtain a chart as if the value is negative.
+        if (timeInStations > 0){
+            timeInStations = timeInStations;
+        } else {
+            timeInStations = 0;
+        }
 
         ArrayList<Long> eventTimeSavingTab = new ArrayList<>();
         long totalTimeSaving = 0;
@@ -134,12 +145,26 @@ public class SummaryTab5 extends GenericTabFragment {
             }
         }
         double timePerformance = (((totalTimeSaving+tripTotalTime)/tripTotalTime)-1)*10;
+        float timePerformanceFloat = (float) timePerformance;
+        //This condition is used to obtain a chart as if the value is negative.
+        if (timePerformanceFloat > 0){
+            timePerformanceFloat = timePerformanceFloat;
+        } else {
+            timePerformanceFloat = 0;
+        }
+
         double timeInCrossRoad = totalTimeInCrossroad*10/tripTotalTime;
+        //This condition is used to obtain a chart as if the value is negative.
+        if (timeInCrossRoad > 0){
+            timeInCrossRoad = timeInCrossRoad;
+        } else {
+            timeInCrossRoad = 0;
+        }
 
         int totalPerson = 0;
         int sum = 0;
-        int capacityMore33Count = 0;
-        int capacityMore33Percent;
+        Double capacityMore33Count = 0.0;
+        double capacityMore33Percent;
         ArrayList<Integer> busPersonTab = new ArrayList<>();
 
         int count = 0;
@@ -156,6 +181,12 @@ public class SummaryTab5 extends GenericTabFragment {
         }
 
         capacityMore33Percent = (capacityMore33Count*10)/(count);
+        //This condition is used to obtain a chart as if the value is negative.
+        if (capacityMore33Percent > 0){
+            capacityMore33Percent = capacityMore33Percent;
+        } else {
+            capacityMore33Percent = 0;
+        }
 
         int confortRating = 0;
         int securityRating = 0;
@@ -163,7 +194,7 @@ public class SummaryTab5 extends GenericTabFragment {
         double confortWeightedRating = 0;
         double securityWeightedRating = 0;
 
-        double confortSecurityRating = 0;
+        double confortSecurityRating = 0.0;
 
         if (getTripDTO().getEventDTOList() != null){
             for (EventDTO eventDTO : getTripDTO().getEventDTOList()){
@@ -189,29 +220,33 @@ public class SummaryTab5 extends GenericTabFragment {
         }
 
         confortSecurityRating = confortWeightedRating + securityWeightedRating;
-
+        //This condition is used to obtain a chart as if the value is negative.
+        if (confortSecurityRating > 0){
+            confortSecurityRating = confortSecurityRating;
+        } else {
+            confortSecurityRating = 0;
+        }
 
         ArrayList<RadarEntry> entries = new ArrayList<>();
-        entries.add(new RadarEntry((float) averageSpeed, 1));
-        entries.add(new RadarEntry((float) timeInCrossRoad, 2));
-        entries.add(new RadarEntry((float) timeInStations, 3));
-        entries.add(new RadarEntry((float) capacityMore33Percent, 4));
-        entries.add(new RadarEntry((float) timePerformance, 5));
-        entries.add(new RadarEntry((float) confortSecurityRating, 6));
+        entries.add(new RadarEntry( (float) averageSpeed, 0));
+        entries.add(new RadarEntry( (float) timeInCrossRoad, 1));
+        entries.add(new RadarEntry((float) timeInStations, 2));
+        entries.add(new RadarEntry((float) capacityMore33Percent, 3));
+        entries.add(new RadarEntry(timePerformanceFloat, 4));
+        entries.add(new RadarEntry((float) confortSecurityRating, 5));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Trip");
         dataSet.setColor(Color.rgb(0, 102, 128));
-        dataSet.setDrawFilled(true);
+        dataSet.setFillAlpha(255);
+        dataSet.setDrawFilled(false);
         dataSet.setLineWidth(2f);
         dataSet.setDrawHighlightCircleEnabled(true);
         dataSet.setDrawHighlightIndicators(false);
-
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(dataSet);
 
         RadarData radarData = new RadarData(sets);
-        mRadarChart.setData(radarData);
         radarData.setValueTextSize(5f);
         radarData.setDrawValues(false);
         mRadarChart.getLegend().setEnabled(false);
