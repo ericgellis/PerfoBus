@@ -49,7 +49,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     private long tripDistance = 0;
 
     private long timeSavingResult;
-    private long timeSavingInMinutes;
+    private static long timeSavingInMinutes;
 
     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.FRANCE);
 
@@ -75,6 +75,36 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
         savingInMinutesTextView = (TextView) rootView.findViewById(R.id.savingInMinutesTextView);
         savingInEuroTextView = (TextView) rootView.findViewById(R.id.savingInEuroTextView);
 
+        ArrayList<Double> distanceTab = new ArrayList<>() ;
+        if (getTripDTO().getStationDataDTOList() != null) {
+            for (int i = 0; i + 1 < getTripDTO().getStationDataDTOList().size(); i++) {
+                timeInStation = getTripDTO().getStationDataDTOList().get(i).getEndTime() - getTripDTO().getStationDataDTOList().get(i).getStartTime();
+                totalTimeInStation += timeInStation;
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
+                distanceTab.add(tripBetweenStationsDistance);
+                tripDistance += tripBetweenStationsDistance;
+            }
+
+        }
+
+        double minVal = Collections.min(distanceTab);
+        double maxVal = Collections.max(distanceTab);
+
+        minDistanceBetweenStations.setText(String.valueOf(minVal) + " m");
+        maxDistanceBetweenStations.setText(String.valueOf(maxVal)+ " m");
+
+        averageDistanceBetweenStations = tripDistance/(getTripDTO().getStationDataDTOList().size()-1);
+        averageDistanceBetweenStationsTextView.setText(String.valueOf(averageDistanceBetweenStations) + " m");
+
+        averageTimeInStation = totalTimeInStation/getTripDTO().getStationDataDTOList().size();
+
+        timeSavingResult = totalTimeInStation-(((tripDistance/interStationObjective)+ 1)*averageTimeInStation);
+
+        timeSavingInMinutes = (((timeSavingResult / 1000)/60) % 60);
+
+        savingInMinutesTextView.setText(timeFormat.format(timeSavingResult)+ " min");
+        savingInEuroTextView.setText("soit " +  Math.round(timeSavingInMinutes* PreferenceManager.getInstance().getCostOfProductionByMinute())  + " euro");
+
         return rootView;
     }
 
@@ -82,7 +112,7 @@ public class ProvisionTab1 extends GenericTabFragment implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         getTripDTO();
-        timeSavingInStation();
+        //timeSavingInStation();
 
     }
 

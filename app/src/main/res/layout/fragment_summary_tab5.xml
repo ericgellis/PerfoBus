@@ -158,7 +158,7 @@
         android:id="@+id/indicatorPerformanceTimeNumber"
         android:layout_width="@dimen/mini_regular_size_rounded_button"
         android:layout_height="@dimen/mini_regular_size_rounded_button"
-        android:layout_alignBaseline="@+id/indicatorPerformanceTime"
+        android:layout_alignBaseline="@+id/effectiveAverageInterstation"
         android:layout_marginStart="260dp"
         android:background="@drawable/textview_grey_circle_design"
         android:text="5"
@@ -166,13 +166,13 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/indicatorPerformanceTime"
+        android:id="@+id/effectiveAverageInterstation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/indicatorAdaptationCapacity"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="300dp"
-        android:text="@string/indicator_performance_time" />
+        android:text="@string/effective_average_interstation" />
 
     <TextView
         android:id="@+id/indicatorPerformanceConfortSecurityNumber"
@@ -189,7 +189,7 @@
         android:id="@+id/indicatorPerformanceConfortSecurity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/indicatorPerformanceTime"
+        android:layout_below="@+id/effectiveAverageInterstation"
         android:layout_marginBottom="@dimen/double_regular_margin"
         android:layout_marginStart="300dp"
         android:text="@string/indicator_performance_confort_security" />
