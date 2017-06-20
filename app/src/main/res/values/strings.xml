@@ -126,13 +126,14 @@
     <string name="number_of_events">Nombre d\'évènements :</string>
     <string name="total_time_events">Temps cumulé des évènements :</string>
     <string name="load">Poids (% par rapport au temps réel du parcours) :</string>
-    <string name="type_event">Type d\'évènements:</string>
+    <string name="type_event">Type d\'évènements :</string>
     <string name="time">Temps :</string>
     <string name="retranscription_voice_memo">Retranscription mémo vocal : </string>
     <string name="impact_bus_performance">Impacts sur les performances du bus :</string>
     <string name="layout_to_favor">Aménagements à privilégier :</string>
     <string name="in_driving">En roulage </string>
     <string name="in_station">En station </string>
+    <string name="impact">Impact :</string>
 
     <!--capacity_tab4-->
     <string name="capacity">Charge</string>
@@ -144,11 +145,11 @@
 
     <!--summary-tab5-->
     <string name="enteringData">Saisi le</string>
-    <string name="speed_in_driving">Vitesse moyenne en section courante</string>
+    <string name="speed_in_driving">Vitesse commerciale</string>
     <string name="time_in_crossroad">Temps passé aux carrefours</string>
     <string name="time_in_station">Temps passé en stations</string>
     <string name="indicator_adaptation_capacity">Indicateur d\'adaptation de la capacité</string>
-    <string name="indicator_performance_time">Indicateur de performance de temps</string>
+    <string name="effective_average_interstation">Interstation moyenne effective</string>
     <string name="indicator_performance_confort_security">Indicateur de performance "confort et sécurité"</string>
     <string name="one">1</string>
     <string name="two">2</string>
@@ -156,5 +157,7 @@
     <string name="four">4</string>
     <string name="five">5</string>
     <string name="six">6</string>
+
+
 
 </resources>

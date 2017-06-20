@@ -80,13 +80,42 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/eventExplanations"
+            android:id="@+id/impact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/eventAudio"
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
-            android:layout_marginBottom="@dimen/double_regular_margin"/>
+            android:layout_marginBottom="@dimen/double_regular_margin"
+            android:text="@string/impact"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/impactTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/impact"
+            android:layout_alignBaseline="@+id/impact"
+            android:layout_marginStart="@dimen/regular_margin" />
+
+        <TextView
+            android:id="@+id/layoutToFavor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/impact"
+            android:layout_marginStart="@dimen/regular_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginBottom="@dimen/double_regular_margin"
+            android:text="@string/layout_to_favor"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/layoutToFavorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/layoutToFavor"
+            android:layout_alignBaseline="@+id/layoutToFavor"
+            android:layout_marginStart="@dimen/regular_margin" />
 
     </RelativeLayout>
 </ScrollView>

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
 import com.mobithink.carbon.database.model.StationDataDTO;
+import com.mobithink.carbon.utils.Mathematics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,8 +27,6 @@ import java.util.Locale;
 
 public class SummaryTab5 extends GenericTabFragment {
 
-    //private ImageView mWeatherImageView;
-    //private TextView mWeatherTemperatureTextView;
     private TextView mCityNameTextView;
     private TextView mLineNameTextView;
     private TextView mDirectionNameTextView;
@@ -62,6 +61,9 @@ public class SummaryTab5 extends GenericTabFragment {
         mRadarChart.setWebColorInner(Color.LTGRAY);
         mRadarChart.setWebAlpha(100);
         mRadarChart.setTouchEnabled(false);
+
+        setData();
+
         mRadarChart.getXAxis().setTextSize(14f);
         mRadarChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
 
@@ -73,11 +75,10 @@ public class SummaryTab5 extends GenericTabFragment {
             }
         });
 
-        mRadarChart.getYAxis().setDrawLabels(false);
+        mRadarChart.getYAxis().setDrawLabels(true);
+        mRadarChart.getYAxis().setSpaceTop(10f);
         mRadarChart.getYAxis().setAxisMinimum(0f);
-        mRadarChart.getYAxis().setAxisMaximum(10f);
-
-        setData();
+        mRadarChart.getYAxis().setAxisMaximum(9f);
 
         return rootView;
     }
@@ -100,6 +101,28 @@ public class SummaryTab5 extends GenericTabFragment {
 
         double tripTotalTime = getTripDTO().getEndTime() -getTripDTO().getStartTime();
 
+        long averageDistanceBetweenStations;
+        double tripBetweenStationsDistance = 0;
+        long tripDistance = 0;
+        long effectiveAverageInterstation = 0;
+
+        ArrayList<Double> distanceTab = new ArrayList<>() ;
+        if (getTripDTO().getStationDataDTOList() != null) {
+            for (int i = 0; i + 1 < getTripDTO().getStationDataDTOList().size(); i++) {
+                tripBetweenStationsDistance = Math.round(Mathematics.calculateGPSDistance(getTripDTO().getStationDataDTOList().get(i).getGpsLat(), getTripDTO().getStationDataDTOList().get(i).getGpsLong(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLat(), getTripDTO().getStationDataDTOList().get(i + 1).getGpsLong()));
+                distanceTab.add(tripBetweenStationsDistance);
+                tripDistance += tripBetweenStationsDistance;
+            }
+        }
+
+        averageDistanceBetweenStations = tripDistance/(getTripDTO().getStationDataDTOList().size()-1);
+        effectiveAverageInterstation = (10*averageDistanceBetweenStations)/1000;
+        if (effectiveAverageInterstation > 0){
+            effectiveAverageInterstation = effectiveAverageInterstation;
+        } else {
+            effectiveAverageInterstation = 0;
+        }
+
         ArrayList<Double> speedTab = new ArrayList<>() ;
         ArrayList<Double> timeinStationTab = new ArrayList<>() ;
         double speedAdd = 0;
@@ -110,23 +133,26 @@ public class SummaryTab5 extends GenericTabFragment {
         if (getTripDTO().getStationDataDTOList() != null) {
             for (StationDataDTO stationDataDTO : getTripDTO().getStationDataDTOList()) {
                 speedTab.add(stationDataDTO.getSpeed());
+                speedAdd += stationDataDTO.getSpeed();
                 double timeInStation = stationDataDTO.getEndTime()-stationDataDTO.getStartTime();
                 timeinStationTab.add(timeInStation);
                 totalTimeInstation += timeInStation;
             }
         }
-        averageSpeed = speedAdd/(getTripDTO().getStationDataDTOList().size()*10);
-        double timeInStations = (totalTimeInstation*10)/tripTotalTime;
+        averageSpeed = (speedAdd*10)/(getTripDTO().getStationDataDTOList().size()*70);
+        double timeInStations = (totalTimeInstation*100*10)/(tripTotalTime*30);
+        //This condition is used to obtain a chart as if the value is negative.
+        if (timeInStations > 0){
+            timeInStations = timeInStations;
+        } else {
+            timeInStations = 0;
+        }
 
-        ArrayList<Long> eventTimeSavingTab = new ArrayList<>();
-        long totalTimeSaving = 0;
         ArrayList<Double> timeInCrossRoadTab = new ArrayList<>() ;
         double totalTimeInCrossroad = 0;
 
         if (getTripDTO().getEventDTOList() != null){
             for (EventDTO eventDTO : getTripDTO().getEventDTOList()){
-                eventTimeSavingTab.add(eventDTO.getTimeSaving());
-                totalTimeSaving += eventDTO.getTimeSaving();
                 if (eventDTO.getEventType().equals("Evènement en carrefour")){
                     double timeInCrossroad = eventDTO.getEndTime() - eventDTO.getStartTime();
                     timeInCrossRoadTab.add(timeInCrossroad);
@@ -134,13 +160,19 @@ public class SummaryTab5 extends GenericTabFragment {
                 }
             }
         }
-        double timePerformance = (((totalTimeSaving+tripTotalTime)/tripTotalTime)-1)*10;
-        double timeInCrossRoad = totalTimeInCrossroad*10/tripTotalTime;
+
+        double timeInCrossRoad = (totalTimeInCrossroad*100*10)/(tripTotalTime*30);
+        //This condition is used to obtain a chart as if the value is negative.
+        if (timeInCrossRoad > 0){
+            timeInCrossRoad = timeInCrossRoad;
+        } else {
+            timeInCrossRoad = 0;
+        }
 
         int totalPerson = 0;
         int sum = 0;
-        int capacityMore33Count = 0;
-        int capacityMore33Percent;
+        Double capacityMore50Count = 0.0;
+        double capacityMore50Percent;
         ArrayList<Integer> busPersonTab = new ArrayList<>();
 
         int count = 0;
@@ -149,14 +181,20 @@ public class SummaryTab5 extends GenericTabFragment {
             int comeOut = stationDataDTO.getNumberOfGoOut();
             totalPerson = totalPerson + comeIn - comeOut;
             sum = sum + totalPerson;
-            if (totalPerson > getTripDTO().getVehicleCapacity() / 3) {
-                capacityMore33Count++;
+            if (totalPerson > getTripDTO().getVehicleCapacity() / 2) {
+                capacityMore50Count++;
             }
             busPersonTab.add(totalPerson);
             count++;
         }
 
-        capacityMore33Percent = (capacityMore33Count*10)/(count);
+        capacityMore50Percent = (capacityMore50Count*100*10)/(count*100);
+        //This condition is used to obtain a chart as if the value is negative.
+        if (capacityMore50Percent > 0){
+            capacityMore50Percent = capacityMore50Percent;
+        } else {
+            capacityMore50Percent = 0;
+        }
 
         int confortRating = 0;
         int securityRating = 0;
@@ -164,7 +202,7 @@ public class SummaryTab5 extends GenericTabFragment {
         double confortWeightedRating = 0;
         double securityWeightedRating = 0;
 
-        double confortSecurityRating = 0;
+        double confortSecurityRating = 0.0;
 
         if (getTripDTO().getEventDTOList() != null){
             for (EventDTO eventDTO : getTripDTO().getEventDTOList()){
@@ -190,25 +228,33 @@ public class SummaryTab5 extends GenericTabFragment {
         }
 
         confortSecurityRating = confortWeightedRating + securityWeightedRating;
-
+        //This condition is used to obtain a chart as if the value is negative.
+        if (confortSecurityRating > 0){
+            confortSecurityRating = confortSecurityRating;
+        } else {
+            confortSecurityRating = 0;
+        }
 
         ArrayList<RadarEntry> entries = new ArrayList<>();
-        entries.add(new RadarEntry((long) averageSpeed, 1));
-        entries.add(new RadarEntry((long) timeInCrossRoad, 2));
-        entries.add(new RadarEntry((long) timeInStations, 3));
-        entries.add(new RadarEntry(capacityMore33Percent, 4));
-        entries.add(new RadarEntry((long) timePerformance, 5));
-        entries.add(new RadarEntry((float) confortSecurityRating, 6));
+        entries.add(new RadarEntry( (float) averageSpeed, 0));
+        entries.add(new RadarEntry( (float) timeInCrossRoad, 1));
+        entries.add(new RadarEntry((float) timeInStations, 2));
+        entries.add(new RadarEntry((float) capacityMore50Percent, 3));
+        entries.add(new RadarEntry((float) effectiveAverageInterstation, 4));
+        entries.add(new RadarEntry((float) confortSecurityRating, 5));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Trip");
         dataSet.setColor(Color.rgb(0, 102, 128));
+        dataSet.setFillAlpha(255);
         dataSet.setDrawFilled(false);
+        dataSet.setLineWidth(2f);
+        dataSet.setDrawHighlightCircleEnabled(true);
+        dataSet.setDrawHighlightIndicators(false);
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(dataSet);
 
         RadarData radarData = new RadarData(sets);
-        mRadarChart.setData(radarData);
         radarData.setValueTextSize(5f);
         radarData.setDrawValues(false);
         mRadarChart.getLegend().setEnabled(false);

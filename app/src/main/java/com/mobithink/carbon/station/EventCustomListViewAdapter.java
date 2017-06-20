@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.mobithink.carbon.R;
 import com.mobithink.carbon.database.model.EventDTO;
+import com.mobithink.carbon.driving.DrivingActivity;
 import com.mobithink.carbon.managers.CarbonApplicationManager;
 import com.mobithink.carbon.managers.DatabaseManager;
 
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -143,12 +145,13 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
                 try {
                     copi.stop();
                     stopAndRegisterEvent(event);
-                    eventDTOList.remove(position);
+                    eventDTOList.remove(eventDTOList.get(position));
+                    notifyDataSetChanged();
+
                 } catch (Exception e) {
                     Log.e(TAG, "updateEvent: error on SQLLiteDataBase: ", e);
                     Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
 
             }
         });
@@ -159,7 +162,6 @@ public class EventCustomListViewAdapter extends BaseAdapter implements OnMapRead
     public void addData(EventDTO event) {
         eventDTOList.add(event);
     }
-
 
     public void takePhoto(final int position) {
 
